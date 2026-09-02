@@ -1,0 +1,144 @@
+Port and Button Assignments.
+
+CTRE CAN Ports
+Port	Device			Description
+-----------------------------------------------------------------------------------
+1       Pigeon          CTRE Pigeon IMU.
+21      CANdle          The CTRE CANdle LED controller.
+
+Motor CAN Ports
+Port	Device			Description
+-----------------------------------------------------------------------------------
+1       TalonFX         Swerve: Front Left Drive Motor.
+2       TalonFX         Swerve: Front Left Steer Motor.
+3       TalonFX         Swerve: Front Right Drive Motor.
+4       TalonFX         Swerve: Front Right Steer Motor.
+5       TalonFX         Swerve: Rear Left Drive Motor.
+6       TalonFX         Swerve: Rear Left Steer Motor.
+7       TalonFX         Swerve: Rear Right Drive Motor.
+8       TalonFX         Swerve: Rear Right Steer Motor.
+
+9       TalonFX         Intake: Pivit.
+10      TalonFX         Intake: Roller Left.
+11      TalonFX         Intake: Roller Right.
+
+12      TalonFX         Hopper: Roller.
+
+13      TalonFX         Shooter: Upper Left Flywheel.
+14      TalonFX         Shooter: Upper Right Flywheel.
+15      TalonFX         Shooter: Lower Left Flywheel.
+16      TalonFX         Shooter: Lower Right Flywheel.
+17      TalonFX         Shooter: Hood Left.
+18      TalonFX         Shooter: Hood Right.
+19      TalonFX         Shooter: Roller Left.
+22      TalonFX         Shooter: Roller Right.
+
+
+Encoders
+Port    Type            Description
+-----------------------------------------------------------------------------------             
+1       CanCoder        Front Left Encoder
+2       CanCoder        Front Right Encoder
+3       CanCoder        Rear Left Encoder
+4       CanCoder        Rear Right Encoder
+
+
+PWM Ports
+Port	Device			Description
+-----------------------------------------------------------------------------------
+
+
+PDP Ports
+Port	Device			Description
+-----------------------------------------------------------------------------------
+20      REV PDH         REV power distribution Hub.
+20      CTRE PDB        CTRE distribution board.
+
+
+PCM 0 Ports
+Port	Device blk-pos	Description
+-----------------------------------------------------------------------------------
+       
+
+PCM 1 Ports (REV PH)
+Port	Device blk-pos	Description
+-----------------------------------------------------------------------------------
+
+
+Digital I/O Ports
+Port	Device			Description
+-----------------------------------------------------------------------------------
+
+
+Analog I/O Ports
+Port	Device			Description
+-----------------------------------------------------------------------------------
+
+
+Driver Controller - Left Joystick
+Button Name				Function
+-----------------------------------------------------------------------------------
+Y Axis					Forward/Backward driving.
+X Axis                  Left/Right strafe (sideways movement).
+
+
+Driver Congtroller - Right Joystick
+Button Name				Function
+-----------------------------------------------------------------------------------
+X Axis                  Rotate.
+
+
+Driver Controller - Buttons
+Button Name				Function
+-----------------------------------------------------------------------------------
+LEFT_TRIGGER            Shooter Flywheel (hold)
+RIGHT_TRIGGER           Shooter Infeed (hold)
+LEFT_BUMPER             Slow Mode (hold)
+RIGHT_BUMPER            Alternate Rotation (hold + R Stick) - not implemented yet
+POV_0 (DPAD UP)
+POV_90 (DPAD RIGHT)     Park Wheels      
+POV_180 (DPAD DOWN)
+POV_270 (DPAD LEFT)             
+BACK                    
+START                   Reset Field Orientation
+A                       Intake Go (toggle)
+B                       Intake Stop (toggle)
+X                       Hub Trackign (toggle)
+Y                       Hopper Start (hold)
+
+
+Utility Controller - Left Joystick
+Button Name				Function
+-----------------------------------------------------------------------------------
+Y Axis                  
+
+
+Utility Controller - Right Joystick
+Button Name				Function
+-----------------------------------------------------------------------------------
+
+
+Utility Controller - Buttons
+Button Name				Function
+-----------------------------------------------------------------------------------
+
+
+Dashboard Indicators/Controls
+Name					Type			Description
+-----------------------------------------------------------------------------------
+AutoTarget				boolean			True when targeting code is running.
+TargetLocked			boolean			True when targeting completed with target
+                                        detected.
+Disabled				boolean			True when robot is disabled.
+Auto Mode				boolean			True when robot is in autonomous mode.
+Teleop Mode				boolean			True when robot is in teleop mode.
+FMS						boolean			True when robot is connected to the FMS.
+Brakes					boolean			True when drive motors are in brake mode.
+Low Battery				boolean			True when battery is low.
+Overload				boolean			True when brownout has occurred.
+Auto Program            Chooser         List of autonomous programs.
+Autonomous active       boolean         True if any auto program is active.
+Field Oriented          boolean         True when swerve drive is in field orientation mode.
+Alternate Drive         boolean         True when alternate driving mode is enabled.
+CompressorEnabled       boolean         True when/to enable compresspr.
+LowPressure             boolean         Toggles true/false when pressure is low.

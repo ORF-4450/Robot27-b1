@@ -1,0 +1,197 @@
+{
+  "version": "2025.0",
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 2.8024783549783554,
+        "y": 1.1098268398268407
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 2.7843417292343076,
+        "y": 0.36357946090368043
+      },
+      "isLocked": false,
+      "linkedName": "Shoot 254"
+    },
+    {
+      "anchor": {
+        "x": 7.41025492086039,
+        "y": 0.8261209331033559
+      },
+      "prevControl": {
+        "x": 7.19437922754329,
+        "y": 0.5329441034226192
+      },
+      "nextControl": {
+        "x": 8.042785820024605,
+        "y": 1.6851495752009735
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 7.564090317234848,
+        "y": 3.498224896847944
+      },
+      "prevControl": {
+        "x": 7.800238088881259,
+        "y": 3.4161625428332405
+      },
+      "nextControl": {
+        "x": 7.327942545588438,
+        "y": 3.5802872508626473
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 6.263007897050866,
+        "y": 3.1606075825216453
+      },
+      "prevControl": {
+        "x": 6.705037118778916,
+        "y": 3.5867398535491724
+      },
+      "nextControl": {
+        "x": 5.433516090029761,
+        "y": 2.360947265625
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 6.326428571428571,
+        "y": 1.0803787878787887
+      },
+      "prevControl": {
+        "x": 6.2641287048473515,
+        "y": 2.3014561728706804
+      },
+      "nextControl": {
+        "x": 6.375508658008658,
+        "y": 0.11840909090909135
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 2.8024783549783554,
+        "y": 1.1098268398268407
+      },
+      "prevControl": {
+        "x": 2.9904397490530306,
+        "y": 0.40230671672077967
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": "Shoot 254"
+    }
+  ],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.1892744479495268,
+      "rotationDegrees": 0.0
+    },
+    {
+      "waypointRelativePos": 0.5480764491324921,
+      "rotationDegrees": 0.0
+    },
+    {
+      "waypointRelativePos": 1.0220125786163523,
+      "rotationDegrees": -90.0
+    },
+    {
+      "waypointRelativePos": 2.864131506309149,
+      "rotationDegrees": 0.0
+    },
+    {
+      "waypointRelativePos": 3.753943217665615,
+      "rotationDegrees": 90.83601680239977
+    },
+    {
+      "waypointRelativePos": 4.1719242902208205,
+      "rotationDegrees": 180.0
+    },
+    {
+      "waypointRelativePos": 4.733617162854889,
+      "rotationDegrees": 180.0
+    }
+  ],
+  "constraintZones": [
+    {
+      "name": "Intake Speed",
+      "minWaypointRelativePos": 1.3333333333333333,
+      "maxWaypointRelativePos": 3.648648648648649,
+      "constraints": {
+        "maxVelocity": 3.0,
+        "maxAcceleration": 4.0,
+        "maxAngularVelocity": 270.0,
+        "maxAngularAcceleration": 270.0,
+        "nominalVoltage": 12.0,
+        "unlimited": false
+      }
+    },
+    {
+      "name": "Stop Accel",
+      "minWaypointRelativePos": 4.6846846846846795,
+      "maxWaypointRelativePos": 5.0,
+      "constraints": {
+        "maxVelocity": 5.2,
+        "maxAcceleration": 3.0,
+        "maxAngularVelocity": 270.0,
+        "maxAngularAcceleration": 270.0,
+        "nominalVoltage": 12.0,
+        "unlimited": false
+      }
+    }
+  ],
+  "pointTowardsZones": [],
+  "eventMarkers": [
+    {
+      "name": "intakeDown",
+      "waypointRelativePos": 0.0,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "intakeDown"
+        }
+      }
+    },
+    {
+      "name": "intake",
+      "waypointRelativePos": 0.6270270270270273,
+      "endWaypointRelativePos": 4.541366906474815,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "intake"
+        }
+      }
+    }
+  ],
+  "globalConstraints": {
+    "maxVelocity": 5.2,
+    "maxAcceleration": 5.0,
+    "maxAngularVelocity": 270.0,
+    "maxAngularAcceleration": 270.0,
+    "nominalVoltage": 12.0,
+    "unlimited": false
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": 75.0
+  },
+  "reversed": false,
+  "folder": null,
+  "idealStartingState": {
+    "velocity": 1.0,
+    "rotation": 75.0
+  },
+  "useDefaultConstraints": false
+}

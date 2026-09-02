@@ -1,0 +1,128 @@
+{
+  "version": "2025.0",
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 2.2209560166396107,
+        "y": 4.034386498917749
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 2.105544144637665,
+        "y": 4.6822436417748925
+      },
+      "isLocked": false,
+      "linkedName": "C-Shoot"
+    },
+    {
+      "anchor": {
+        "x": 1.3680361370400436,
+        "y": 5.1059428267045455
+      },
+      "prevControl": {
+        "x": 2.1697225587497444,
+        "y": 5.01880299825784
+      },
+      "nextControl": {
+        "x": 0.9164993405032469,
+        "y": 5.155022913284632
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 1.0748593073593076,
+        "y": 6.655876623376623
+      },
+      "prevControl": {
+        "x": 1.1730194805194805,
+        "y": 5.664458874458875
+      },
+      "nextControl": {
+        "x": 1.01392860677295,
+        "y": 7.271276699298836
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 1.5072625388933987,
+        "y": 5.319517890963205
+      },
+      "prevControl": {
+        "x": 1.3796543137851733,
+        "y": 6.124431310876625
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": null
+    }
+  ],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.5,
+      "rotationDegrees": -25.0
+    }
+  ],
+  "constraintZones": [
+    {
+      "name": "Constraints Zone",
+      "minWaypointRelativePos": 0.9405405405405406,
+      "maxWaypointRelativePos": 2.0,
+      "constraints": {
+        "maxVelocity": 1.0,
+        "maxAcceleration": 2.0,
+        "maxAngularVelocity": 270.0,
+        "maxAngularAcceleration": 270.0,
+        "nominalVoltage": 12.0,
+        "unlimited": false
+      }
+    }
+  ],
+  "pointTowardsZones": [],
+  "eventMarkers": [
+    {
+      "name": "intakeDown",
+      "waypointRelativePos": 0,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "intakeDown"
+        }
+      }
+    },
+    {
+      "name": "intake",
+      "waypointRelativePos": 0.7027027027027027,
+      "endWaypointRelativePos": 2.4648648648648646,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "intake"
+        }
+      }
+    }
+  ],
+  "globalConstraints": {
+    "maxVelocity": 5.2,
+    "maxAcceleration": 2.0,
+    "maxAngularVelocity": 270.0,
+    "maxAngularAcceleration": 270.0,
+    "nominalVoltage": 12.0,
+    "unlimited": false
+  },
+  "goalEndState": {
+    "velocity": 0.0,
+    "rotation": -25.0
+  },
+  "reversed": false,
+  "folder": null,
+  "idealStartingState": {
+    "velocity": 0,
+    "rotation": 0.0
+  },
+  "useDefaultConstraints": true
+}
