@@ -176,7 +176,6 @@ logs/*
 #simgui-window.json
 #simgui.json
 
-
 # Backups
 *.zip
 
