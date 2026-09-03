@@ -34,10 +34,11 @@ import org.wpilib.framework.RobotBase;
 import org.wpilib.system.RobotController;
 import org.wpilib.driverstation.Alliance;
 import org.wpilib.smartdashboard.Field2d;
-import org.wpilib.smartdashboard.SmartDashboard;
+//import org.wpilib.smartdashboard.SmartDashboard;
 import org.wpilib.command2.Command;
 import org.wpilib.command2.SubsystemBase;
 import org.wpilib.command2.button.RobotModeTriggers;
+import org.wpilib.telemetry.Telemetry;
 import Team4450.Robot27.utility.RobotOrientation;
 
 /**
@@ -151,33 +152,33 @@ public class Drivebase extends SubsystemBase {
     // See this function for more information.
     updateModulePoses(sdsDrivebase);
 
-    SmartDashboard.putString(Constants.SmartDashboardKeys.ROBOT_POSE, getPose().toString());
-    SmartDashboard.putBoolean(Constants.SmartDashboardKeys.HUB_TRACKING, Constants.HUB_TRACKING);
-    SmartDashboard.putBoolean(Constants.SmartDashboardKeys.BUMP_HAPPENED, this.bumpHappened);
+    Telemetry.log(Constants.SmartDashboardKeys.ROBOT_POSE, getPose().toString());
+    Telemetry.log(Constants.SmartDashboardKeys.HUB_TRACKING, Constants.HUB_TRACKING);
+    Telemetry.log(Constants.SmartDashboardKeys.BUMP_HAPPENED, this.bumpHappened);
 
     Pose2d drivebasePose = getPose();
     if (Math.abs(drivebasePose.getX()) > Constants.FIELD_MAX_X || Math.abs(drivebasePose.getY()) > Constants.FIELD_MAX_Y) {
-        SmartDashboard.putBoolean(Constants.SmartDashboardKeys.OUTSIDE_FIELD, true);
+        Telemetry.log(Constants.SmartDashboardKeys.OUTSIDE_FIELD, true);
     } else {
-        SmartDashboard.putBoolean(Constants.SmartDashboardKeys.OUTSIDE_FIELD, false);
+        Telemetry.log(Constants.SmartDashboardKeys.OUTSIDE_FIELD, false);
     }
 
 
-    if (SmartDashboard.getNumber(Constants.SmartDashboardKeys.ROBOT_DISTANCE, 0) > 1.25 && SmartDashboard.getNumber(Constants.SmartDashboardKeys.ROBOT_DISTANCE, 0) < 1.75) {
-        SmartDashboard.putBoolean(Constants.SmartDashboardKeys.DISTANCE_BOX, true);
+    if (Tunables.addDouble(Constants.SmartDashboardKeys.ROBOT_DISTANCE, 0) > 1.25 && Tunables.addDouble(Constants.SmartDashboardKeys.ROBOT_DISTANCE, 0) < 1.75) {
+        Telemetry.log(Constants.SmartDashboardKeys.DISTANCE_BOX, true);
     } else {
-        SmartDashboard.putBoolean(Constants.SmartDashboardKeys.DISTANCE_BOX, false);
+        Telemetry.log(Constants.SmartDashboardKeys.DISTANCE_BOX, false);
     }
 
-    SmartDashboard.putNumber(Constants.SmartDashboardKeys.BATTERY_VOLTAGE, RobotController.getBatteryVoltage());
+    Telemetry.log(Constants.SmartDashboardKeys.BATTERY_VOLTAGE, RobotController.getBatteryVoltage());
 
     if (RobotContainer.inTestMode) {
-        SmartDashboard.putNumber(Constants.SmartDashboardKeys.Gyro_HEADING, pigeonWrapper.startingYaw);
-        SmartDashboard.putNumber(Constants.SmartDashboardKeys.GYRO_STARTING_YAW, pigeonWrapper.getHeading());
-        SmartDashboard.putString(Constants.SmartDashboardKeys.ROBOT_OD_POSE, getODPose().toString());
-        SmartDashboard.putNumber(Constants.SmartDashboardKeys.DRIVEBASE_CURRENT, getDrivetrainCurrent());
-        SmartDashboard.putString(Constants.SmartDashboardKeys.LIMELIGHT_POSE, this.limelightPoseEstimate.toString());
-        SmartDashboard.putNumber("Flywheel Error", RobotContainer.shooter.flywheelRPMError);
+        Telemetry.log(Constants.SmartDashboardKeys.Gyro_HEADING, pigeonWrapper.startingYaw);
+        Telemetry.log(Constants.SmartDashboardKeys.GYRO_STARTING_YAW, pigeonWrapper.getHeading());
+        Telemetry.log(Constants.SmartDashboardKeys.ROBOT_OD_POSE, getODPose().toString());
+        Telemetry.log(Constants.SmartDashboardKeys.DRIVEBASE_CURRENT, getDrivetrainCurrent());
+        Telemetry.log(Constants.SmartDashboardKeys.LIMELIGHT_POSE, this.limelightPoseEstimate.toString());
+        Telemetry.log("Flywheel Error", RobotContainer.shooter.flywheelRPMError);
         
     }
   }
@@ -375,15 +376,15 @@ public class Drivebase extends SubsystemBase {
   public Pose2d getPose() {
       if (RobotContainer.questNavSubsystem.useQuest()) {
 
-          if(!SmartDashboard.getBoolean(Constants.SmartDashboardKeys.ROBOT_CURRENTLY_USING_QUEST, false)){ 
+          if(!Tunables.addBoolean(Constants.SmartDashboardKeys.ROBOT_CURRENTLY_USING_QUEST, false)){ 
               RobotContainer.questNavSubsystem.resetQuest2d(getODPose());
           }
 
-          SmartDashboard.putBoolean(Constants.SmartDashboardKeys.ROBOT_CURRENTLY_USING_QUEST, true);
+          Telemetry.log(Constants.SmartDashboardKeys.ROBOT_CURRENTLY_USING_QUEST, true);
           return RobotContainer.questNavSubsystem.getQuestPose();
 
       } else {
-          SmartDashboard.putBoolean(Constants.SmartDashboardKeys.ROBOT_CURRENTLY_USING_QUEST, false);
+          Telemetry.log(Constants.SmartDashboardKeys.ROBOT_CURRENTLY_USING_QUEST, false);
           return getODPose();
       }
   }
@@ -432,7 +433,7 @@ public class Drivebase extends SubsystemBase {
   }
 
   private void updateDS() {
-    SmartDashboard.putBoolean(Constants.SmartDashboardKeys.FIELD_ORIENTED, fieldRelativeDriving);
+    Telemetry.log(Constants.SmartDashboardKeys.FIELD_ORIENTED, fieldRelativeDriving);
   }
 
   //

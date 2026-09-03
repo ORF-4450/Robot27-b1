@@ -25,6 +25,8 @@ import org.wpilib.system.WPILibVersion;
 import org.wpilib.command2.Command;
 import org.wpilib.command2.CommandScheduler;
 import org.wpilib.telemetry.Telemetry;
+import org.wpilib.tunable.TunableBoolean;
+import org.wpilib.tunable.Tunables;
 
 /**
  * This is the top class or starting point for team robot code. This class acts
@@ -37,7 +39,8 @@ import org.wpilib.telemetry.Telemetry;
  */
 
 public class Robot extends TimedRobot {
-  private RobotContainer robotContainer;
+  private RobotContainer  robotContainer;
+  private TunableBoolean  flipAuto = Tunables.addBoolean(Constants.SmartDashboardKeys.FLIP_AUTO, false);
 
   /**
    * This constructor function is called when the robot is first started up and should be used
@@ -112,7 +115,6 @@ public class Robot extends TimedRobot {
           SendableVersion.INSTANCE.getCommit());
 
       // Send program version to the dashboard.
-      //SmartDashboard.putString(Constants.SmartDashboardKeys.PROGRAM, PROGRAM_NAME);
       Telemetry.log(Constants.SmartDashboardKeys.PROGRAM, PROGRAM_NAME);
 
       // Log RobotLib and WPILib versions we are using. Note Robolib WPILib version
@@ -121,22 +123,15 @@ public class Robot extends TimedRobot {
       Util.consoleLog("Robot WPILib=%s  Java=%s", WPILibVersion.Version, System.getProperty("java.version"));
       Util.consoleLog("RobotLib=%s", LibraryVersion.version);
 
-      // Note: Any Sendables added to SmartDashboard or Shuffleboard are sent to the
-      // DS on every
-      // loop of a TimedRobot. In this case it means that the SendableVersion data
-      // would be sent
-      // to the DS every 20ms even though it does not change. Sendables must be added
-      // to the SDB
-      // or SB in order to be sent so its a catch-22 with static Sendables. So we add
-      // the SendableVersion
-      // here and then a few lines below delete it from the sendable system. This puts
-      // the version
+      // Note: Any Sendables added to SmartDashboard or Shuffleboard are sent to the DS on every
+      // loop of a TimedRobot. In this case it means that the SendableVersion data would be sent
+      // to the DS every 20ms even though it does not change. Sendables must be added to the SDB
+      // or SB in order to be sent so its a catch-22 with static Sendables. So we add the SendableVersion
+      // here and then a few lines below delete it from the sendable system. This puts the version
       // info onto the dashboard but removes it from further updates.
 
-      // Note: As of 2023 WPILib, deleting a Sendable actually removes the data from
-      // the dashboard
-      // so we had to replace adding the SendableVersion as a Sendable (putdata) and
-      // add the data
+      // Note: As of 2023 WPILib, deleting a Sendable actually removes the data from the dashboard
+      // so we had to replace adding the SendableVersion as a Sendable (putdata) and add the data
       // manually to the dashboard in SendableVersion class.
 
       SendableVersion.INSTANCE.updateDashBoard();
@@ -146,10 +141,8 @@ public class Robot extends TimedRobot {
 
       // PathfindingCommand.warmupCommand().schedule();
 
-      // Instantiate our RobotContainer class. This will perform all necessary setup
-      // of the various
-      // subsystems, commands and other items that are needed to to be ready before we
-      // start doing
+      // Instantiate our RobotContainer class. This will perform all necessary setup of the various
+      // subsystems, commands and other items that are needed to to be ready before we start doing
       // either autonomous or teleop modes.
 
       robotContainer = new RobotContainer();
@@ -239,14 +232,13 @@ public class Robot extends TimedRobot {
    * This function is called once at the start of autonomous mode and schedules
    * the autonomous command selected by your {@link RobotContainer} class.
    */
-  private boolean flipAuto = SmartDashboard.putBoolean(Constants.SmartDashboardKeys.FLIP_AUTO, false);
-
+  
   @Override
   public void autonomousInit() {
-    this.flipAuto = SmartDashboard.getBoolean(Constants.SmartDashboardKeys.FLIP_AUTO, true);
+    Util.consoleLog("flipAuto=%b", flipAuto.get());
 
-    SmartDashboard.putBoolean(Constants.SmartDashboardKeys.DISABLED, false);
-    SmartDashboard.putBoolean(Constants.SmartDashboardKeys.AUTO_MODE, true);
+    Telemetry.log(Constants.SmartDashboardKeys.DISABLED, false);
+    Telemetry.log(Constants.SmartDashboardKeys.AUTO_MODE, true);
 
     RobotContainer.drivebase.pigeonWrapper.setCurrentYaw(0);
 
@@ -285,8 +277,8 @@ public class Robot extends TimedRobot {
   public void teleopInit() {
     robotContainer.getMatchInformation();
 
-    SmartDashboard.putBoolean(Constants.SmartDashboardKeys.DISABLED, false);
-    SmartDashboard.putBoolean(Constants.SmartDashboardKeys.TELEOP_MODE, true);
+    Telemetry.log(Constants.SmartDashboardKeys.DISABLED, false);
+    Telemetry.log(Constants.SmartDashboardKeys.TELEOP_MODE, true);
 
     // Set Limelight imu mode to 2
     RobotContainer.visionSubsystem.enableInternalIMU();

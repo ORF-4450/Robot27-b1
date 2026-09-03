@@ -10,11 +10,13 @@ import java.util.function.DoubleSupplier;
 import org.wpilib.math.controller.PIDController;
 import org.wpilib.math.geometry.Pose2d;
 import org.wpilib.math.geometry.Rotation2d;
+import org.wpilib.telemetry.Telemetry;
+
 import Team4450.Lib.Util;
 import Team4450.Robot27.Constants;
 import Team4450.Robot27.subsystems.Drivebase;
 import static Team4450.Robot27.Constants.*;
-import org.wpilib.smartdashboard.SmartDashboard;
+//import org.wpilib.smartdashboard.SmartDashboard;
 
 public class AutonHubTracking extends Command {
     private final Drivebase drivebase;
@@ -60,9 +62,9 @@ public class AutonHubTracking extends Command {
         // This finds where the correct hub position is
         Pose2d hubPosition;
         if (alliance == Alliance.BLUE) {
-            hubPosition = new Pose2d(HUB_BLUE_WELDED_POSE.getX(), HUB_BLUE_WELDED_POSE.getY(), Rotation2d.kZero);
+            hubPosition = new Pose2d(HUB_BLUE_WELDED_POSE.getX(), HUB_BLUE_WELDED_POSE.getY(), Rotation2d.ZERO);
         } else {
-            hubPosition = new Pose2d(HUB_RED_WELDED_POSE.getX(), HUB_RED_WELDED_POSE.getY(), Rotation2d.kZero);
+            hubPosition = new Pose2d(HUB_RED_WELDED_POSE.getX(), HUB_RED_WELDED_POSE.getY(), Rotation2d.ZERO);
         }
 
         double targetHeading;
@@ -83,19 +85,19 @@ public class AutonHubTracking extends Command {
         }
 
         targetHeading = normalizeAngle(targetHeading);
-        SmartDashboard.putNumber(Constants.SmartDashboardKeys.TARGET_HEADING, targetHeading);
+        Telemetry.log(Constants.SmartDashboardKeys.TARGET_HEADING, targetHeading);
 
         double drivebaseYaw = drivebase.getODPose().getRotation().getDegrees();
         double headingError = drivebaseYaw - targetHeading;
-        SmartDashboard.putNumber("Heading Error", headingError);
+        Telemetry.log("Heading Error", headingError);
 
         // Uses a PID and the previous assigned target heading to rotate there
         double rotation = headingPID.calculate(drivebaseYaw, targetHeading);
-        SmartDashboard.putNumber(Constants.SmartDashboardKeys.HEADING_PID_OUTPUT, rotation);
+        Telemetry.log(Constants.SmartDashboardKeys.HEADING_PID_OUTPUT, rotation);
 
-        headingPID.setP(SmartDashboard.getNumber(Constants.SmartDashboardKeys.HEADING_P, Constants.ROBOT_HEADING_KP));
-        headingPID.setI(SmartDashboard.getNumber(Constants.SmartDashboardKeys.HEADING_I, Constants.ROBOT_HEADING_KI));
-        headingPID.setD(SmartDashboard.getNumber(Constants.SmartDashboardKeys.HEADING_D, Constants.ROBOT_HEADING_KD));
+        headingPID.setP(Tunables.addDouble(Constants.SmartDashboardKeys.HEADING_P, Constants.ROBOT_HEADING_KP));
+        headingPID.setI(Tunables.addDouble(Constants.SmartDashboardKeys.HEADING_I, Constants.ROBOT_HEADING_KI));
+        headingPID.setD(Tunables.addDouble(Constants.SmartDashboardKeys.HEADING_D, Constants.ROBOT_HEADING_KD));
 
         drivebase.drive(0, 0, rotation);
         return;

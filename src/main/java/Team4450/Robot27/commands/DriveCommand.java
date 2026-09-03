@@ -6,6 +6,7 @@ import org.wpilib.driverstation.Alliance;
 import org.wpilib.driverstation.MatchType;
 import org.wpilib.driverstation.DriverStationErrors;
 import org.wpilib.driverstation.GenericHID.RumbleType;
+import org.wpilib.framework.RobotBase;
 import org.wpilib.command2.Command;
 import java.util.function.DoubleSupplier;
 
@@ -14,12 +15,14 @@ import com.ctre.phoenix6.swerve.SwerveRequest.RobotCentricFacingAngle;
 import org.wpilib.math.controller.PIDController;
 import org.wpilib.math.geometry.Pose2d;
 import org.wpilib.math.geometry.Rotation2d;
+import org.wpilib.telemetry.Telemetry;
+
 import Team4450.Lib.Util;
 import Team4450.Robot27.Constants;
 import Team4450.Robot27.RobotContainer;
 import Team4450.Robot27.subsystems.Drivebase;
 import static Team4450.Robot27.Constants.*;
-import org.wpilib.smartdashboard.SmartDashboard;
+//import org.wpilib.smartdashboard.SmartDashboard;
 
 public class DriveCommand extends Command {
     private final Drivebase drivebase;
@@ -70,16 +73,16 @@ public class DriveCommand extends Command {
         // program completed. The if
         // statment below prevents this.
 
-        if (robot.isAutonomous()) return; // We do not want to run the drive command if we are in auto
+        if (RobotBase.isAutonomous()) return; // We do not want to run the drive command if we are in auto
 
         // Somewhere in here for the pose estimate for the robot there is a problem where on the red side the robot seems to point to the left. There does not seem to be a problem with the blue side
 
         // This finds where the correct hub position is
         Pose2d hubPosition;
         if (alliance == Alliance.BLUE) {
-            hubPosition = new Pose2d(HUB_BLUE_WELDED_POSE.getX(), HUB_BLUE_WELDED_POSE.getY(), Rotation2d.kZero);
+            hubPosition = new Pose2d(HUB_BLUE_WELDED_POSE.getX(), HUB_BLUE_WELDED_POSE.getY(), Rotation2d.ZERO);
         } else {
-            hubPosition = new Pose2d(HUB_RED_WELDED_POSE.getX(), HUB_RED_WELDED_POSE.getY(), Rotation2d.kZero);
+            hubPosition = new Pose2d(HUB_RED_WELDED_POSE.getX(), HUB_RED_WELDED_POSE.getY(), Rotation2d.ZERO);
         }
 
         double targetHeading;
@@ -89,7 +92,8 @@ public class DriveCommand extends Command {
         Pose2d drivebasePose = drivebase.getPose();
 
         if (!drivebase.wallTrackingLeft && !drivebase.wallTrackingRight) {
-            if (Math.abs(rotationXSupplier.getAsDouble()) <= 0.2 && Math.abs(rotationYSupplier.getAsDouble()) <= 0.2 && alliance == Alliance.BLUE) {
+            if (Math.abs(rotationXSupplier.getAsDouble()) <= 0.2 && Math.abs(rotationYSupplier.getAsDouble()) <= 0.2 && 
+                alliance == Alliance.BLUE) {
                 // Checks if robot is currently in the Alliance Zone then aims at the hub
                 if (drivebasePose.getX() < NEUTRAL_BLUE_ZONE_BARRIER_X) {
                     targetHeading = drivebase.getAngleToAim(drivebasePose, hubPosition);
@@ -109,7 +113,8 @@ public class DriveCommand extends Command {
                     }
                 }
                 // This does the same thing but for the red alliance
-            } else if (Math.abs(rotationXSupplier.getAsDouble()) <= 0.2 && Math.abs(rotationYSupplier.getAsDouble()) <= 0.2 && alliance == Alliance.RED) {
+            } else if (Math.abs(rotationXSupplier.getAsDouble()) <= 0.2 && 
+                       Math.abs(rotationYSupplier.getAsDouble()) <= 0.2 && alliance == Alliance.RED) {
                 if (drivebasePose.getX() > NEUTRAL_RED_ZONE_BARRIER_X) {
                     targetHeading = drivebase.getAngleToAim(drivebasePose, hubPosition);
                     RobotContainer.shooter.disableManualDistanceThree();
@@ -142,25 +147,25 @@ public class DriveCommand extends Command {
         }
 
         targetHeading = normalizeAngle(targetHeading);
-        SmartDashboard.putNumber(Constants.SmartDashboardKeys.TARGET_HEADING, targetHeading);
+        Telemetry.log(Constants.SmartDashboardKeys.TARGET_HEADING, targetHeading);
 
         double drivebaseYaw = drivebase.getODPose().getRotation().getDegrees();
         double headingError = drivebaseYaw - targetHeading;
-        SmartDashboard.putNumber("Heading Error", headingError);
+        Telemetry.log("Heading Error", headingError);
 
         if (Constants.HUB_TRACKING) {
             // Uses a PID and the previous assigned target heading to rotate there
             double rotation = headingPID.calculate(drivebaseYaw, targetHeading);
-            SmartDashboard.putNumber(Constants.SmartDashboardKeys.HEADING_PID_OUTPUT, rotation);
+            Telemetry.log(Constants.SmartDashboardKeys.HEADING_PID_OUTPUT, rotation);
             double throttle = throttleSupplier.getAsDouble();
             double strafe = strafeSupplier.getAsDouble();
 
             throttle = Util.squareInput(throttle);
             strafe = Util.squareInput(strafe);
 
-            headingPID.setP(SmartDashboard.getNumber(Constants.SmartDashboardKeys.HEADING_P, Constants.ROBOT_HEADING_KP));
-            headingPID.setI(SmartDashboard.getNumber(Constants.SmartDashboardKeys.HEADING_I, Constants.ROBOT_HEADING_KI));
-            headingPID.setD(SmartDashboard.getNumber(Constants.SmartDashboardKeys.HEADING_D, Constants.ROBOT_HEADING_KD));
+            headingPID.setP(Tunables.addDouble(Constants.SmartDashboardKeys.HEADING_P, Constants.ROBOT_HEADING_KP));
+            headingPID.setI(Tunables.addDouble(Constants.SmartDashboardKeys.HEADING_I, Constants.ROBOT_HEADING_KI));
+            headingPID.setD(Tunables.addDouble(Constants.SmartDashboardKeys.HEADING_D, Constants.ROBOT_HEADING_KD));
 
             if (Math.abs(headingError) <= 5 || Math.abs(headingError) >= 355) {
                 RobotContainer.driverController.setRumble(RumbleType.kBothRumble, 0.3);
@@ -185,7 +190,7 @@ public class DriveCommand extends Command {
                 drivebase.setX();
             }
 
-            if (SmartDashboard.getBoolean(Constants.SmartDashboardKeys.ROBOT_CURRENTLY_USING_QUEST, true)){
+            if (Tunables.addBoolean(Constants.SmartDashboardKeys.ROBOT_CURRENTLY_USING_QUEST, true)){
                 rotation = rotation * 0.6;
             }
 

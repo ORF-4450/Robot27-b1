@@ -6,7 +6,8 @@ import Team4450.Robot27.subsystems.Shooter;
 import Team4450.Robot27.subsystems.Intake;
 import org.wpilib.system.Timer;
 import org.wpilib.command2.Command;
-import org.wpilib.smartdashboard.SmartDashboard;
+import org.wpilib.telemetry.Telemetry;
+//import org.wpilib.smartdashboard.SmartDashboard;
 import Team4450.Robot27.Constants;
 import Team4450.Robot27.RobotContainer;
 
@@ -75,10 +76,10 @@ public class Shoot extends Command {
         }
 
         if (!this.shooter.flywheelWithinSpeed()) {
-            SmartDashboard.putNumber(Constants.SmartDashboardKeys.INFEED_TARGET_RPM, (Constants.INFEED_DEFAULT_TARGET_RPM - Math.max(shooter.flywheelRPMError * 5, 0)));
+            Telemetry.log(Constants.SmartDashboardKeys.INFEED_TARGET_RPM, (Constants.INFEED_DEFAULT_TARGET_RPM - Math.max(shooter.flywheelRPMError * 5, 0)));
         }
 
-        if (pivotDelay.hasElapsed(0.5) && pviotIncrementTimer.hasElapsed(0.2) && SmartDashboard.getNumber(Constants.SmartDashboardKeys.PIVOT_POSITION, 0) > 0.1) {
+        if (pivotDelay.hasElapsed(0.5) && pviotIncrementTimer.hasElapsed(0.2) && Tunables.addDouble(Constants.SmartDashboardKeys.PIVOT_POSITION, 0) > 0.1) {
             intake.incrementPivitUp(0.05);
             pviotIncrementTimer.reset();
             

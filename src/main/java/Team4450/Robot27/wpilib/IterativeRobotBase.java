@@ -8,7 +8,6 @@ package Team4450.Robot27.wpilib;
 import Team4450.Lib.Util;
 
 import org.wpilib.framework.RobotBase;
-import org.wpilib.driverstation.DriverStation;
 import org.wpilib.driverstation.DriverStationErrors;
 import org.wpilib.driverstation.internal.DriverStationBackend;
 import org.wpilib.hardware.hal.ControlWord;
@@ -16,7 +15,7 @@ import org.wpilib.hardware.hal.DriverStationJNI;
 import org.wpilib.hardware.hal.HAL;
 import org.wpilib.hardware.hal.RobotMode;
 import org.wpilib.networktables.NetworkTableInstance;
-import org.wpilib.system.Watchdog;
+//import org.wpilib.system.Watchdog;
 import org.wpilib.tunable.TunableRegistry;
 
 /**

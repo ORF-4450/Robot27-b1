@@ -11,8 +11,9 @@ import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.MotorAlignmentValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
-import org.wpilib.smartdashboard.SmartDashboard;
+//import org.wpilib.smartdashboard.SmartDashboard;
 import org.wpilib.command2.SubsystemBase;
+import org.wpilib.telemetry.Telemetry;
 import Team4450.Robot27.subsystems.Drivebase;
 import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.controls.PositionVoltage;
@@ -99,14 +100,14 @@ public class Intake extends SubsystemBase {
 
         this.pivotMotor.getConfigurator().apply(pivotCFG);
 
-        SmartDashboard.putBoolean("Intake can Pivot", canPivot);
-        SmartDashboard.putBoolean("Intake can Spin", canSpin);
-        SmartDashboard.putNumber(Constants.SmartDashboardKeys.PIVOT_POSITION, 0);
+        Telemetry.log("Intake can Pivot", canPivot);
+        Telemetry.log("Intake can Spin", canSpin);
+        Telemetry.log(Constants.SmartDashboardKeys.PIVOT_POSITION, 0);
     }
 
     @Override
     public void periodic() {
-        this.pivitTargetPosition = SmartDashboard.getNumber(Constants.SmartDashboardKeys.PIVOT_POSITION, 0);
+        this.pivitTargetPosition = Tunables.addDouble(Constants.SmartDashboardKeys.PIVOT_POSITION, 0);
         if (this.canPivot) {
             this.pivitTargetPositionMotorPosition = this.pivitPositionToMotorPosition(this.pivitTargetPosition);
             // Convert position input to rotations for the motor
@@ -120,16 +121,16 @@ public class Intake extends SubsystemBase {
             this.pivitCurrentPosition = this.motorPositionToPivitPosition(this.pivitCurrentPositionMotorPosition);
 
             if (RobotContainer.inTestMode) {
-                SmartDashboard.putNumber("Intake RPM", getIntakeRPM());
+                Telemetry.log("Intake RPM", getIntakeRPM());
             }
-            SmartDashboard.putNumber(Constants.SmartDashboardKeys.INTAKE_CURRENT_DRAW, getIntakeCurrent());
-            SmartDashboard.putNumber(Constants.SmartDashboardKeys.PIVOT_CURRENT_DRAW, getPivotMotorCurrent());
-            SmartDashboard.putNumber(Constants.SmartDashboardKeys.PIVOT_CURRENT_POSITION, this.pivitCurrentPosition);
-            SmartDashboard.putNumber("Intake RPM", getIntakeRPM());
+            Telemetry.log(Constants.SmartDashboardKeys.INTAKE_CURRENT_DRAW, getIntakeCurrent());
+            Telemetry.log(Constants.SmartDashboardKeys.PIVOT_CURRENT_DRAW, getPivotMotorCurrent());
+            Telemetry.log(Constants.SmartDashboardKeys.PIVOT_CURRENT_POSITION, this.pivitCurrentPosition);
+            Telemetry.log("Intake RPM", getIntakeRPM());
         }
 
         if (this.runIntake) {
-            if (SmartDashboard.getBoolean(Constants.SmartDashboardKeys.AUTONOMOUS_ACTIVE, true)) {
+            if (Tunables.addBoolean(Constants.SmartDashboardKeys.AUTONOMOUS_ACTIVE, true)) {
                 if (this.reverseIntake) {
                     setIntakeRPM(-7000);
                 } else {
@@ -167,26 +168,26 @@ public class Intake extends SubsystemBase {
     }
 
     public void pivitDown() {
-        SmartDashboard.putNumber(Constants.SmartDashboardKeys.PIVOT_POSITION, 1.01);
+        Telemetry.log(Constants.SmartDashboardKeys.PIVOT_POSITION, 1.01);
     }
 
     public void pivitUp() {
-        SmartDashboard.putNumber(Constants.SmartDashboardKeys.PIVOT_POSITION, 0);
+        Telemetry.log(Constants.SmartDashboardKeys.PIVOT_POSITION, 0);
     }
 
     public void shootingPivitToggle() {
         if (this.pivitCurrentPosition >= 0.85) {
-            SmartDashboard.putNumber(Constants.SmartDashboardKeys.PIVOT_POSITION, 0.40);
+            Telemetry.log(Constants.SmartDashboardKeys.PIVOT_POSITION, 0.40);
         } else {
-            SmartDashboard.putNumber(Constants.SmartDashboardKeys.PIVOT_POSITION, 0.95);
+            Telemetry.log(Constants.SmartDashboardKeys.PIVOT_POSITION, 0.95);
         }
     }
 
     public void incrementPivitUp(double incrementAmount) {
 
-        incrementAmount = SmartDashboard.getNumber(Constants.SmartDashboardKeys.PIVOT_POSITION, 1) - incrementAmount;
+        incrementAmount = Tunables.addDouble(Constants.SmartDashboardKeys.PIVOT_POSITION, 1) - incrementAmount;
 
-        SmartDashboard.putNumber(Constants.SmartDashboardKeys.PIVOT_POSITION, incrementAmount);
+        Telemetry.log(Constants.SmartDashboardKeys.PIVOT_POSITION, incrementAmount);
     }
 
     // Linear interpolate the pivit position between zero and one with the motor
@@ -205,7 +206,7 @@ public class Intake extends SubsystemBase {
     public void startIntake() {
         if (canSpin) {
             this.runIntake = true;
-            SmartDashboard.putNumber(Constants.SmartDashboardKeys.PIVOT_POSITION, 0.95);
+            Telemetry.log(Constants.SmartDashboardKeys.PIVOT_POSITION, 0.95);
         }
     }
 

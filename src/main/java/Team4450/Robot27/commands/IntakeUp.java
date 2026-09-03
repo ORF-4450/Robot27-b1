@@ -1,8 +1,9 @@
 package Team4450.Robot27.commands;
 
 import org.wpilib.command2.Command;
+import org.wpilib.telemetry.Telemetry;
 import Team4450.Robot27.subsystems.Intake;
-import org.wpilib.smartdashboard.SmartDashboard;
+//import org.wpilib.smartdashboard.SmartDashboard;
 import Team4450.Robot27.Constants;
 
 public class IntakeUp extends Command {
@@ -17,7 +18,7 @@ public class IntakeUp extends Command {
   }
 
   public void execute() {
-    SmartDashboard.putNumber(Constants.SmartDashboardKeys.PIVOT_POSITION, 0);
+    Telemetry.log(Constants.SmartDashboardKeys.PIVOT_POSITION, 0);
   }
 
   public boolean isFinished() {

@@ -2,22 +2,15 @@ package Team4450.Robot27.subsystems;
 
 import Team4450.Lib.Util;
 import Team4450.Robot27.Constants;
-import Team4450.Robot27.RobotContainer;
 import Team4450.Robot27.commands.Utility.NotifierCommand;
 
-import static Team4450.Robot27.Constants.*;
-
-import org.wpilib.math.geometry.Pose2d;
-import org.wpilib.driverstation.MatchState;
 import org.wpilib.driverstation.RobotState;
-import org.wpilib.driverstation.Alliance;
-import org.wpilib.driverstation.MatchType;
-import org.wpilib.driverstation.DriverStationErrors;
 import org.wpilib.system.Notifier;
-import org.wpilib.shuffleboard.Shuffleboard;
-import org.wpilib.shuffleboard.ShuffleboardTab;
-import org.wpilib.smartdashboard.SmartDashboard;
+//import org.wpilib.shuffleboard.Shuffleboard;
+//import org.wpilib.shuffleboard.ShuffleboardTab;
+//import org.wpilib.smartdashboard.SmartDashboard;
 import org.wpilib.command2.SubsystemBase;
+import org.wpilib.telemetry.Telemetry;
 
 /**
  * This class hosts functions relating to communicating with the ShuffleBoard driver
@@ -75,28 +68,28 @@ public class ShuffleBoard extends SubsystemBase {
     private void resetLEDIndicators() {
         Util.consoleLog();
         
-        SmartDashboard.putBoolean(Constants.SmartDashboardKeys.DISABLED, true);
-        SmartDashboard.putBoolean(Constants.SmartDashboardKeys.AUTO_MODE, false);
-        SmartDashboard.putBoolean(Constants.SmartDashboardKeys.TELEOP_MODE, false);
-        SmartDashboard.putBoolean(Constants.SmartDashboardKeys.FMS, RobotState.isFMSAttached());
-        SmartDashboard.putBoolean(Constants.SmartDashboardKeys.AUTONOMOUS_ACTIVE, false);
+        Telemetry.log(Constants.SmartDashboardKeys.DISABLED, true);
+        Telemetry.log(Constants.SmartDashboardKeys.AUTO_MODE, false);
+        Telemetry.log(Constants.SmartDashboardKeys.TELEOP_MODE, false);
+        Telemetry.log(Constants.SmartDashboardKeys.FMS, RobotState.isFMSAttached());
+        Telemetry.log(Constants.SmartDashboardKeys.AUTONOMOUS_ACTIVE, false);
     }
 
     /**
      * Switch tab on shuffleboard display by rotating through the tabs.
      * @return The new tab index (0-based).
      */
-    public int switchTab() {
-        currentTab++;
+    // public int switchTab() {
+    //     currentTab++;
 
-        if (currentTab > (numberOfTabs - 1)) currentTab = 0;
+    //     if (currentTab > (numberOfTabs - 1)) currentTab = 0;
 
-        Util.consoleLog("%d", currentTab);
+    //     Util.consoleLog("%d", currentTab);
 
-        Shuffleboard.selectTab(currentTab);
+    //     Shuffleboard.selectTab(currentTab);
 
-        return currentTab;
-    }
+    //     return currentTab;
+    // }
 
     /**
      * Switch tab on shuffleboard display by tab name. Will create the tab if
@@ -104,9 +97,9 @@ public class ShuffleBoard extends SubsystemBase {
      * @param tabName The name of the tab to select.
      * @return The selected tab object.
      */
-    public ShuffleboardTab switchTab(String tabName) {
-        Util.consoleLog("%s", tabName);
+    // public ShuffleboardTab switchTab(String tabName) {
+    //     Util.consoleLog("%s", tabName);
 
-        return Shuffleboard.getTab(tabName);
-    }
+    //     return Shuffleboard.getTab(tabName);
+    // }
 }

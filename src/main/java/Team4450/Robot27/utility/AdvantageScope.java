@@ -7,9 +7,10 @@ import org.wpilib.math.geometry.Pose2d;
 import org.wpilib.math.geometry.Pose3d;
 import org.wpilib.math.geometry.Quaternion;
 import org.wpilib.math.geometry.Rotation3d;
+import org.wpilib.telemetry.Telemetry;
 import org.wpilib.math.kinematics.SwerveModuleState;
 import org.wpilib.framework.RobotBase;
-import org.wpilib.smartdashboard.SmartDashboard;
+//mport org.wpilib.smartdashboard.SmartDashboard;
 
 public class AdvantageScope {
     // Why TF does this run all the time. It should only be running in simulation mode
@@ -60,8 +61,8 @@ public class AdvantageScope {
     //     sendPoses("gamepieces", gamepieces);
     //     sendPoses("targets", visionTargets.toArray(new Pose3d[0]));
 
-    //     SmartDashboard.putNumberArray("Visualization/swerve_modules", swerveStates);
-    //     SmartDashboard.putNumber("Visualization/gyro", gyro);
+    //     Telemetry.logArray("Visualization/swerve_modules", swerveStates);
+    //     Telemetry.log("Visualization/gyro", gyro);
 
     //     // for all the notes in the gamepiece inventory, set the pose to be above the robot
     //     // this could be changed to make it look like they are "in" the robot but thats not
@@ -113,7 +114,7 @@ public class AdvantageScope {
         
     //     Double[] outputArray = output.toArray(new Double[0]);
 
-    //     SmartDashboard.putNumberArray("Visualization/"+key, outputArray);
+    //     Telemetry.logArray("Visualization/"+key, outputArray);
     // }
 
     // /**

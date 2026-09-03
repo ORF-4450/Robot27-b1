@@ -2,7 +2,8 @@ package Team4450.Robot27.utility;
 
 import Team4450.Lib.Util;
 import Team4450.Robot27.RobotContainer;
-import org.wpilib.smartdashboard.SmartDashboard;
+//import org.wpilib.smartdashboard.SmartDashboard;
+import org.wpilib.telemetry.Telemetry;
 
 public class ConsoleEveryX {
     private int x;
@@ -16,12 +17,12 @@ public class ConsoleEveryX {
         this.enabled = false;
         this.id = String.format("ConsoleEveryX/%s", id);
         if (!RobotContainer.inTestMode) { return; } // Early return if not in test mode
-        SmartDashboard.putBoolean(id, enabled);
+        Telemetry.log(id, enabled);
     }
 
     public void update(String text) {
         if (!RobotContainer.inTestMode) { return; } // Early return if not in test mode
-        this.enabled = SmartDashboard.getBoolean(this.id, this.enabled);
+        this.enabled = Tunables.addBoolean(this.id, this.enabled);
         if (this.enabled) {
             this.x++;
             if (this.x == this.targetX) {

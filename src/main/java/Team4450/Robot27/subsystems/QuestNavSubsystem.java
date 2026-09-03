@@ -8,8 +8,9 @@ import Team4450.Robot27.Constants.SmartDashboardKeys;
 import org.wpilib.math.geometry.Pose2d;
 import org.wpilib.math.geometry.Pose3d;
 import org.wpilib.math.geometry.Rotation2d;
-import org.wpilib.smartdashboard.SmartDashboard;
+//import org.wpilib.smartdashboard.SmartDashboard;
 import org.wpilib.command2.SubsystemBase;
+import org.wpilib.telemetry.Telemetry;
 import gg.questnav.questnav.PoseFrame;
 import gg.questnav.questnav.QuestNav;
 
@@ -23,17 +24,17 @@ public class QuestNavSubsystem extends SubsystemBase {
 
         questNav.setVersionCheckEnabled(false);
 
-        SmartDashboard.putBoolean(Constants.SmartDashboardKeys.QUEST_CONNECTED, false);
-        SmartDashboard.putBoolean(Constants.SmartDashboardKeys.QUEST_TRACKING, false);
-        SmartDashboard.putBoolean(Constants.SmartDashboardKeys.QUEST_LOW_BATTERY, false);
-        SmartDashboard.putBoolean(Constants.SmartDashboardKeys.USE_QUEST, true);
+        Telemetry.log(Constants.SmartDashboardKeys.QUEST_CONNECTED, false);
+        Telemetry.log(Constants.SmartDashboardKeys.QUEST_TRACKING, false);
+        Telemetry.log(Constants.SmartDashboardKeys.QUEST_LOW_BATTERY, false);
+        Telemetry.log(Constants.SmartDashboardKeys.USE_QUEST, true);
 
-        questNav.onConnected(() -> SmartDashboard.putBoolean(Constants.SmartDashboardKeys.QUEST_CONNECTED, true));
-        questNav.onDisconnected(() -> SmartDashboard.putBoolean(Constants.SmartDashboardKeys.QUEST_CONNECTED, false));
+        questNav.onConnected(() -> Telemetry.log(Constants.SmartDashboardKeys.QUEST_CONNECTED, true));
+        questNav.onDisconnected(() -> Telemetry.log(Constants.SmartDashboardKeys.QUEST_CONNECTED, false));
 
-        questNav.onTrackingAcquired(() -> SmartDashboard.putBoolean(Constants.SmartDashboardKeys.QUEST_TRACKING, true));
-        questNav.onTrackingLost(() -> SmartDashboard.putBoolean(Constants.SmartDashboardKeys.QUEST_TRACKING, false));
-        questNav.onLowBattery(20, level -> SmartDashboard.putBoolean(Constants.SmartDashboardKeys.QUEST_LOW_BATTERY, true));
+        questNav.onTrackingAcquired(() -> Telemetry.log(Constants.SmartDashboardKeys.QUEST_TRACKING, true));
+        questNav.onTrackingLost(() -> Telemetry.log(Constants.SmartDashboardKeys.QUEST_TRACKING, false));
+        questNav.onLowBattery(20, level -> Telemetry.log(Constants.SmartDashboardKeys.QUEST_LOW_BATTERY, true));
 
         // Initialize a blank pose3d
         questNav.setPose(new Pose3d());
@@ -57,8 +58,8 @@ public class QuestNavSubsystem extends SubsystemBase {
 
             String robotPoseString = robotPose.toString();
 
-            SmartDashboard.putString(Constants.SmartDashboardKeys.QUEST_POSE, robotPoseString);
-            SmartDashboard.putNumber(Constants.SmartDashboardKeys.QUEST_BATTERY_PERCENTAGE, questNav.getBatteryPercent().getAsInt());
+            Telemetry.log(Constants.SmartDashboardKeys.QUEST_POSE, robotPoseString);
+            Telemetry.log(Constants.SmartDashboardKeys.QUEST_BATTERY_PERCENTAGE, questNav.getBatteryPercent().getAsInt());
         }
     }
 
@@ -77,8 +78,8 @@ public class QuestNavSubsystem extends SubsystemBase {
     }
 
     public boolean useQuest() {
-        if (SmartDashboard.getBoolean(Constants.SmartDashboardKeys.USE_QUEST, true) &&
-                SmartDashboard.getBoolean(Constants.SmartDashboardKeys.QUEST_TRACKING, false) &&
+        if (Tunables.addBoolean(Constants.SmartDashboardKeys.USE_QUEST, true) &&
+                Tunables.addBoolean(Constants.SmartDashboardKeys.QUEST_TRACKING, false) &&
                 !questAgainstWall()) {
             return true;
         } else {

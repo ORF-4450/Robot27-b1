@@ -2,8 +2,9 @@ package Team4450.Robot27.subsystems;
 
 import Team4450.Robot27.Constants;
 import Team4450.Robot27.RobotContainer;
-import org.wpilib.smartdashboard.SmartDashboard;
+//import org.wpilib.smartdashboard.SmartDashboard;
 import org.wpilib.command2.SubsystemBase;
+import org.wpilib.telemetry.Telemetry;
 
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.NeutralModeValue;
@@ -50,8 +51,8 @@ public class Hopper extends SubsystemBase {
 
     @Override
     public void periodic() {
-        SmartDashboard.putNumber("Lower Rollers Current Draw", getLowerRollersCurrent());
-        SmartDashboard.putNumber("Lower Rollers RPM", getLowerRollersRPM());
+        Telemetry.log("Lower Rollers Current Draw", getLowerRollersCurrent());
+        Telemetry.log("Lower Rollers RPM", getLowerRollersRPM());
     }
 
     public void start() {

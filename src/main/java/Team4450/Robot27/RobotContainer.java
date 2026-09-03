@@ -11,6 +11,7 @@ import com.pathplanner.lib.commands.FollowPathCommand;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 import com.pathplanner.lib.auto.AutoBuilder;
 import org.wpilib.command2.button.RobotModeTriggers;
+import org.wpilib.command2.button.Trigger;
 
 import Team4450.Robot27.commands.DriveCommand;
 import Team4450.Robot27.commands.Shoot;
@@ -39,6 +40,7 @@ import Team4450.Robot27.subsystems.QuestNavSubsystem;
 import Team4450.Robot27.subsystems.ShuffleBoard;
 import Team4450.Robot27.subsystems.VisionSubsystem;
 import Team4450.Robot27.subsystems.Hopper;
+
 import org.wpilib.math.controller.PIDController;
 import org.wpilib.math.geometry.Pose2d;
 import org.wpilib.driverstation.MatchState;
@@ -47,11 +49,12 @@ import org.wpilib.driverstation.Alliance;
 import org.wpilib.driverstation.MatchType;
 import org.wpilib.driverstation.DriverStationErrors;
 import org.wpilib.system.Timer;
-import org.wpilib.driverstation.Alliance;
+import org.wpilib.driverstation.DriverStation;
 import org.wpilib.driverstation.GenericHID.RumbleType;
+import org.wpilib.driverstation.internal.DriverStationBackend;
 import org.wpilib.system.RobotController;
-import org.wpilib.smartdashboard.SendableChooser;
-import org.wpilib.smartdashboard.SmartDashboard;
+//import org.wpilib.smartdashboard.SendableChooser;
+//import org.wpilib.smartdashboard.SmartDashboard;
 import org.wpilib.command2.Command;
 import org.wpilib.command2.CommandScheduler;
 import org.wpilib.command2.Commands;
@@ -59,6 +62,7 @@ import org.wpilib.command2.InstantCommand;
 import org.wpilib.command2.StartEndCommand;
 import org.wpilib.command2.button.Trigger;
 import org.wpilib.command2.sysid.SysIdRoutine;
+import org.wpilib.telemetry.Telemetry;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -182,10 +186,10 @@ public class RobotContainer {
         shooter = new Shooter(drivebase);
 
         headingPID = new PIDController(Constants.ROBOT_HEADING_KP, Constants.ROBOT_HEADING_KI, Constants.ROBOT_HEADING_KD);
-        SmartDashboard.putNumber(Constants.SmartDashboardKeys.HEADING_P, Constants.ROBOT_HEADING_KP);
-        SmartDashboard.putNumber(Constants.SmartDashboardKeys.HEADING_I, Constants.ROBOT_HEADING_KI);
-        SmartDashboard.putNumber(Constants.SmartDashboardKeys.HEADING_D, Constants.ROBOT_HEADING_KD);
-        SmartDashboard.putBoolean(Constants.SmartDashboardKeys.HEADING_PID_TOGGLE, Constants.HUB_TRACKING);
+        Telemetry.log(Constants.SmartDashboardKeys.HEADING_P, Constants.ROBOT_HEADING_KP);
+        Telemetry.log(Constants.SmartDashboardKeys.HEADING_I, Constants.ROBOT_HEADING_KI);
+        Telemetry.log(Constants.SmartDashboardKeys.HEADING_D, Constants.ROBOT_HEADING_KD);
+        Telemetry.log(Constants.SmartDashboardKeys.HEADING_PID_TOGGLE, Constants.HUB_TRACKING);
 
         // Create any persistent commands.
 
@@ -271,7 +275,7 @@ public class RobotContainer {
         new Thread(() -> {
             try {
                 Timer.delay(30);
-                DriverStation.silenceJoystickConnectionWarning(true);
+                DriverStationBackend.silenceJoystickConnectionAlert(true);
             } catch (Exception e) {
             }
         }).start();
@@ -285,6 +289,7 @@ public class RobotContainer {
         for (int i = 0; i < AutoBuilder.getAllAutoNames().size(); i++) {
             commandAutoChooser.addOption(AutoBuilder.getAllAutoNames().get(i), new PathPlannerAuto(AutoBuilder.getAllAutoNames().get(i)));
         }
+
         //initialize flipped autos
         for (int i = 0; i < AutoBuilder.getAllAutoNames().size(); i++) {
             commandAutoChooser.addOption(AutoBuilder.getAllAutoNames().get(i).concat(" flipped"), new PathPlannerAuto(AutoBuilder.getAllAutoNames().get(i), true));
@@ -322,18 +327,23 @@ public class RobotContainer {
         // driveBase, false))
         //
         RobotModeTriggers.disabled()
-                .onTrue(Commands.either(visionSubsystem.recordAuto(), visionSubsystem.recordTeleop(), DriverStation::isAutonomous)
-                        .ignoringDisable(true));
+                .onTrue(Commands.either(visionSubsystem.recordAuto(), visionSubsystem.recordTeleop(), 
+                    DriverStationBackend::isAutonomous)
+                .ignoringDisable(true));
 
         // Vibrate between 30 and 25 sec left in match.
         new Trigger(() -> Timer.getMatchTime() < 30 && Timer.getMatchTime() > 25).whileTrue(new StartEndCommand(
                 () -> {
-                    driverController.setRumble(RumbleType.kBothRumble, 0.5);
-                    utilityController.setRumble(RumbleType.kBothRumble, 0.5);
+                    driverController.setRumble(RumbleType.LEFT_RUMBLE, 0.5);
+                    utilityController.setRumble(RumbleType.LEFT_RUMBLE, 0.5);
+                    driverController.setRumble(RumbleType.RIGHT_RUMBLE, 0.5);
+                    utilityController.setRumble(RumbleType.RIGHT_RUMBLE, 0.5);
                 },
                 () -> {
-                    driverController.setRumble(RumbleType.kBothRumble, 0);
-                    utilityController.setRumble(RumbleType.kBothRumble, 0);
+                    driverController.setRumble(RumbleType.LEFT_RUMBLE, 0);
+                    utilityController.setRumble(RumbleType.LEFT_RUMBLE, 0);
+                    driverController.setRumble(RumbleType.RIGHT_RUMBLE, 0);
+                    utilityController.setRumble(RumbleType.RIGHT_RUMBLE, 0);
                 }));
 
         // Reset field orientation (direction).
@@ -476,7 +486,7 @@ public class RobotContainer {
         location = MatchState.getLocation().orElse(0);
         eventName = MatchState.getEventName();
         matchNumber = MatchState.getMatchNumber();
-        gameMessage = MatchState.getGameData();
+        gameMessage = MatchState.getGameData().get();
 
         Util.consoleLog("Alliance=%s, Location=%d, FMS=%b event=%s match=%d msg=%s",
                 alliance.name(), location, RobotState.isFMSAttached(), eventName, matchNumber,
