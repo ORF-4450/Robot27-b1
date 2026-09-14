@@ -208,55 +208,38 @@ public class RobotContainer {
         NamedCommands.registerCommand("spinShooter", new spinShooter(shooter));
         NamedCommands.registerCommand("hubTrack", new AutonHubTracking(drivebase, headingPID));
 
-        // Set the default drive command. This command will be scheduled automatically
-        // to run
+        // Set the default drive command. This command will be scheduled automatically to run
         // every teleop period and so use the gamepad joy sticks to drive the robot.
 
-        // We pass the GetY() functions on the Joysticks as a DoubleSuppier. The point
-        // of this
-        // is removing the direct connection between the Drive and XboxController
-        // classes. We
-        // are in effect passing functions into the Drive command so it can read the
-        // values
-        // later when the Drive command is executing under the Scheduler. Drive command
-        // code does
-        // not have to know anything about the JoySticks (or any other source) but can
-        // still read
-        // them. We can pass the DoubleSupplier two ways. First is with () -> lambda
-        // expression
-        // which wraps the getLeftY() function in a DoubleSupplier instance. Second is
-        // using the
-        // controller class convenience method getRightYDS() which returns getRightY()
-        // as a
+        // We pass the GetY() functions on the Joysticks as a DoubleSuppier. The point of this
+        // is removing the direct connection between the Drive and XboxController classes. We
+        // are in effect passing functions into the Drive command so it can read the values
+        // later when the Drive command is executing under the Scheduler. Drive command code does
+        // not have to know anything about the JoySticks (or any other source) but can still read
+        // them. We can pass the DoubleSupplier two ways. First is with () -> lambda expression
+        // which wraps the getLeftY() function in a DoubleSupplier instance. Second is using the
+        // controller class convenience method getRightYDS() which returns getRightY() as a
         // DoubleSupplier. We show both ways here as an example.
 
         // The joystick controls for driving:
         // Left stick Y axis -> forward and backwards movement (throttle)
         // Left stick X axis -> left and right movement (strafe)
         // Right stick X axis -> rotation
-        // Note: X and Y axis on stick is opposite X and Y axis on the WheelSpeeds
-        // object
+        // Note: X and Y axis on stick is opposite X and Y axis on the WheelSpeeds object
         // and the odometry pose2d classes.
-        // Wheelspeeds +X axis is down the field away from alliance wall. +Y axis is
-        // left
+        // Wheelspeeds +X axis is down the field away from alliance wall. +Y axis is left
         // when standing at alliance wall looking down the field.
-        // This is handled here by swapping the inputs. Note that first axis parameter
-        // below
+        // This is handled here by swapping the inputs. Note that first axis parameter below
         // is the X wheelspeeds input and the second is Y wheelspeeds input.
 
         // Note that field oriented driving does the movements in relation to the field.
-        // So
-        // throttle is always down the field and back and strafe is always left right
-        // from
-        // the down the field axis, no matter which way the robot is pointing. Robot
-        // oriented
-        // driving movemments are in relation to the direction the robot is currently
+        // So throttle is always down the field and back and strafe is always left right
+        // from the down the field axis, no matter which way the robot is pointing. Robot
+        // oriented driving movemments are in relation to the direction the robot is currently
         // pointing.
 
-        // Note that the controller instance is passed to the drive command for use in
-        // displaying
-        // debugging information on Shuffleboard. It is not required for the driving
-        // function.
+        // Note that the controller instance is passed to the drive command for use in displaying
+        // debugging information on Shuffleboard. It is not required for the driving function.
         driveCommand = new DriveCommand(drivebase,
                 () -> driverController.getLeftY(),
                 driverController.getLeftXDS(),
@@ -295,8 +278,8 @@ public class RobotContainer {
             commandAutoChooser.addOption(AutoBuilder.getAllAutoNames().get(i).concat(" flipped"), new PathPlannerAuto(AutoBuilder.getAllAutoNames().get(i), true));
         }
 
-        SmartDashboard.putData("String Auto", stringAutoChooser);
-        SmartDashboard.putData("Auto Chooser", commandAutoChooser);
+        Telemetry.log("String Auto", stringAutoChooser);
+        Telemetry.log("Auto Chooser", commandAutoChooser);
 
         // Configure the button bindings.
         configureButtonBindings();
@@ -362,7 +345,7 @@ public class RobotContainer {
 
         // new Trigger(() -> driverController.getBButton())
         // .onTrue(new InstantCommand(() -> drivebase.resetOdometry(new Pose2d(0, 0,
-        // Rotation2d.kZero))));
+        // Rotation2d.ZERO))));
 
         // // Toggle motor brake mode.
         // new Trigger(() -> driverController.getBButton()) // Rich
@@ -371,22 +354,22 @@ public class RobotContainer {
         // Toggle slow-mode
         // Right D-Pad button sets X pattern to stop movement.
 
-        new Trigger(() -> driverController.getPOV() == 0)
+        new Trigger(() -> driverController.getPOVAngle(0))
                 .onTrue(new InstantCommand(shooter::toggleManualDistanceOne))
                 .onTrue(new InstantCommand(shooter::disableManualDistanceTwo))
                 .onTrue(new InstantCommand(shooter::disableManualDistanceThree))
                 .onTrue(new InstantCommand(shooter::disableManualDistanceFour));
 
-        new Trigger(() -> driverController.getPOV() == 90)
+        new Trigger(() -> driverController.getPOVAngle(90))
                 .onTrue(new InstantCommand(drivebase::setX));
 
-        new Trigger(() -> driverController.getPOV() == 180)
+        new Trigger(() -> driverController.getPOVAngle(180))
                 .onTrue(new InstantCommand(shooter::enableManualDistanceFour))
                 .onTrue(new InstantCommand(shooter::disableManualDistanceOne))
                 .onTrue(new InstantCommand(shooter::disableManualDistanceTwo))
                 .onTrue(new InstantCommand(shooter::disableManualDistanceThree));
 
-        new Trigger(() -> driverController.getPOV() == 270)
+        new Trigger(() -> driverController.getPOVAngle(270))
                 .onTrue(new InstantCommand(shooter::toggleManualDistanceTwo))
                 .onTrue(new InstantCommand(shooter::disableManualDistanceOne))
                 .onTrue(new InstantCommand(shooter::disableManualDistanceThree))
@@ -398,10 +381,10 @@ public class RobotContainer {
         new Trigger(() -> driverController.getLeftBumperButton()) // Rich
                 .onChange(new InstantCommand(drivebase::toggleSlowMode));
 
-        new Trigger(() -> driverController.getLeftTrigger())
+        new Trigger(() -> driverController.getLeftTriggerAxis())
                 .whileTrue(new Shoot(drivebase, shooter, hopper, intake));
 
-        new Trigger(() -> driverController.getRightTrigger())
+        new Trigger(() -> driverController.getRightTriggerAxis())
                 .onTrue(new InstantCommand(shooter::disableManualDistanceFour))
                 .onTrue(new InstantCommand(shooter::disableManualDistanceThree))
                 .onTrue(new InstantCommand(shooter::disableManualDistanceOne))

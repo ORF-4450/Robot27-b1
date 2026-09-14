@@ -11,6 +11,7 @@ import com.pathplanner.lib.path.PathConstraints;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.ctre.phoenix6.swerve.SwerveModule;
 import com.ctre.phoenix6.swerve.SwerveRequest;
+import com.ctre.phoenix6.StatusSignal;
 
 import Team4450.Lib.Util;
 import static Team4450.Robot27.Constants.*;
@@ -20,7 +21,7 @@ import Team4450.Robot27.RobotContainer;
 import Team4450.Robot27.Constants.DriveConstants;
 import Team4450.Robot27.commands.DriveCommand;
 import Team4450.Robot27.subsystems.SDS.CommandSwerveDrivetrain;
-import Team4450.Robot27.subsystems.SDS.Telemetry;
+//import Team4450.Robot27.subsystems.SDS.Telemetry;
 import Team4450.Robot27.subsystems.SDS.TunerConstants;
 import org.wpilib.math.geometry.Pose2d;
 import org.wpilib.math.geometry.Pose3d;
@@ -29,7 +30,7 @@ import org.wpilib.math.geometry.Translation2d;
 import org.wpilib.math.kinematics.ChassisVelocities;
 import org.wpilib.math.util.Units;
 import org.wpilib.units.measure.Angle;
-import org.wpilib.util.sendable.Sendable;
+//import org.wpilib.util.sendable.Sendable;
 import org.wpilib.framework.RobotBase;
 import org.wpilib.system.RobotController;
 import org.wpilib.driverstation.Alliance;
@@ -39,6 +40,8 @@ import org.wpilib.command2.Command;
 import org.wpilib.command2.SubsystemBase;
 import org.wpilib.command2.button.RobotModeTriggers;
 import org.wpilib.telemetry.Telemetry;
+import org.wpilib.tunable.Tunables;
+
 import Team4450.Robot27.utility.RobotOrientation;
 
 /**
@@ -55,10 +58,10 @@ public class Drivebase extends SubsystemBase {
 
   // This should init to whatever the limelights see during the init period,
   // otherwise set a smartdashboard and a console log into if it does not
-  public Pose2d robotPose = new Pose2d(0, 0, Rotation2d.kZero);
-  public Pose2d limelightPoseEstimate = new Pose2d(0, 0, Rotation2d.kZero);
+  public Pose2d robotPose = new Pose2d(0, 0, Rotation2d.ZERO);
+  public Pose2d limelightPoseEstimate = new Pose2d(0, 0, Rotation2d.ZERO);
 
-  private final Telemetry logger = new Telemetry(kMaxSpeed);
+  private final Team4450.Robot27.subsystems.SDS.Telemetry logger = new Team4450.Robot27.subsystems.SDS.Telemetry(kMaxSpeed);
 
   // Field2d object creates the field display on the simulation and gives us an
   // API
@@ -94,8 +97,8 @@ public class Drivebase extends SubsystemBase {
 
     // Add pigeon gyro as a Sendable. Updates the dashboard heading indicator
     // automatically.
-    SmartDashboard.putData(Constants.SmartDashboardKeys.PIGEON_GYRO, pigeonWrapper);
-    SmartDashboard.putData(Constants.SmartDashboardKeys.FIELD2D, field2d);
+    //TODO SmartDashboard.putData(Constants.SmartDashboardKeys.PIGEON_GYRO, pigeonWrapper);
+    //TODO SmartDashboard.putData(Constants.SmartDashboardKeys.FIELD2D, field2d);
 
     // Check Gyro.
     if (pigeonWrapper.getPigeon().isConnected())
@@ -117,7 +120,7 @@ public class Drivebase extends SubsystemBase {
 
         // Updates the dashboard heading indicator automatically.
         // Can I remove this?
-        SmartDashboard.putData(Constants.SmartDashboardKeys.FIELD2D, field2d);
+        //TODO SmartDashboard.putData(Constants.SmartDashboardKeys.FIELD2D, field2d);
 
     // At some point move this to teleop init if it can be done quickly because
     // we will be waiting for the Limelight to get an accurate position during init
@@ -164,7 +167,8 @@ public class Drivebase extends SubsystemBase {
     }
 
 
-    if (Tunables.addDouble(Constants.SmartDashboardKeys.ROBOT_DISTANCE, 0) > 1.25 && Tunables.addDouble(Constants.SmartDashboardKeys.ROBOT_DISTANCE, 0) < 1.75) {
+    if (Tunables.addDouble(Constants.SmartDashboardKeys.ROBOT_DISTANCE, 0).get() > 1.25 && 
+        Tunables.addDouble(Constants.SmartDashboardKeys.ROBOT_DISTANCE, 0).get() < 1.75) {
         Telemetry.log(Constants.SmartDashboardKeys.DISTANCE_BOX, true);
     } else {
         Telemetry.log(Constants.SmartDashboardKeys.DISTANCE_BOX, false);
@@ -376,7 +380,7 @@ public class Drivebase extends SubsystemBase {
   public Pose2d getPose() {
       if (RobotContainer.questNavSubsystem.useQuest()) {
 
-          if(!Tunables.addBoolean(Constants.SmartDashboardKeys.ROBOT_CURRENTLY_USING_QUEST, false)){ 
+          if(!Tunables.addBoolean(Constants.SmartDashboardKeys.ROBOT_CURRENTLY_USING_QUEST, false).get()){ 
               RobotContainer.questNavSubsystem.resetQuest2d(getODPose());
           }
 

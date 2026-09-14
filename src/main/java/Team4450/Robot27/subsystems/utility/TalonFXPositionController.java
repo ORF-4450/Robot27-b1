@@ -10,8 +10,8 @@ import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import Team4450.Lib.Util;
-import org.wpilib.util.sendable.SendableBuilder;
-import org.wpilib.util.sendable.SendableRegistry;
+//import org.wpilib.util.sendable.SendableBuilder;
+//import org.wpilib.util.sendable.SendableRegistry;
 import org.wpilib.framework.RobotBase;
 import org.wpilib.command2.InstantCommand;
 import org.wpilib.command2.SubsystemBase;
@@ -78,7 +78,7 @@ public class TalonFXPositionController extends SubsystemBase {
 
         Util.consoleLog("%s", this.name);
 
-        SendableRegistry.addLW(this, this.name);
+        //SendableRegistry.addLW(this, this.name);
 
         RobotModeTriggers.disabled().onChange(new InstantCommand(this::stop));
 
@@ -406,31 +406,31 @@ public class TalonFXPositionController extends SubsystemBase {
      */
     public double getPosition() { return talon.getPosition().getValueAsDouble(); }
 
-    @Override
-    public void initSendable( SendableBuilder builder )
-    {
-        builder.setSmartDashboardType("TalonFXPositionController"); 
-        //builder.addBooleanProperty(".controllable", () -> true, null);
+    //TODO @Override
+    // public void initSendable( SendableBuilder builder )
+    // {
+    //     builder.setSmartDashboardType("TalonFXPositionController"); 
+    //     //builder.addBooleanProperty(".controllable", () -> true, null);
 
-        builder.addDoubleProperty("Desired Position", ()-> desiredPosition, null);            
-        builder.addDoubleProperty("Motor Position", this::getPosition, null);
+    //     builder.addDoubleProperty("Desired Position", ()-> desiredPosition, null);            
+    //     builder.addDoubleProperty("Motor Position", this::getPosition, null);
 
-        if (controlType == MotorControlType.voltage || controlType == MotorControlType.motionMagic) {
-            builder.addDoubleProperty("Voltage kI", ()-> slot0_kI, this::withVoltagekI);
-            builder.addDoubleProperty("Voltage kD", ()-> slot0_kD, this::withVoltagekD);
-            builder.addDoubleProperty("Voltage kS", ()-> slot0_kS, this::withVoltagekS);
-            builder.addDoubleProperty("Voltage kV", ()-> slot0_kV, this::withVoltagekV);
-            builder.addDoubleProperty("Voltage kA", ()-> slot0_kA, this::withVoltagekA);
-            builder.addDoubleProperty("Voltage kG", ()-> slot0_kG, this::withVoltagekG);
-            builder.addDoubleProperty("Voltage kP", ()-> slot0_kP, this::withVoltagekP);
-            builder.addDoubleProperty("MM cruise Vel", ()-> kCV, this::withCV);
-        } else {
-            builder.addDoubleProperty("Torque kP", ()-> slot1_kP, this::withTorquekP);
-            builder.addDoubleProperty("Torque kI", ()-> slot1_kI, this::withTorquekI);
-            builder.addDoubleProperty("Torque kD", ()-> slot1_kD, this::withTorquekD);
-            builder.addDoubleProperty("Torque kS", ()-> slot1_kS, this::withTorquekS);
-        }
-    }
+    //     if (controlType == MotorControlType.voltage || controlType == MotorControlType.motionMagic) {
+    //         builder.addDoubleProperty("Voltage kI", ()-> slot0_kI, this::withVoltagekI);
+    //         builder.addDoubleProperty("Voltage kD", ()-> slot0_kD, this::withVoltagekD);
+    //         builder.addDoubleProperty("Voltage kS", ()-> slot0_kS, this::withVoltagekS);
+    //         builder.addDoubleProperty("Voltage kV", ()-> slot0_kV, this::withVoltagekV);
+    //         builder.addDoubleProperty("Voltage kA", ()-> slot0_kA, this::withVoltagekA);
+    //         builder.addDoubleProperty("Voltage kG", ()-> slot0_kG, this::withVoltagekG);
+    //         builder.addDoubleProperty("Voltage kP", ()-> slot0_kP, this::withVoltagekP);
+    //         builder.addDoubleProperty("MM cruise Vel", ()-> kCV, this::withCV);
+    //     } else {
+    //         builder.addDoubleProperty("Torque kP", ()-> slot1_kP, this::withTorquekP);
+    //         builder.addDoubleProperty("Torque kI", ()-> slot1_kI, this::withTorquekI);
+    //         builder.addDoubleProperty("Torque kD", ()-> slot1_kD, this::withTorquekD);
+    //         builder.addDoubleProperty("Torque kS", ()-> slot1_kS, this::withTorquekS);
+    //     }
+    // }
 
     /**
      * Motor control types available. Note Motion Magic is configured the same

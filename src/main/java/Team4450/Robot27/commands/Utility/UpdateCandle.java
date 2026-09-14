@@ -6,12 +6,7 @@ import Team4450.Lib.Util;
 import Team4450.Robot27.subsystems.Candle;
 import Team4450.Robot27.subsystems.Candle.AnimationTypes;
 import org.wpilib.driverstation.Alliance;
-import org.wpilib.driverstation.MatchState;
 import org.wpilib.driverstation.RobotState;
-import org.wpilib.driverstation.Alliance;
-import org.wpilib.driverstation.MatchType;
-import org.wpilib.driverstation.DriverStationErrors;
-import org.wpilib.framework.RobotState;
 import org.wpilib.util.Color;
 import org.wpilib.command2.Command;
 

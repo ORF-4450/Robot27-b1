@@ -7,7 +7,7 @@ plugins {
     // of the code we are compiling and include it in the manifiest of the Jar
     // created by the gradle build. From the Jar manifiest, RobotLib code can extract
     // that information and include it in the robot trace files.
-    id "org.ajoberstar.grgit" version "5.0.0-rc.3"
+    id "org.ajoberstar.grgit" version "5.0.0"
 }
 
 java {

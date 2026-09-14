@@ -4,9 +4,9 @@ import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.sim.TalonFXSimState;
 
 import org.wpilib.math.system.DCMotor;
-import org.wpilib.math.system.LinearSystemId;
 import org.wpilib.math.util.Units;
 import org.wpilib.simulation.DCMotorSim;
+import org.wpilib.math.system.Models;
 
 /**
  * Holds information about a simulated TalonFX.
@@ -26,7 +26,8 @@ class TalonFXSimProfile extends Team4450.Robot27.subsystems.utility.PhoenixPhysi
      */
     public TalonFXSimProfile(final TalonFX talonFX, final double rotorInertia) {
         var gearbox = DCMotor.getKrakenX60Foc(1);
-        this.motorSim = new DCMotorSim(LinearSystemId.createDCMotorSystem(gearbox, rotorInertia, 1.0), gearbox);
+        this.motorSim = new DCMotorSim(Models.singleJointedArmFromPhysicalConstants(gearbox, rotorInertia, 1.0),
+                            gearbox, rotorInertia, 1.0);
         this.talonFXSim = talonFX.getSimState();
     }
 
@@ -46,7 +47,7 @@ class TalonFXSimProfile extends Team4450.Robot27.subsystems.utility.PhoenixPhysi
 
         /// SET SIM PHYSICS INPUTS
         final double position_rot = motorSim.getAngularPosition();
-        final double velocity_rps = Units.radiansToRotations(motorSim.getAngularVelocityRadPerSec());
+        final double velocity_rps = Units.radiansToRotations(motorSim.getAngularVelocity());
 
         talonFXSim.setRawRotorPosition(position_rot);
         talonFXSim.setRotorVelocity(velocity_rps);

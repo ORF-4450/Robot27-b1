@@ -6,7 +6,6 @@ import org.wpilib.system.Timer;
 
 import Team4450.Robot27.Constants;
 import org.wpilib.command2.Command;
-import org.wpilib.smartdashboard.SmartDashboard;
 
 public class intakeCommand extends Command {
     private Intake intake;

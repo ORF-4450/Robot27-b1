@@ -45,10 +45,10 @@ public class ShuffleBoard extends SubsystemBase {
 
     /**
      * Shuffleboard telemetry. Do not call if this class is running in it's
-     * own thread.
+     * own thread. This is where you send data you want updated regularly to
+     * the dashboard.
      */
     public void updateDS() {    
-        // Pose2d pose = RobotContainer.drivebase.getPose(); 
     }
 
     /**

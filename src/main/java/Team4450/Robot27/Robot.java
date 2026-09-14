@@ -123,17 +123,6 @@ public class Robot extends TimedRobot {
       Util.consoleLog("Robot WPILib=%s  Java=%s", WPILibVersion.Version, System.getProperty("java.version"));
       Util.consoleLog("RobotLib=%s", LibraryVersion.version);
 
-      // Note: Any Sendables added to SmartDashboard or Shuffleboard are sent to the DS on every
-      // loop of a TimedRobot. In this case it means that the SendableVersion data would be sent
-      // to the DS every 20ms even though it does not change. Sendables must be added to the SDB
-      // or SB in order to be sent so its a catch-22 with static Sendables. So we add the SendableVersion
-      // here and then a few lines below delete it from the sendable system. This puts the version
-      // info onto the dashboard but removes it from further updates.
-
-      // Note: As of 2023 WPILib, deleting a Sendable actually removes the data from the dashboard
-      // so we had to replace adding the SendableVersion as a Sendable (putdata) and add the data
-      // manually to the dashboard in SendableVersion class.
-
       SendableVersion.INSTANCE.updateDashBoard();
 
       // Warm up the Pathfinder so that you can create paths to follow on the fly

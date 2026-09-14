@@ -5,7 +5,8 @@ import Team4450.Robot27.Constants;
 import Team4450.Robot27.utility.RobotOrientation;
 import org.wpilib.system.RobotController;
 import org.wpilib.driverstation.Alliance;
-import org.wpilib.smartdashboard.SmartDashboard;
+//import org.wpilib.smartdashboard.SmartDashboard;
+import org.wpilib.telemetry.Telemetry;
 import org.wpilib.command2.SubsystemBase;
 import java.lang.Math;
 import org.wpilib.math.geometry.Pose2d;
@@ -92,11 +93,15 @@ public class VisionSubsystem extends SubsystemBase {
         // Get latest pose estimage from each camera
         
         // LimelightHelpers.PoseEstimate front_mt2 = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2(Constants.LIMELIGHT_FRONT);
+        
         LimelightHelpers.PoseEstimate front_mt2 = LimelightHelpers.getBotPoseEstimate_wpiBlue(Constants.LIMELIGHT_FRONT);
+        
         // Pose2d front_mt2 = LimelightHelpers.getBotPose2d_wpiBlue(Constants.LIMELIGHT_LEFT);
         //
         // LimelightHelpers.PoseEstimate right_mt2 = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2(Constants.LIMELIGHT_RIGHT);
+        
         LimelightHelpers.PoseEstimate right_mt2 = LimelightHelpers.getBotPoseEstimate_wpiBlue(Constants.LIMELIGHT_RIGHT);
+        
         // Pose2d right_mt2 = LimelightHelpers.getBotPose2d_wpiBlue(Constants.LIMELIGHT_RIGHT);
 
         // If the angular velocity is greater than 120 degrees per second ignore the vision update

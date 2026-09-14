@@ -3,13 +3,15 @@ package Team4450.Robot27.subsystems;
 import com.ctre.phoenix6.hardware.Pigeon2;
 
 import Team4450.Lib.Util;
-import org.wpilib.util.sendable.SendableBuilder;
+//import org.wpilib.util.sendable.SendableBuilder;
 import org.wpilib.command2.SubsystemBase;
+import org.wpilib.tunable.ComplexTunable;
+import org.wpilib.tunable.TunableTable;
 
 /**
  * Wrapper class for Pigeon2 gyro.
  */
-public class PigeonWrapper extends SubsystemBase {
+public class PigeonWrapper extends SubsystemBase implements ComplexTunable {
     public Pigeon2     pigeon;
     public double      startingYaw; // Starting yaw is in degrees
 
@@ -83,11 +85,23 @@ public class PigeonWrapper extends SubsystemBase {
         startingYaw = degrees;
     }
 
+    // @Override
+    // public void initSendable(SendableBuilder builder) {
+    //     builder.setSmartDashboardType("Gyro");
+    //     builder.addDoubleProperty("Value", () -> getYaw(), null);
+    //     builder.addDoubleProperty("Yaw 180", () -> getYaw180(), null);
+    //     builder.addDoubleProperty("Heading", () -> getHeading(), null);
+    // }
+
     @Override
-    public void initSendable(SendableBuilder builder) {
-        builder.setSmartDashboardType("Gyro");
-        builder.addDoubleProperty("Value", () -> getYaw(), null);
-        builder.addDoubleProperty("Yaw 180", () -> getYaw180(), null);
-        builder.addDoubleProperty("Heading", () -> getHeading(), null);
+    public void publishTunable(TunableTable table) {
+        table.publishDouble("Value", () -> getYaw(), null);
+        table.publishDouble("Yaw 180", () -> getYaw180(), null);
+        table.publishDouble("Heading", () -> getHeading(), null);
+    }
+    
+    @Override
+    public String getTunableType() {
+        return "Gyro";
     }
 }
