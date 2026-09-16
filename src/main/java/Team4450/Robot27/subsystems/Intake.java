@@ -120,7 +120,7 @@ public class Intake extends SubsystemBase {
             this.pivitCurrentPositionMotorPosition = this.getPivitPosition();
             this.pivitCurrentPosition = this.motorPositionToPivitPosition(this.pivitCurrentPositionMotorPosition);
 
-            if (RobotContainer.inTestMode) {
+            if (RobotContainer.inUtilityMode) {
                 Telemetry.log("Intake RPM", getIntakeRPM());
             }
             Telemetry.log(Constants.SmartDashboardKeys.INTAKE_CURRENT_DRAW, getIntakeCurrent());

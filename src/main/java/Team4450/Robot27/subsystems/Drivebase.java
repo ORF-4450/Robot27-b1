@@ -63,8 +63,7 @@ public class Drivebase extends SubsystemBase {
 
   private final Team4450.Robot27.subsystems.SDS.Telemetry logger = new Team4450.Robot27.subsystems.SDS.Telemetry(kMaxSpeed);
 
-  // Field2d object creates the field display on the simulation and gives us an
-  // API
+  // Field2d object creates the field display on the simulation and gives us an API
   // to control what is displayed (the simulated robot).
   private final Field2d field2d = new Field2d();
 
@@ -95,9 +94,10 @@ public class Drivebase extends SubsystemBase {
   public Drivebase() {
     Util.consoleLog();
 
-    // Add pigeon gyro as a Sendable. Updates the dashboard heading indicator
-    // automatically.
+    // Add pigeon gyro as a Tunable. Updates the dashboard heading indicator automatically.
     //TODO SmartDashboard.putData(Constants.SmartDashboardKeys.PIGEON_GYRO, pigeonWrapper);
+    Tunables.publish(Constants.SmartDashboardKeys.PIGEON_GYRO, pigeonWrapper);
+
     //TODO SmartDashboard.putData(Constants.SmartDashboardKeys.FIELD2D, field2d);
 
     // Check Gyro.
@@ -118,21 +118,15 @@ public class Drivebase extends SubsystemBase {
     RobotModeTriggers.disabled().whileTrue(
         sdsDrivebase.applyRequest(() -> idle).ignoringDisable(true));
 
-        // Updates the dashboard heading indicator automatically.
-        // Can I remove this?
-        //TODO SmartDashboard.putData(Constants.SmartDashboardKeys.FIELD2D, field2d);
-
     // At some point move this to teleop init if it can be done quickly because
     // we will be waiting for the Limelight to get an accurate position during init
     // periodic
     resetOdometry(DriveConstants.DEFAULT_STARTING_POSE);
 
     // Under sim, we starting pose the robot (above) before you can change the
-    // alliance
-    // in the sim UI. We can't really do it anywhere else or it would interfere with
+    // alliance in the sim UI. We can't really do it anywhere else or it would interfere with
     // transition from auto to teleop. So we pose robot at lower left (blue) corner
-    // and
-    // force the blue driving perspective.
+    // and force the blue driving perspective.
 
     if (RobotBase.isSimulation())
       driveField.ForwardPerspective = ForwardPerspectiveValue.BlueAlliance;
@@ -176,7 +170,7 @@ public class Drivebase extends SubsystemBase {
 
     Telemetry.log(Constants.SmartDashboardKeys.BATTERY_VOLTAGE, RobotController.getBatteryVoltage());
 
-    if (RobotContainer.inTestMode) {
+    if (RobotContainer.inUtilityMode) {
         Telemetry.log(Constants.SmartDashboardKeys.Gyro_HEADING, pigeonWrapper.startingYaw);
         Telemetry.log(Constants.SmartDashboardKeys.GYRO_STARTING_YAW, pigeonWrapper.getHeading());
         Telemetry.log(Constants.SmartDashboardKeys.ROBOT_OD_POSE, getODPose().toString());
@@ -457,7 +451,6 @@ public class Drivebase extends SubsystemBase {
     this.sdsDrivebase.addVisionMeasurement(pose, timestampSeconds);
   }
 
-
   public void addQuestPose(Pose2d pose, double timestampSeconds) {
 
       this.sdsDrivebase.addVisionMeasurement(pose, timestampSeconds);
@@ -536,6 +529,8 @@ public class Drivebase extends SubsystemBase {
     //field2d.getObject("Robot").setPose(new Pose2d(robotPose.getX(), robotPose.getY(), new Rotation2d(Math.toRadians(robotPose.getRotation().getRadians()))));
     field2d.getObject("Robot").setPose(new Pose2d(robotPose.getX(), robotPose.getY(), new Rotation2d(Math.toRadians(robotPose.getRotation().getDegrees()))));
     field2d.getObject("Swerve Modules").setPoses(modulePoses);
+
+    Telemetry.log(Constants.SmartDashboardKeys.FIELD2D, field2d); // Update robot and module poses.
   }
 
   public void toggleHubTracking() {

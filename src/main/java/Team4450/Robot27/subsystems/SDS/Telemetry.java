@@ -7,7 +7,7 @@ import Team4450.Robot27.RobotContainer;
 import org.wpilib.math.geometry.Pose2d;
 import org.wpilib.math.kinematics.ChassisVelocities;
 import org.wpilib.math.kinematics.SwerveModulePosition;
-import org.wpilib.math.kinematics.SwerveModuleState;
+//import org.wpilib.math.kinematics.SwerveModuleState;
 import org.wpilib.networktables.DoubleArrayPublisher;
 import org.wpilib.networktables.DoublePublisher;
 import org.wpilib.networktables.NetworkTable;
@@ -33,13 +33,15 @@ public class Telemetry {
         MaxSpeed = maxSpeed;
         SignalLogger.start();
 
-        // This line turns of the *Stupid* CTRE logging into ".hoot" files. This save a very large amount on bandwidth on the system (network, disk)
-        // Basic testing shows that this savings is about 50 Megabytes or more for every minute of robot runtime (At least while the robot is stationary).
+        // This line turns off the *Stupid* CTRE logging into ".hoot" files. This save a very large amount on bandwidth on 
+        // the system (network, disk). Basic testing shows that this savings is about 50 Megabytes or more for every minute 
+        // of robot runtime (At least while the robot is stationary).
         SignalLogger.stop();
     }
 
-    // All of this is commented out because it is a ton of data that really does not need to be send
-    // If at some point this data is desired there should be a check for if the robot is a simulation or being ran in test mode to determine if data should be send
+    // All of this is commented out because it is a ton of data that really does not need to be sent.
+    // If at some point this data is desired there should be a check for if the robot is a simulation or being 
+    // run in test mode to determine if data should be sent.
 
     /* What to publish over networktables for telemetry */
     // private final NetworkTableInstance inst = NetworkTableInstance.getDefault();

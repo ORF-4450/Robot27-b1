@@ -1,10 +1,6 @@
 package Team4450.Robot27.utility;
 
-import com.ctre.phoenix6.controls.ControlRequest;
-import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.hardware.TalonFX;
-import com.ctre.phoenix6.signals.MotorAlignmentValue;
-
 import java.util.List;
 
 public class LinkedMotors {

@@ -10,6 +10,7 @@ import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.FollowPathCommand;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 import com.pathplanner.lib.auto.AutoBuilder;
+
 import org.wpilib.command2.button.RobotModeTriggers;
 import org.wpilib.command2.button.Trigger;
 
@@ -63,6 +64,8 @@ import org.wpilib.command2.StartEndCommand;
 import org.wpilib.command2.button.Trigger;
 import org.wpilib.command2.sysid.SysIdRoutine;
 import org.wpilib.telemetry.Telemetry;
+import org.wpilib.tunable.Selectable;
+import org.wpilib.tunable.Tunables;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -91,11 +94,13 @@ public class RobotContainer {
 
     public static Hopper hopper = new Hopper();
 
-    public static boolean inTestMode = false;
+    public static boolean inUtilityMode = false;
 
-    private static SendableChooser<String> stringAutoChooser;
+    //private static SendableChooser<String> stringAutoChooser;
     // private static SendableChooser<Command> autoChooser;
-    private static SendableChooser<Command> commandAutoChooser;
+    //private static SendableChooser<Command> commandAutoChooser;
+
+    private final Selectable<Command> autoChooser = new Selectable<>();
 
     // Subsystem Default Commands.
 
@@ -186,6 +191,7 @@ public class RobotContainer {
         shooter = new Shooter(drivebase);
 
         headingPID = new PIDController(Constants.ROBOT_HEADING_KP, Constants.ROBOT_HEADING_KI, Constants.ROBOT_HEADING_KD);
+        
         Telemetry.log(Constants.SmartDashboardKeys.HEADING_P, Constants.ROBOT_HEADING_KP);
         Telemetry.log(Constants.SmartDashboardKeys.HEADING_I, Constants.ROBOT_HEADING_KI);
         Telemetry.log(Constants.SmartDashboardKeys.HEADING_D, Constants.ROBOT_HEADING_KD);
@@ -265,21 +271,22 @@ public class RobotContainer {
 
         // Configure autonomous routines and send to dashboard.
         // autoChooser = AutoBuilder.buildAutoChooser();
-        stringAutoChooser = new SendableChooser<String>();
-        commandAutoChooser = new SendableChooser<Command>();
+        //stringAutoChooser = new SendableChooser<String>();
+        //commandAutoChooser = new SendableChooser<Command>();
 
         // init non flipped autos
         for (int i = 0; i < AutoBuilder.getAllAutoNames().size(); i++) {
-            commandAutoChooser.addOption(AutoBuilder.getAllAutoNames().get(i), new PathPlannerAuto(AutoBuilder.getAllAutoNames().get(i)));
+            autoChooser.add(AutoBuilder.getAllAutoNames().get(i), new PathPlannerAuto(AutoBuilder.getAllAutoNames().get(i)));
         }
 
-        //initialize flipped autos
+        // init flipped autos
         for (int i = 0; i < AutoBuilder.getAllAutoNames().size(); i++) {
-            commandAutoChooser.addOption(AutoBuilder.getAllAutoNames().get(i).concat(" flipped"), new PathPlannerAuto(AutoBuilder.getAllAutoNames().get(i), true));
+            autoChooser.add(AutoBuilder.getAllAutoNames().get(i).concat(" flipped"), new PathPlannerAuto(AutoBuilder.getAllAutoNames().get(i), true));
         }
 
-        Telemetry.log("String Auto", stringAutoChooser);
-        Telemetry.log("Auto Chooser", commandAutoChooser);
+        //Telemetry.log("String Auto", stringAutoChooser);
+        //Telemetry.log("Auto Chooser", commandAutoChooser);
+        Tunables.publish("Auto Program", autoChooser);
 
         // Configure the button bindings.
         configureButtonBindings();
@@ -438,27 +445,11 @@ public class RobotContainer {
      * 
      * @return The Command to run in autonomous.
      */
-    // public Command getAutonomousCommand() {
-    // }
-
-    // public static String getAutonomousCommandName() {
-    // return autonomousCommandName;
-    // }
-
-    // Configure SendableChooser (drop down list on dashboard) with auto program
-    // choices and
-    // send them to SmartDashboard/ShuffleBoard.
-
-    private void setAutoChoices() {
-        // autoChooser = AutoBuilder.buildAutoChooser();
-
-        // SmartDashboard.putData("Auto Program", autoChooser);
-    }
 
     public Command getAutonomousCommand() {
         // return autoChooser.getSelected();
         // return stringAutoChooser.getSelected();
-        return commandAutoChooser.getSelected();
+        return autoChooser.getSelected();
     }
 
     /**

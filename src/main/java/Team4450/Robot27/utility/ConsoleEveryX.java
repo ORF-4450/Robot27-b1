@@ -16,12 +16,12 @@ public class ConsoleEveryX {
         this.targetX = x;
         this.enabled = false;
         this.id = String.format("ConsoleEveryX/%s", id);
-        if (!RobotContainer.inTestMode) { return; } // Early return if not in test mode
+        if (!RobotContainer.inUtilityMode) { return; } // Early return if not in test mode
         Telemetry.log(id, enabled);
     }
 
     public void update(String text) {
-        if (!RobotContainer.inTestMode) { return; } // Early return if not in test mode
+        if (!RobotContainer.inUtilityMode) { return; } // Early return if not in test mode
         this.enabled = Tunables.addBoolean(this.id, this.enabled);
         if (this.enabled) {
             this.x++;

@@ -235,9 +235,8 @@ public class Robot extends TimedRobot {
 
     // RobotContainer function determines which auto command is selected to run.
     Command autonomousCommand = robotContainer.getAutonomousCommand();
-    // Command autonomousCommand = new PathPlannerAuto(RobotContainer.getAutonomousCommand(), this.flipAuto);
 
-    // schedule the autonomous command (example)
+    // schedule the autonomous command
     try {
       if (autonomousCommand != null)
         CommandScheduler.getInstance().schedule(autonomousCommand);
@@ -303,13 +302,13 @@ public class Robot extends TimedRobot {
   }
 
   /**
-   * This function is called once at the start of test mode.
+   * This function is called once at the start of utility mode.
    */
   @Override
   public void utilityInit() {
     Util.consoleLog();
 
-    // Cancels all running commands at the start of test mode.
+    // Cancels all running commands at the start of utility mode.
     CommandScheduler.getInstance().cancelAll();
 
     // Next two lines launch teleop mode, but since we are in test
@@ -318,10 +317,10 @@ public class Robot extends TimedRobot {
     // telop with LW enabled. Our code displays more detailed test/debug
     // data in LW mode.
 
-    // What is LiveWindow
-    // LiveWindow.enableAllTelemetry();
+    //LiveWindow.enableAllTelemetry();
 
-    RobotContainer.inTestMode = true;
+    RobotContainer.inUtilityMode = true;
+    
     teleopInit();
 
     CommandScheduler.getInstance().enable();
@@ -336,6 +335,6 @@ public class Robot extends TimedRobot {
 
   @Override
   public void utilityExit() {
-    RobotContainer.inTestMode = false;
+    RobotContainer.inUtilityMode = false;
   }
 }
