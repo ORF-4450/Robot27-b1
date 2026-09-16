@@ -95,10 +95,12 @@ public class Drivebase extends SubsystemBase {
     Util.consoleLog();
 
     // Add pigeon gyro as a Tunable. Updates the dashboard heading indicator automatically.
+    // Will try to do this in the PiegeonWrapper class it self.
     //TODO SmartDashboard.putData(Constants.SmartDashboardKeys.PIGEON_GYRO, pigeonWrapper);
-    Tunables.publish(Constants.SmartDashboardKeys.PIGEON_GYRO, pigeonWrapper);
+    //Tunables.publish(Constants.SmartDashboardKeys.PIGEON_GYRO, pigeonWrapper);
 
-    //TODO SmartDashboard.putData(Constants.SmartDashboardKeys.FIELD2D, field2d);
+    //TODO SmartDashboard.putData(Constants.SmartDashboardKeys.FIELD2D, field2d); This may not be
+    // needed anymore. See the field2d updating below in updateModulePoses().
 
     // Check Gyro.
     if (pigeonWrapper.getPigeon().isConnected())
