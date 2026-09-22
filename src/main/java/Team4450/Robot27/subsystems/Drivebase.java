@@ -11,7 +11,6 @@ import com.pathplanner.lib.path.PathConstraints;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.ctre.phoenix6.swerve.SwerveModule;
 import com.ctre.phoenix6.swerve.SwerveRequest;
-import com.ctre.phoenix6.StatusSignal;
 
 import Team4450.Lib.Util;
 import static Team4450.Robot27.Constants.*;
@@ -21,7 +20,7 @@ import Team4450.Robot27.RobotContainer;
 import Team4450.Robot27.Constants.DriveConstants;
 import Team4450.Robot27.commands.DriveCommand;
 import Team4450.Robot27.subsystems.SDS.CommandSwerveDrivetrain;
-//import Team4450.Robot27.subsystems.SDS.Telemetry;
+import Team4450.Robot27.subsystems.SDS.SDSTelemetry;
 import Team4450.Robot27.subsystems.SDS.TunerConstants;
 import org.wpilib.math.geometry.Pose2d;
 import org.wpilib.math.geometry.Pose3d;
@@ -61,7 +60,7 @@ public class Drivebase extends SubsystemBase {
   public Pose2d robotPose = new Pose2d(0, 0, Rotation2d.ZERO);
   public Pose2d limelightPoseEstimate = new Pose2d(0, 0, Rotation2d.ZERO);
 
-  private final Team4450.Robot27.subsystems.SDS.Telemetry logger = new Team4450.Robot27.subsystems.SDS.Telemetry(kMaxSpeed);
+  private final Team4450.Robot27.subsystems.SDS.SDSTelemetry logger = new Team4450.Robot27.subsystems.SDS.SDSTelemetry(kMaxSpeed);
 
   // Field2d object creates the field display on the simulation and gives us an API
   // to control what is displayed (the simulated robot).
@@ -97,7 +96,7 @@ public class Drivebase extends SubsystemBase {
     // Add pigeon gyro as a Tunable. Updates the dashboard heading indicator automatically.
     // Will try to do this in the PiegeonWrapper class it self.
     //TODO SmartDashboard.putData(Constants.SmartDashboardKeys.PIGEON_GYRO, pigeonWrapper);
-    //Tunables.publish(Constants.SmartDashboardKeys.PIGEON_GYRO, pigeonWrapper);
+    Tunables.publish(Constants.SmartDashboardKeys.PIGEON_GYRO, pigeonWrapper);
 
     //TODO SmartDashboard.putData(Constants.SmartDashboardKeys.FIELD2D, field2d); This may not be
     // needed anymore. See the field2d updating below in updateModulePoses().
@@ -134,7 +133,7 @@ public class Drivebase extends SubsystemBase {
       driveField.ForwardPerspective = ForwardPerspectiveValue.BlueAlliance;
 
     // Register for SDS telemetry.
-    // sdsDrivebase.registerTelemetry(logger::telemeterize);
+    //TODO sdsDrivebase.registerTelemetry(logger::telemeterize);
 
     updateDS();
   }
@@ -237,13 +236,14 @@ public class Drivebase extends SubsystemBase {
 
   public void driveToNearestOpening() {
     double targetY = robotPose.getY();
+
     if (robotPose.getY() >= 1.7 && robotPose.getY() <= 4) {
       targetY = 1.6;
     } else if (robotPose.getY() > 4 && robotPose.getY() <= 6.3) {
       targetY = 6.4;
     }
-    // driveToPose(new Pose2d(robotPose.getX(), targetY,
-    // Rotation2d.fromDegrees(0.0)), 0.0);
+    
+    driveToPose(new Pose2d(robotPose.getX(), targetY, Rotation2d.fromDegrees(0.0)), 0.0);
   }
 
   public void driveMeter() {
@@ -391,12 +391,12 @@ public class Drivebase extends SubsystemBase {
 
   // Get the sds ordometry rotation velocity in radians per second
   public double getRotVelocity() {
-    return Math.toDegrees(sdsDrivebase.getStateCopy().Speeds.omega);
+    return Math.toDegrees(sdsDrivebase.getStateCopy().Velocity.omega);
   }
 
   // Get the sds ordometry x velocity in meters per second
   public double getXVelocity() {
-    return sdsDrivebase.getStateCopy().Speeds.vx;
+    return sdsDrivebase.getStateCopy().Velocity.vx;
   }
 
   public double getTotalVelocity() {
@@ -405,7 +405,7 @@ public class Drivebase extends SubsystemBase {
 
   // Get the sds ordometry y velocity in meters per second
   public double getYVelocity() {
-    return sdsDrivebase.getStateCopy().Speeds.vy;
+    return sdsDrivebase.getStateCopy().Velocity.vy;
   }
 
   @Deprecated
@@ -525,7 +525,7 @@ public class Drivebase extends SubsystemBase {
           .plus(robotPose.getTranslation());
 
       modulePoses[i] = new Pose2d(moduleLocation,
-          modules[i].getCurrentState().angle.plus(Rotation2d.fromDegrees(-getYaw180())));
+          modules[i].getPosition(true).angle.plus(Rotation2d.fromDegrees(-getYaw180()))); //2027
     }
 
     //field2d.getObject("Robot").setPose(new Pose2d(robotPose.getX(), robotPose.getY(), new Rotation2d(Math.toRadians(robotPose.getRotation().getRadians()))));

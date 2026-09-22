@@ -21,7 +21,7 @@ import org.wpilib.smartdashboard.MechanismLigament2d;
 import org.wpilib.util.Color;
 import org.wpilib.util.Color8Bit;
 
-public class Telemetry {
+public class SDSTelemetry {
     private final double MaxSpeed;
 
     /**
@@ -29,7 +29,7 @@ public class Telemetry {
      * 
      * @param maxSpeed Maximum speed in meters per second
      */
-    public Telemetry(double maxSpeed) {
+    public SDSTelemetry(double maxSpeed) {
         MaxSpeed = maxSpeed;
         SignalLogger.start();
 

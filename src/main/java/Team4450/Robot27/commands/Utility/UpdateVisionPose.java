@@ -63,14 +63,14 @@ public class UpdateVisionPose extends Command {
             EstimatedRobotPose estimatedPoseContainer = estimatedPoseOptional.get();
             
             // convert a pose3d to pose2d (we ignore the Z axis which is just height off ground)
-            Pose2d pose2d = new Pose2d(
-                estimatedPoseContainer.estimatedPose.getX(),
-                estimatedPoseContainer.estimatedPose.getY(),
-                new Rotation2d(estimatedPoseContainer.estimatedPose.getRotation().getZ())
-            );
+            //TODO Pose2d pose2d = new Pose2d(
+            //     estimatedPoseContainer.estimatedPose.getX(),
+            //     estimatedPoseContainer.estimatedPose.getY(),
+            //     new Rotation2d(estimatedPoseContainer.estimatedPose.getRotation().getZ())
+            //);
             
             //robotDrive.updateOdometryVision(pose2d, estimatedPoseContainer.timestampSeconds); rich
-            robotDrive.addVisionMeasurement(pose2d, estimatedPoseContainer.timestampSeconds); // rich
+            //TODOrobotDrive.addVisionMeasurement(pose2d, estimatedPoseContainer.timestampSeconds); // rich
         }
     }
 
