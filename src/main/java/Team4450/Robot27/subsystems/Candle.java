@@ -27,6 +27,7 @@ import com.ctre.phoenix.led.ColorFlowAnimation.Direction;
 
 /**
  * Utiity class that wraps CTRE CANdle LED controller.
+ * NOTE: This is Phoenix 5 CANDle and has been deprecated. Needs rewrite to Phoenix 6 API.
  */
 public class Candle extends SubsystemBase {
 

@@ -60,7 +60,7 @@ public class Drivebase extends SubsystemBase {
   public Pose2d robotPose = new Pose2d(0, 0, Rotation2d.ZERO);
   public Pose2d limelightPoseEstimate = new Pose2d(0, 0, Rotation2d.ZERO);
 
-  private final Team4450.Robot27.subsystems.SDS.SDSTelemetry logger = new Team4450.Robot27.subsystems.SDS.SDSTelemetry(kMaxSpeed);
+  //private final Team4450.Robot27.subsystems.SDS.SDSTelemetry logger = new Team4450.Robot27.subsystems.SDS.SDSTelemetry(kMaxSpeed);
 
   // Field2d object creates the field display on the simulation and gives us an API
   // to control what is displayed (the simulated robot).
@@ -95,8 +95,8 @@ public class Drivebase extends SubsystemBase {
 
     // Add pigeon gyro as a Tunable. Updates the dashboard heading indicator automatically.
     // Will try to do this in the PiegeonWrapper class it self.
-    //TODO SmartDashboard.putData(Constants.SmartDashboardKeys.PIGEON_GYRO, pigeonWrapper);
-    Tunables.publish(Constants.SmartDashboardKeys.PIGEON_GYRO, pigeonWrapper);
+    //SmartDashboard.putData(Constants.SmartDashboardKeys.PIGEON_GYRO, pigeonWrapper);
+    Tunables.publish(Constants.SmartDashboardKeys.PIGEON_GYRO, pigeonWrapper); // 2027
 
     //TODO SmartDashboard.putData(Constants.SmartDashboardKeys.FIELD2D, field2d); This may not be
     // needed anymore. See the field2d updating below in updateModulePoses().

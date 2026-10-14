@@ -526,7 +526,7 @@ public class Shooter extends SubsystemBase {
 
     public void testInfeed() {
         if (canInfeed) {
-            this.infeedMotorLeft.set(0.05);
+            this.infeedMotorLeft.setThrottle(0.05); // 2027
             this.infeedMotorRight.setControl(new Follower(this.infeedMotorLeft.getDeviceID(), MotorAlignmentValue.Opposed));
         }
     }
@@ -535,7 +535,7 @@ public class Shooter extends SubsystemBase {
         if (canInfeed) {
             this.runInfeed = false;
             this.reverseInfeed = false;
-            this.infeedMotorLeft.set(0);
+            this.infeedMotorLeft.setThrottle(0); // 2027
             this.infeedMotorRight.setControl(new Follower(this.infeedMotorLeft.getDeviceID(), MotorAlignmentValue.Opposed));
         }
     }

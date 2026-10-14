@@ -1,5 +1,6 @@
 package Team4450.Robot27.subsystems.SDS;
 
+import static Team4450.Robot27.Constants.swerveCanBus;
 import static org.wpilib.units.Units.*;
 
 import com.ctre.phoenix6.CANBus;
@@ -9,7 +10,6 @@ import com.ctre.phoenix6.signals.*;
 import com.ctre.phoenix6.swerve.*;
 import com.ctre.phoenix6.swerve.SwerveModuleConstants.*;
 
-import static Team4450.Robot27.Constants.CANIVORE_NAME;
 import Team4450.Robot27.Constants.DriveConstants;
 import org.wpilib.math.linalg.Matrix;
 import org.wpilib.math.numbers.N1;
@@ -76,10 +76,6 @@ public class TunerConstants {
     // Configs for the Pigeon 2; leave this null to skip applying Pigeon 2 configs
     private static final Pigeon2Configuration pigeonConfigs = null;
 
-    // CAN bus that the devices are located on;
-    // All swerve devices must share the same CAN bus
-    public static final CANBus kCANBus = new CANBus(CANIVORE_NAME, "./logs/example.hoot"); // 4450
-
     // Theoretical free speed (m/s) at 12 V applied output;
     // This needs to be tuned to your individual robot
     public static final LinearVelocity kSpeedAt12Volts = MetersPerSecond.of(4.39);
@@ -105,7 +101,7 @@ public class TunerConstants {
     private static final Voltage kDriveFrictionVoltage = Volts.of(0.2);
 
     public static final SwerveDrivetrainConstants DrivetrainConstants = new SwerveDrivetrainConstants()
-            .withCANBusName(kCANBus.getName())
+            .withNetwork(swerveCanBus) // 2027
             .withPigeon2Id(kPigeonId)
             .withPigeon2Configs(pigeonConfigs);
 

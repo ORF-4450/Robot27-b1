@@ -12,6 +12,9 @@ import org.wpilib.math.geometry.Pose3d;
 import org.wpilib.math.geometry.Rotation2d;
 import org.wpilib.math.geometry.Rotation3d;
 import org.wpilib.math.geometry.Transform3d;
+
+import com.ctre.phoenix6.CANBus;
+
 import org.wpilib.driverstation.MatchState;
 import org.wpilib.driverstation.RobotState;
 import org.wpilib.driverstation.Alliance;
@@ -32,7 +35,7 @@ import org.wpilib.driverstation.DriverStationErrors;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
-    public static String PROGRAM_NAME = "ORF27b1-09.01.26";
+    public static String PROGRAM_NAME = "ORF27b1-10.13.26";
 
     public static Robot robot;
 
@@ -46,6 +49,14 @@ public final class Constants {
 
     public static final double ROBOT_PERIOD_SEC = .02;
     public static final int ROBOT_PERIOD_MS = 20;
+
+    // CAN bus that the swerve devices are located on;
+    // All swerve devices must share the same CAN bus
+    // Here defaults to S2.
+    public static final CANBus swerveCanBus = new CANBus(); // 2027
+
+    // CAN bus for all other devices.
+    public static final CANBus canBus = new CANBus("S1");
 
     // Non-drive base motor controller port assignments
 

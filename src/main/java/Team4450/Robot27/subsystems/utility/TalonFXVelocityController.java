@@ -76,7 +76,7 @@ public class TalonFXVelocityController extends SubsystemBase {
 
         Util.consoleLog("%s", this.name);
 
-        SendableRegistry.addLW(this, this.name);
+        //TODOSendableRegistry.addLW(this, this.name);
 
         RobotModeTriggers.disabled().onChange(new InstantCommand(this::stop));
 

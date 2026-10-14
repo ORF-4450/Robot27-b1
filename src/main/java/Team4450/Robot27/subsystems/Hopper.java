@@ -2,6 +2,9 @@ package Team4450.Robot27.subsystems;
 
 import Team4450.Robot27.Constants;
 import Team4450.Robot27.RobotContainer;
+
+import java.lang.classfile.constantpool.NameAndTypeEntry;
+
 //import org.wpilib.smartdashboard.SmartDashboard;
 import org.wpilib.command2.SubsystemBase;
 import org.wpilib.telemetry.Telemetry;
@@ -11,6 +14,7 @@ import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.CoastOut;
 import com.ctre.phoenix6.controls.Follower;
+import com.ctre.phoenix6.controls.NeutralOut;
 import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.controls.VoltageOut;
 import com.ctre.phoenix6.configs.CurrentLimitsConfigs;
@@ -26,8 +30,10 @@ public class Hopper extends SubsystemBase {
 
     public Hopper() {
         // Configure motor neutral mode
-        hopperMotor.setNeutralMode(NeutralModeValue.Coast);
-
+        //hopperMotor.setNeutralMode(NeutralModeValue.Coast);
+        NeutralOut neutralRequest = new NeutralOut(); // 2027
+        hopperMotor.setControl(neutralRequest); // 2027
+        
         TalonFXConfiguration hopperCFG = new TalonFXConfiguration();
 
         // Neutral + inversion
@@ -45,8 +51,8 @@ public class Hopper extends SubsystemBase {
         this.hopperMotor.getConfigurator().apply(hopperCFG);
         this.hopperMotorRight.getConfigurator().apply(hopperCFG);
 
-        this.hopperMotor.set(0);
-        this.hopperMotorRight.set(0);
+        this.hopperMotor.setThrottle(0); // 2027
+        this.hopperMotorRight.setThrottle(0); // 2027
     }
 
     @Override
@@ -69,7 +75,7 @@ public class Hopper extends SubsystemBase {
     }
 
     public void startWithScaling() {
-        hopperMotor.set(1 * robotContainer.getVolatgePercent() * Constants.HOPPER_VOLTAGE_MULTIPLIER);
+        hopperMotor.setThrottle(1 * robotContainer.getVolatgePercent() * Constants.HOPPER_VOLTAGE_MULTIPLIER); // 2027
         hopperMotorRight.setControl(new Follower(this.hopperMotor.getDeviceID(), MotorAlignmentValue.Opposed));
     }
 

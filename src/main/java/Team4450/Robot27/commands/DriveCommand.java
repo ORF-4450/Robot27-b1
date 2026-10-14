@@ -16,6 +16,7 @@ import org.wpilib.math.controller.PIDController;
 import org.wpilib.math.geometry.Pose2d;
 import org.wpilib.math.geometry.Rotation2d;
 import org.wpilib.telemetry.Telemetry;
+import org.wpilib.tunable.Tunables;
 
 import Team4450.Lib.Util;
 import Team4450.Robot27.Constants;
@@ -163,15 +164,17 @@ public class DriveCommand extends Command {
             throttle = Util.squareInput(throttle);
             strafe = Util.squareInput(strafe);
 
-            headingPID.setP(Tunables.addDouble(Constants.SmartDashboardKeys.HEADING_P, Constants.ROBOT_HEADING_KP));
-            headingPID.setI(Tunables.addDouble(Constants.SmartDashboardKeys.HEADING_I, Constants.ROBOT_HEADING_KI));
-            headingPID.setD(Tunables.addDouble(Constants.SmartDashboardKeys.HEADING_D, Constants.ROBOT_HEADING_KD));
+            headingPID.setP(Tunables.addDouble(Constants.SmartDashboardKeys.HEADING_P, Constants.ROBOT_HEADING_KP).get());
+            headingPID.setI(Tunables.addDouble(Constants.SmartDashboardKeys.HEADING_I, Constants.ROBOT_HEADING_KI).get());
+            headingPID.setD(Tunables.addDouble(Constants.SmartDashboardKeys.HEADING_D, Constants.ROBOT_HEADING_KD).get());
 
             if (Math.abs(headingError) <= 5 || Math.abs(headingError) >= 355) {
-                RobotContainer.driverController.setRumble(RumbleType.kBothRumble, 0.3);
+                RobotContainer.driverController.setRumble(RumbleType.LEFT_RUMBLE, 0.3);
+                RobotContainer.driverController.setRumble(RumbleType.RIGHT_RUMBLE, 0.3);
                 rotation = 0;
             } else {
-                RobotContainer.driverController.setRumble(RumbleType.kBothRumble, 0);
+                RobotContainer.driverController.setRumble(RumbleType.LEFT_RUMBLE, 0);
+                RobotContainer.driverController.setRumble(RumbleType.RIGHT_RUMBLE, 0);
             }
 
             Pose2d goalPose = (RobotContainer.shooter.getGoalPose());
@@ -190,18 +193,22 @@ public class DriveCommand extends Command {
                 drivebase.setX();
             }
 
-            if (Tunables.addBoolean(Constants.SmartDashboardKeys.ROBOT_CURRENTLY_USING_QUEST, true)){
+            if (Tunables.addBoolean(Constants.SmartDashboardKeys.ROBOT_CURRENTLY_USING_QUEST, true).get()){
                 rotation = rotation * 0.6;
             }
 
             drivebase.drive(throttle, strafe, rotation);
             return;
         } else {
-            RobotContainer.driverController.setRumble(RumbleType.kBothRumble, 0);
+            RobotContainer.driverController.setRumble(RumbleType.LEFT_RUMBLE, 0);
+            RobotContainer.driverController.setRumble(RumbleType.RIGHT_RUMBLE, 0);
+                
             double rotation = rotationXSupplier.getAsDouble();
+
             if (rotation <= 0.1) {
                 rotation = rotation * 2;
             }
+
             double throttle = throttleSupplier.getAsDouble();
             double strafe = strafeSupplier.getAsDouble();
 

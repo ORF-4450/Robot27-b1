@@ -4,6 +4,7 @@ import Team4450.Lib.Util;
 import Team4450.Robot27.RobotContainer;
 //import org.wpilib.smartdashboard.SmartDashboard;
 import org.wpilib.telemetry.Telemetry;
+import org.wpilib.tunable.Tunables;
 
 public class ConsoleEveryX {
     private int x;
@@ -22,7 +23,9 @@ public class ConsoleEveryX {
 
     public void update(String text) {
         if (!RobotContainer.inUtilityMode) { return; } // Early return if not in test mode
-        this.enabled = Tunables.addBoolean(this.id, this.enabled);
+        
+        this.enabled = Tunables.addBoolean(this.id, this.enabled).get(); // 2027
+        
         if (this.enabled) {
             this.x++;
             if (this.x == this.targetX) {

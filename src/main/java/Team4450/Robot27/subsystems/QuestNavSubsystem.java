@@ -11,6 +11,8 @@ import org.wpilib.math.geometry.Rotation2d;
 //import org.wpilib.smartdashboard.SmartDashboard;
 import org.wpilib.command2.SubsystemBase;
 import org.wpilib.telemetry.Telemetry;
+import org.wpilib.tunable.Tunables;
+
 import gg.questnav.questnav.PoseFrame;
 import gg.questnav.questnav.QuestNav;
 
@@ -78,8 +80,8 @@ public class QuestNavSubsystem extends SubsystemBase {
     }
 
     public boolean useQuest() {
-        if (Tunables.addBoolean(Constants.SmartDashboardKeys.USE_QUEST, true) &&
-                Tunables.addBoolean(Constants.SmartDashboardKeys.QUEST_TRACKING, false) &&
+        if (Tunables.addBoolean(Constants.SmartDashboardKeys.USE_QUEST, true).get() &&
+                Tunables.addBoolean(Constants.SmartDashboardKeys.QUEST_TRACKING, false).get() &&
                 !questAgainstWall()) {
             return true;
         } else {

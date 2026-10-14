@@ -11,6 +11,7 @@ import org.wpilib.math.controller.PIDController;
 import org.wpilib.math.geometry.Pose2d;
 import org.wpilib.math.geometry.Rotation2d;
 import org.wpilib.telemetry.Telemetry;
+import org.wpilib.tunable.Tunables;
 
 import Team4450.Lib.Util;
 import Team4450.Robot27.Constants;
@@ -95,9 +96,9 @@ public class AutonHubTracking extends Command {
         double rotation = headingPID.calculate(drivebaseYaw, targetHeading);
         Telemetry.log(Constants.SmartDashboardKeys.HEADING_PID_OUTPUT, rotation);
 
-        headingPID.setP(Tunables.addDouble(Constants.SmartDashboardKeys.HEADING_P, Constants.ROBOT_HEADING_KP));
-        headingPID.setI(Tunables.addDouble(Constants.SmartDashboardKeys.HEADING_I, Constants.ROBOT_HEADING_KI));
-        headingPID.setD(Tunables.addDouble(Constants.SmartDashboardKeys.HEADING_D, Constants.ROBOT_HEADING_KD));
+        headingPID.setP(Tunables.addDouble(Constants.SmartDashboardKeys.HEADING_P, Constants.ROBOT_HEADING_KP).get());
+        headingPID.setI(Tunables.addDouble(Constants.SmartDashboardKeys.HEADING_I, Constants.ROBOT_HEADING_KI).get());
+        headingPID.setD(Tunables.addDouble(Constants.SmartDashboardKeys.HEADING_D, Constants.ROBOT_HEADING_KD).get());
 
         drivebase.drive(0, 0, rotation);
         return;

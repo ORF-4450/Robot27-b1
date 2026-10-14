@@ -52,7 +52,8 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
   private boolean m_hasAppliedOperatorPerspective = false;
 
   /** Swerve request to apply during robot-centric path following */
-  private final SwerveRequest.ApplyRobotSpeeds m_pathApplyRobotSpeeds = new SwerveRequest.ApplyRobotSpeeds();
+  //TODO private final SwerveRequest.ApplyRobotSpeeds m_pathApplyRobotSpeeds = new SwerveRequest.ApplyRobotSpeeds();
+  private final SwerveRequest.ApplyRobotVelocity m_pathApplyRobotSpeeds = new SwerveRequest.ApplyRobotVelocity();
 
   /* Swerve requests to apply during SysId characterization */
   private final SwerveRequest.SysIdSwerveTranslation m_translationCharacterization = new SwerveRequest.SysIdSwerveTranslation();
@@ -217,10 +218,10 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
       AutoBuilder.configure(
           () -> RobotContainer.drivebase.getODPose(), // Supplier of current robot pose
           this::resetPose, // Consumer for seeding pose against auto
-          () -> getState().Speeds, // Supplier of current robot speeds
+          () -> getState().Velocity, // Supplier of current robot speeds 2027
           // Consumer of ChassisVelocities and feedforwards to drive the robot
           (speeds, feedforwards) -> setControl(
-              m_pathApplyRobotSpeeds.withSpeeds(speeds)
+              m_pathApplyRobotSpeeds.withVelocity(speeds) // 2027
                   .withWheelForceFeedforwardsX(feedforwards.robotRelativeForcesXNewtons())
                   .withWheelForceFeedforwardsY(feedforwards.robotRelativeForcesYNewtons())),
           new PPHolonomicDriveController(
@@ -296,7 +297,7 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
      */
     if (!m_hasAppliedOperatorPerspective || RobotState.isDisabled()) {
       MatchState.getAlliance().ifPresent(allianceColor -> {
-        setOperatorPerspectiveForward(
+        setOperatorForwardDirection(  // 2027
             allianceColor == Alliance.RED
                 ? kRedAlliancePerspectiveRotation
                 : kBlueAlliancePerspectiveRotation);
@@ -332,7 +333,8 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
    */
   @Override
   public void addVisionMeasurement(Pose2d visionRobotPoseMeters, double timestampSeconds) {
-    super.addVisionMeasurement(visionRobotPoseMeters, Utils.fpgaToCurrentTime(timestampSeconds));
+    //super.addVisionMeasurement(visionRobotPoseMeters, Utils.fpgaToCurrentTime(timestampSeconds));
+    super.addVisionMeasurement(visionRobotPoseMeters, timestampSeconds); // 2027
   }
 
   /**
@@ -358,11 +360,12 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
       Pose2d visionRobotPoseMeters,
       double timestampSeconds,
       Matrix<N3, N1> visionMeasurementStdDevs) {
-    super.addVisionMeasurement(visionRobotPoseMeters, Utils.fpgaToCurrentTime(timestampSeconds),
+    //super.addVisionMeasurement(visionRobotPoseMeters, Utils..fpgaToCurrentTime(timestampSeconds),
+    super.addVisionMeasurement(visionRobotPoseMeters, timestampSeconds, // 2027
         visionMeasurementStdDevs);
   }
 
   public ChassisVelocities getChassisVelocities() {
-    return m_pathApplyRobotSpeeds.Speeds;
+    return m_pathApplyRobotSpeeds.Velocity; // 2027
   }
 }

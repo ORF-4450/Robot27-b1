@@ -11,9 +11,14 @@ import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.MotorAlignmentValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
+
+import static Team4450.Robot27.Constants.canBus;
+
 //import org.wpilib.smartdashboard.SmartDashboard;
 import org.wpilib.command2.SubsystemBase;
 import org.wpilib.telemetry.Telemetry;
+import org.wpilib.tunable.Tunables;
+
 import Team4450.Robot27.subsystems.Drivebase;
 import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.controls.PositionVoltage;
@@ -28,9 +33,9 @@ public class Intake extends SubsystemBase {
     private final TalonFX pivotMotor = new TalonFX(Constants.INTAKE_MOTOR_PIVOT_CAN_ID,
             new CANBus(Constants.CANIVORE_NAME));
     // This motor is a Kraken x44
-    private final TalonFX intakeMotorLeft = new TalonFX(Constants.INTAKE_MOTOR_LEFT_CAN_ID);
+    private final TalonFX intakeMotorLeft = new TalonFX(Constants.INTAKE_MOTOR_LEFT_CAN_ID, canBus); // 2027
     // This motor is a Kraken x44
-    private final TalonFX intakeMotorRight = new TalonFX(Constants.INTAKE_MOTOR_RIGHT_CAN_ID);
+    private final TalonFX intakeMotorRight = new TalonFX(Constants.INTAKE_MOTOR_RIGHT_CAN_ID, canBus); // 2027
 
     private boolean canPivot;
     private boolean canSpin;
@@ -107,7 +112,8 @@ public class Intake extends SubsystemBase {
 
     @Override
     public void periodic() {
-        this.pivitTargetPosition = Tunables.addDouble(Constants.SmartDashboardKeys.PIVOT_POSITION, 0);
+        this.pivitTargetPosition = Tunables.addDouble(Constants.SmartDashboardKeys.PIVOT_POSITION, 0).get(); // 2027
+        
         if (this.canPivot) {
             this.pivitTargetPositionMotorPosition = this.pivitPositionToMotorPosition(this.pivitTargetPosition);
             // Convert position input to rotations for the motor
@@ -130,7 +136,7 @@ public class Intake extends SubsystemBase {
         }
 
         if (this.runIntake) {
-            if (Tunables.addBoolean(Constants.SmartDashboardKeys.AUTONOMOUS_ACTIVE, true)) {
+            if (Tunables.addBoolean(Constants.SmartDashboardKeys.AUTONOMOUS_ACTIVE, true).get()) { // 2027
                 if (this.reverseIntake) {
                     setIntakeRPM(-7000);
                 } else {
@@ -185,7 +191,7 @@ public class Intake extends SubsystemBase {
 
     public void incrementPivitUp(double incrementAmount) {
 
-        incrementAmount = Tunables.addDouble(Constants.SmartDashboardKeys.PIVOT_POSITION, 1) - incrementAmount;
+        incrementAmount = Tunables.addDouble(Constants.SmartDashboardKeys.PIVOT_POSITION, 1).get() - incrementAmount; // 2027
 
         Telemetry.log(Constants.SmartDashboardKeys.PIVOT_POSITION, incrementAmount);
     }
@@ -218,19 +224,19 @@ public class Intake extends SubsystemBase {
     }
 
     public void testIntake() {
-        this.intakeMotorLeft.set(0.05);
+        this.intakeMotorLeft.setThrottle(0.05); // 2027
         this.intakeMotorRight.setControl(new Follower(this.intakeMotorLeft.getDeviceID(), MotorAlignmentValue.Opposed));
     }
 
     public void slowIntake() {
-        this.intakeMotorLeft.set(0.60);
+        this.intakeMotorLeft.setThrottle(0.60); // 2027
         this.intakeMotorRight.setControl(new Follower(this.intakeMotorLeft.getDeviceID(), MotorAlignmentValue.Opposed));
     }
 
     public void stopIntake() {
         this.runIntake = false;
         this.reverseIntake = false;
-        this.intakeMotorLeft.set(0);
+        this.intakeMotorLeft.setThrottle(0); // 2027
         this.intakeMotorRight.setControl(new Follower(this.intakeMotorLeft.getDeviceID(), MotorAlignmentValue.Opposed));
     }
 
@@ -265,7 +271,7 @@ public class Intake extends SubsystemBase {
 
     public void setPivitMotorSpeed(double speed) {
         if (canPivot) {
-            pivotMotor.set(speed);
+            pivotMotor.setThrottle(speed); // 2027
         }
     }
 
@@ -302,7 +308,7 @@ public class Intake extends SubsystemBase {
      * @param power The power level to set.
      */
     public void setPower(double power) {
-        this.pivotMotor.set(power);
+        this.pivotMotor.setThrottle(power); // 2027
     }
 
     public void setIntakeRPM(double targetRPM) {

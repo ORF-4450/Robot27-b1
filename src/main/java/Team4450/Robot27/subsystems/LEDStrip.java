@@ -62,7 +62,7 @@ public class LEDStrip  extends SubsystemBase
         ledSpacing = Meters.of(1 / ledDensity);
         ledBuffer = new AddressableLEDBuffer(numberOfLeds);
         ledStrip.setLength(ledBuffer.getLength());
-        ledStrip.start();
+        ledStrip.setStart(0); // 2027
     }
 
     /**
