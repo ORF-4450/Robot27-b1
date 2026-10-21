@@ -1,0 +1,51 @@
+{
+  "NTProvider": {
+    "types": {
+      "\/DriverStation": "DriverStation",
+      "\/Telemetry\/Field2d": "Field2d",
+      "\/Tunables\/Auto Program": "Selectable",
+      "\/Tunables\/Pigeon Gyro": "Gyro"
+    },
+    "windows": {
+      "\/Telemetry\/Field2d": {
+        "Robot": {
+          "image": "C:\\Users\\Richard\\Workspace\\FRC Java\\Robot27-b1\\resources\\robot.png",
+          "length": 0.7366,
+          "width": 0.7366
+        },
+        "Swerve Modules": {
+          "image": "C:\\Users\\Richard\\Workspace\\FRC Java\\Robot27-b1\\resources\\swerve_module.png",
+          "length": 0.3048,
+          "width": 0.3048
+        },
+        "bottom": 1917,
+        "builtin": "2026 FRC Rebuilt Welded",
+        "height": 8.069,
+        "left": 254,
+        "right": 3951,
+        "top": 121,
+        "units": "inches",
+        "width": 16.541,
+        "window": {"visible": true}
+      },
+      "\/Tunables\/Auto Program": {"window": {"visible": true}},
+      "\/Tunables\/Pigeon Gyro": {"window": {"visible": true}}
+    }
+  },
+  "NetworkTables": {
+    "Persistent Values": {"open": false},
+    "Retained Values": {"open": false},
+    "transitory": {
+      "Telemetry": {
+        "Version": {"open": true},
+        "open": true
+      },
+      "Tunables": {
+        "Auto Program": {"open": true},
+        "Pigeon Gyro": {"open": true},
+        "open": true
+      }
+    }
+  },
+  "NetworkTables Info": {"visible": true}
+}

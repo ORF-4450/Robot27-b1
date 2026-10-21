@@ -12,6 +12,7 @@ import org.wpilib.math.geometry.Rotation2d;
 import org.wpilib.command2.SubsystemBase;
 import org.wpilib.telemetry.Telemetry;
 import org.wpilib.tunable.Tunables;
+import org.wpilib.util.protobuf.*;
 
 import gg.questnav.questnav.PoseFrame;
 import gg.questnav.questnav.QuestNav;
@@ -22,57 +23,59 @@ public class QuestNavSubsystem extends SubsystemBase {
     double robotRotation;
 
     public QuestNavSubsystem() {
-        questNav = new QuestNav(); 
+        //TODO questNav = new QuestNav(); 
 
-        questNav.setVersionCheckEnabled(false);
+        // questNav.setVersionCheckEnabled(false);
 
-        Telemetry.log(Constants.SmartDashboardKeys.QUEST_CONNECTED, false);
-        Telemetry.log(Constants.SmartDashboardKeys.QUEST_TRACKING, false);
-        Telemetry.log(Constants.SmartDashboardKeys.QUEST_LOW_BATTERY, false);
-        Telemetry.log(Constants.SmartDashboardKeys.USE_QUEST, true);
+        // Telemetry.log(Constants.SmartDashboardKeys.QUEST_CONNECTED, false);
+        // Telemetry.log(Constants.SmartDashboardKeys.QUEST_TRACKING, false);
+        // Telemetry.log(Constants.SmartDashboardKeys.QUEST_LOW_BATTERY, false);
+        // Telemetry.log(Constants.SmartDashboardKeys.USE_QUEST, true);
 
-        questNav.onConnected(() -> Telemetry.log(Constants.SmartDashboardKeys.QUEST_CONNECTED, true));
-        questNav.onDisconnected(() -> Telemetry.log(Constants.SmartDashboardKeys.QUEST_CONNECTED, false));
+        // questNav.onConnected(() -> Telemetry.log(Constants.SmartDashboardKeys.QUEST_CONNECTED, true));
+        // questNav.onDisconnected(() -> Telemetry.log(Constants.SmartDashboardKeys.QUEST_CONNECTED, false));
 
-        questNav.onTrackingAcquired(() -> Telemetry.log(Constants.SmartDashboardKeys.QUEST_TRACKING, true));
-        questNav.onTrackingLost(() -> Telemetry.log(Constants.SmartDashboardKeys.QUEST_TRACKING, false));
-        questNav.onLowBattery(20, level -> Telemetry.log(Constants.SmartDashboardKeys.QUEST_LOW_BATTERY, true));
+        // questNav.onTrackingAcquired(() -> Telemetry.log(Constants.SmartDashboardKeys.QUEST_TRACKING, true));
+        // questNav.onTrackingLost(() -> Telemetry.log(Constants.SmartDashboardKeys.QUEST_TRACKING, false));
+        // questNav.onLowBattery(20, level -> Telemetry.log(Constants.SmartDashboardKeys.QUEST_LOW_BATTERY, true));
 
         // Initialize a blank pose3d
-        questNav.setPose(new Pose3d());
+        //TODO questNav.setPose(new Pose3d());
     }
     @Override
     public void periodic() {
-        questNav.commandPeriodic();
+        //TODO questNav.commandPeriodic();
 
-        PoseFrame[] questFrames = questNav.getAllUnreadPoseFrames();
+        if (true) return; //TODO
 
-        for (PoseFrame questFrame : questFrames) {
+        //TODO PoseFrame[] questFrames = questNav.getAllUnreadPoseFrames();
+
+        //TODO for (PoseFrame questFrame : questFrames) {
             //get quest pose
-            Pose3d questPose = questFrame.questPose3d();
+            //TODO Pose3d questPose = questFrame.questPose3d();
             //get timestamp for that pose
-            double timestamp = questFrame.dataTimestamp();
+            //TODO double timestamp = questFrame.dataTimestamp();
 
-            robotPose = questPose.transformBy(Constants.ROBOT_TO_QUEST.inverse());
+            //TODO robotPose = questPose.transformBy(Constants.ROBOT_TO_QUEST.inverse());
             robotRotation = robotPose.getRotation().toRotation2d().getDegrees();
 
-            RobotContainer.drivebase.addQuestPose(robotPose.toPose2d(), timestamp);
+            //TODO RobotContainer.drivebase.addQuestPose(robotPose.toPose2d(), timestamp);
 
             String robotPoseString = robotPose.toString();
 
             Telemetry.log(Constants.SmartDashboardKeys.QUEST_POSE, robotPoseString);
             Telemetry.log(Constants.SmartDashboardKeys.QUEST_BATTERY_PERCENTAGE, questNav.getBatteryPercent().getAsInt());
-        }
+        //TODO}
     }
 
     public void resetQuestPose(Pose3d newPose) {
-        questNav.setPose(newPose);
+        //TODO questNav.setPose(newPose);
     }
 
     public void resetQuest2d(Pose2d newPose) {
         Pose3d pose = new Pose3d(newPose);
 
-        questNav.setPose(pose);
+        //TODO questNav.setPose(pose);
     }
 
     public Pose2d getQuestPose() {
@@ -80,13 +83,13 @@ public class QuestNavSubsystem extends SubsystemBase {
     }
 
     public boolean useQuest() {
-        if (Tunables.addBoolean(Constants.SmartDashboardKeys.USE_QUEST, true).get() &&
-                Tunables.addBoolean(Constants.SmartDashboardKeys.QUEST_TRACKING, false).get() &&
-                !questAgainstWall()) {
-            return true;
-        } else {
+        //TODO if (Tunables.addBoolean(Constants.SmartDashboardKeys.USE_QUEST, true).get() &&
+        //         Tunables.addBoolean(Constants.SmartDashboardKeys.QUEST_TRACKING, false).get() &&
+        //         !questAgainstWall()) {
+        //     return true;
+        // } else {
             return false;
-        }
+        // }
     }
 
     public boolean questAgainstWall() {

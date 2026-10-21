@@ -1,0 +1,94 @@
+{
+  "Docking": {"Data": []},
+  "MainWindow": {"GLOBAL": {
+    "font": "Roboto Bold",
+    "fps": "120",
+    "height": "816",
+    "maximized": "0",
+    "style": "2",
+    "userScaling": "100",
+    "width": "1456",
+    "xpos": "-1",
+    "ypos": "-1"
+  }},
+  "Table": {
+    "0x48040D35,4": {
+      "Column 0  Weight": "1.0000",
+      "Column 1  Weight": "1.0000",
+      "Column 2  Weight": "1.0000",
+      "Column 3  Weight": "1.0000"
+    },
+    "0xED901DC8,2": {
+      "Column 0  Width": "262",
+      "Column 1  Width": "284",
+      "RefScale": "13"
+    }
+  },
+  "Window": {
+    "\/Telemetry\/Field2d": {
+      "Collapsed": "0",
+      "Pos": "277,67",
+      "Size": "1032,678"
+    },
+    "\/Tunables\/Auto Program": {
+      "Collapsed": "0",
+      "Pos": "2,417",
+      "Size": "259,54"
+    },
+    "\/Tunables\/Pigeon Gyro": {
+      "Collapsed": "0",
+      "Pos": "878,332",
+      "Size": "320,380"
+    },
+    "DS": {
+      "Collapsed": "0",
+      "Pos": "2,476",
+      "Size": "275,140"
+    },
+    "Debug##Default": {
+      "Collapsed": "0",
+      "Pos": "60,60",
+      "Size": "400,400"
+    },
+    "Display": {
+      "Collapsed": "1",
+      "Pos": "509,27",
+      "Size": "650,320"
+    },
+    "Joysticks": {
+      "Collapsed": "0",
+      "Pos": "204,736",
+      "Size": "796,201"
+    },
+    "NetworkTables": {
+      "Collapsed": "0",
+      "Pos": "320,44",
+      "Size": "750,672"
+    },
+    "NetworkTables Info": {
+      "Collapsed": "1",
+      "Pos": "336,28",
+      "Size": "750,233"
+    },
+    "Other Devices": {
+      "Collapsed": "0",
+      "Pos": "1197,26",
+      "Size": "250,695"
+    },
+    "Robot State": {
+      "Collapsed": "0",
+      "Pos": "5,20",
+      "Size": "291,156"
+    },
+    "System Joysticks": {
+      "Collapsed": "0",
+      "Pos": "6,617",
+      "Size": "158,218"
+    },
+    "Timing": {
+      "Collapsed": "0",
+      "Pos": "2,192",
+      "Size": "301,222"
+    }
+  }
+}

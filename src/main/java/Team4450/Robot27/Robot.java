@@ -302,7 +302,7 @@ public class Robot extends TimedRobot {
   }
 
   /**
-   * This function is called once at the start of utility mode.
+   * This function is called once at the start of utility mode. Was called test mode.
    */
   @Override
   public void utilityInit() {
@@ -311,13 +311,12 @@ public class Robot extends TimedRobot {
     // Cancels all running commands at the start of utility mode.
     CommandScheduler.getInstance().cancelAll();
 
-    // Next two lines launch teleop mode, but since we are in test
-    // mode, LiveWindow will be enabled to display test data to the
-    // outlineviewer and shuffleboard. Our "test" mode is the regular
-    // telop with LW enabled. Our code displays more detailed test/debug
-    // data in LW mode.
-
-    //LiveWindow.enableAllTelemetry();
+    // Next two lines launch teleop mode, but since we are in utility
+    // mode, Telemetry/Tunables will be enabled to display test data to the
+    // outlineviewer and dashboard. Our "utility" mode is the regular
+    // telop with Telemetry/Tunables enabled. Our code displays more detailed 
+    // test/debug data in utility mode. This is how we replaced the old LiveWindow mode.
+    // The whole point is to not send all the debugging Telemetry/Tunables in the regular modes.
 
     RobotContainer.inUtilityMode = true;
     

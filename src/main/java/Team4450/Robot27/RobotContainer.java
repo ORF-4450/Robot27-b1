@@ -25,7 +25,6 @@ import Team4450.Robot27.commands.IntakeUp;
 import Team4450.Robot27.commands.IntakeDown;
 import Team4450.Robot27.commands.spinShooter;
 import Team4450.Robot27.commands.AutonHubTracking;
-import Team4450.Robot27.subsystems.Candle;
 import Team4450.Robot27.subsystems.Intake;
 import Team4450.Robot27.subsystems.LimelightHelpers;
 import Team4450.Robot27.subsystems.Drivebase;
@@ -460,7 +459,7 @@ public class RobotContainer {
         location = MatchState.getLocation().orElse(0);
         eventName = MatchState.getEventName();
         matchNumber = MatchState.getMatchNumber();
-        gameMessage = MatchState.getGameData().get();
+        gameMessage = MatchState.getGameData().orElse("");
 
         Util.consoleLog("Alliance=%s, Location=%d, FMS=%b event=%s match=%d msg=%s",
                 alliance.name(), location, RobotState.isFMSAttached(), eventName, matchNumber,

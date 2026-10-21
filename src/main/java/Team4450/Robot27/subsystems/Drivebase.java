@@ -178,7 +178,6 @@ public class Drivebase extends SubsystemBase {
         Telemetry.log(Constants.SmartDashboardKeys.DRIVEBASE_CURRENT, getDrivetrainCurrent());
         Telemetry.log(Constants.SmartDashboardKeys.LIMELIGHT_POSE, this.limelightPoseEstimate.toString());
         Telemetry.log("Flywheel Error", RobotContainer.shooter.flywheelRPMError);
-        
     }
   }
 
