@@ -71,6 +71,7 @@ public class ShuffleBoard extends SubsystemBase {
         Telemetry.log(Constants.SmartDashboardKeys.DISABLED, true);
         Telemetry.log(Constants.SmartDashboardKeys.AUTO_MODE, false);
         Telemetry.log(Constants.SmartDashboardKeys.TELEOP_MODE, false);
+        Telemetry.log(Constants.SmartDashboardKeys.UTILITY_MODE, false);
         Telemetry.log(Constants.SmartDashboardKeys.FMS, RobotState.isFMSAttached());
         Telemetry.log(Constants.SmartDashboardKeys.AUTONOMOUS_ACTIVE, false);
     }

@@ -355,15 +355,14 @@ public abstract class IterativeRobotBase extends RobotBase {
   }
 
   private void printLoopOverrunMessage() {
-      if (m_watchDog_warning) // 4450
+    if (m_watchDog_warning) // 4450
     {
       DriverStationErrors.reportWarning("Loop time of " + m_period + "s overrun\n", false);
       Util.consoleLog("Loop time of " + m_period + "s overrun"); // 4450
     }
   }
 
-    
-  boolean m_watchDog_warning, m_watchDog_flush;
+  boolean m_watchDog_warning, m_watchDog_flush; // 4450
 
   /**
    * 4450
@@ -373,6 +372,7 @@ public abstract class IterativeRobotBase extends RobotBase {
   public void enableWatchDogWarning(boolean enabled)
   {
       m_watchDog_warning = enabled;
+      m_watchdog.suppressTimeoutMessage(true);
   }
 
   /**
@@ -395,5 +395,4 @@ public abstract class IterativeRobotBase extends RobotBase {
       m_watchdog.setTimeout(timeout);
       m_period = timeout;
   }
-
 }

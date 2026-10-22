@@ -189,7 +189,8 @@ public class RobotContainer {
         intake = new Intake();
         shooter = new Shooter(drivebase);
 
-        headingPID = new PIDController(Constants.ROBOT_HEADING_KP, Constants.ROBOT_HEADING_KI, Constants.ROBOT_HEADING_KD);
+        headingPID = new PIDController(Constants.ROBOT_HEADING_KP, Constants.ROBOT_HEADING_KI, 
+                                        Constants.ROBOT_HEADING_KD);
         
         Telemetry.log(Constants.SmartDashboardKeys.HEADING_P, Constants.ROBOT_HEADING_KP);
         Telemetry.log(Constants.SmartDashboardKeys.HEADING_I, Constants.ROBOT_HEADING_KI);
@@ -245,6 +246,7 @@ public class RobotContainer {
 
         // Note that the controller instance is passed to the drive command for use in displaying
         // debugging information on Shuffleboard. It is not required for the driving function.
+
         driveCommand = new DriveCommand(drivebase,
                 () -> driverController.getLeftY(),
                 driverController.getLeftXDS(),
@@ -260,6 +262,7 @@ public class RobotContainer {
         // joystick warning. This is long enough for when the warning is valid
         // but will stop flooding the console log when we are legitimately
         // running without both joysticks plugged in.
+
         new Thread(() -> {
             try {
                 Timer.delay(30);

@@ -20,7 +20,6 @@ import org.wpilib.driverstation.Alliance;
 import org.wpilib.driverstation.MatchType;
 import org.wpilib.driverstation.DriverStationErrors;
 import org.wpilib.framework.RobotBase;
-//import org.wpilib.smartdashboard.SmartDashboard;
 import org.wpilib.system.WPILibVersion;
 import org.wpilib.command2.Command;
 import org.wpilib.command2.CommandScheduler;
@@ -211,12 +210,6 @@ public class Robot extends TimedRobot {
   public void disabledPeriodic() {
   }
 
-  public long driveStart;
-  public long shootStart;
-  public long shootTwo;
-
-  public Shoot command;
-
   /**
    * This function is called once at the start of autonomous mode and schedules
    * the autonomous command selected by your {@link RobotContainer} class.
@@ -279,6 +272,7 @@ public class Robot extends TimedRobot {
       RobotContainer.drivebase.robotPose = new Pose2d(RobotContainer.drivebase.limelightPoseEstimate.getX(),
           RobotContainer.drivebase.limelightPoseEstimate.getY(),
           RobotContainer.drivebase.limelightPoseEstimate.getRotation());
+
       RobotContainer.drivebase.resetOdometry(RobotContainer.drivebase.robotPose);
     }
 
@@ -308,6 +302,9 @@ public class Robot extends TimedRobot {
   public void utilityInit() {
     Util.consoleLog();
 
+    Telemetry.log(Constants.SmartDashboardKeys.DISABLED, false);
+    Telemetry.log(Constants.SmartDashboardKeys.UTILITY_MODE, true);
+
     // Cancels all running commands at the start of utility mode.
     CommandScheduler.getInstance().cancelAll();
 
@@ -317,8 +314,6 @@ public class Robot extends TimedRobot {
     // telop with Telemetry/Tunables enabled. Our code displays more detailed 
     // test/debug data in utility mode. This is how we replaced the old LiveWindow mode.
     // The whole point is to not send all the debugging Telemetry/Tunables in the regular modes.
-
-    RobotContainer.inUtilityMode = true;
     
     teleopInit();
 
@@ -326,7 +321,7 @@ public class Robot extends TimedRobot {
   }
 
   /**
-   * This function is called periodically during test mode.
+   * This function is called periodically during utility mode.
    */
   @Override
   public void utilityPeriodic() {
@@ -334,6 +329,5 @@ public class Robot extends TimedRobot {
 
   @Override
   public void utilityExit() {
-    RobotContainer.inUtilityMode = false;
   }
 }

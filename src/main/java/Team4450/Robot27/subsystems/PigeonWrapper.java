@@ -5,7 +5,6 @@ import com.ctre.phoenix6.hardware.Pigeon2;
 import Team4450.Lib.Util;
 import Team4450.Robot27.Constants;
 
-//import org.wpilib.util.sendable.SendableBuilder;
 import org.wpilib.command2.SubsystemBase;
 import org.wpilib.tunable.ComplexTunable;
 import org.wpilib.tunable.TunableTable;
@@ -89,14 +88,6 @@ public class PigeonWrapper extends SubsystemBase implements ComplexTunable {
 
         startingYaw = degrees;
     }
-
-    // @Override
-    // public void initSendable(SendableBuilder builder) {
-    //     builder.setSmartDashboardType("Gyro");
-    //     builder.addDoubleProperty("Value", () -> getYaw(), null);
-    //     builder.addDoubleProperty("Yaw 180", () -> getYaw180(), null);
-    //     builder.addDoubleProperty("Heading", () -> getHeading(), null);
-    // }
 
     @Override
     public void publishTunable(TunableTable table) {

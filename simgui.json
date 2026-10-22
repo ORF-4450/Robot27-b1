@@ -41,7 +41,9 @@
         "open": true
       },
       "Tunables": {
-        "Auto Program": {"open": true},
+        "Auto Program": {"selected": {"open": true}},
+        "MonitorPower": {"open": true},
+        "MyMonitorPower": {"open": true},
         "Pigeon Gyro": {"open": true},
         "open": true
       }

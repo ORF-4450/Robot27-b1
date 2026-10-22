@@ -263,9 +263,11 @@ public class Watchdog implements Closeable, Comparable<Watchdog> {
         Thread.currentThread().interrupt();
         break;
       }
+      
       long curTime = HALUtil.getMonotonicTime();
 
       m_queueMutex.lock();
+
       try {
         if (m_watchdogs.isEmpty()) {
           continue;
@@ -276,6 +278,7 @@ public class Watchdog implements Closeable, Comparable<Watchdog> {
         Watchdog watchdog = m_watchdogs.poll();
 
         double now = curTime * 1e-9;
+
         if (now - watchdog.m_lastTimeoutPrint > MIN_PRINT_PERIOD) {
           watchdog.m_lastTimeoutPrint = now;
           if (!watchdog.m_suppressTimeoutMessage) {
@@ -290,6 +293,7 @@ public class Watchdog implements Closeable, Comparable<Watchdog> {
         watchdog.m_isExpired = true;
 
         m_queueMutex.unlock();
+
         try {
           watchdog.m_callback.run();
         } finally {

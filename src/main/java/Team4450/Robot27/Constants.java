@@ -35,7 +35,7 @@ import org.wpilib.driverstation.DriverStationErrors;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
-    public static String PROGRAM_NAME = "ORF27b1-10.20.26";
+    public static String PROGRAM_NAME = "ORF27b1-10.21.26";
 
     public static Robot robot;
 
@@ -331,8 +331,9 @@ public final class Constants {
         // Control Flow
         public static final String DISABLED = "Disabled";
         public static final String AUTO_MODE = "Auto Mode";
-        public static final String TELEOP_MODE = "Teleop Mode";
-        public static final String PROGRAM = "Program";
+        public static final String TELEOP_MODE = "Test Mode";
+         public static final String UTILITY_MODE = "Utility Mode";
+       public static final String PROGRAM = "Program";
         public static final String FMS = "FMS";
         public static final String AUTONOMOUS_ACTIVE = "Autonomous Active";
 
