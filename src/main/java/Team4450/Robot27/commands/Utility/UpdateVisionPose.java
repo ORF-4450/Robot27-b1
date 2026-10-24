@@ -1,27 +1,27 @@
-// package Team4450.Robot27.commands.Utility;
+package Team4450.Robot27.commands.Utility;
 
-// import java.util.Optional;
+import java.util.Optional;
 
-// import org.photonvision.EstimatedRobotPose;
+import org.photonvision.EstimatedRobotPose;
 
-// import Team4450.Lib.Util;
-// import Team4450.Robot27.subsystems.PhotonVision;
-// import Team4450.Robot27.subsystems.SDS.CommandSwerveDrivetrain;
-// import org.wpilib.math.geometry.Pose2d;
-// import org.wpilib.math.geometry.Rotation2d;
-// import org.wpilib.command2.Command;
+import Team4450.Lib.Util;
+//import Team4450.Robot27.subsystems.PhotonVision;
+import Team4450.Robot27.subsystems.SDS.CommandSwerveDrivetrain;
+import org.wpilib.math.geometry.Pose2d;
+import org.wpilib.math.geometry.Rotation2d;
+import org.wpilib.command2.Command;
 
-// /**
-//  * This class runs as the default command of a PhotonVision
-//  * subsystem and regularly updates the SwerveDrivePoseEstimator
-//  * object with timestamped vision poses. The pose estimator then
-//  * merges these observed poses with what the actual odometry on
-//  * the robot is doing and produces a smoothed "true" pose.
-//  * 
-//  * Also, this class updates the visionSim object with the robots
-//  * pose so that the visionSim can accurately calculate targets
-//  * in the simulator.
-//  */
+/**
+ * This class runs as the default command of a PhotonVision
+ * subsystem and regularly updates the SwerveDrivePoseEstimator
+ * object with timestamped vision poses. The pose estimator then
+ * merges these observed poses with what the actual odometry on
+ * the robot is doing and produces a smoothed "true" pose.
+ * 
+ * Also, this class updates the visionSim object with the robots
+ * pose so that the visionSim can accurately calculate targets
+ * in the simulator.
+ */
 // public class UpdateVisionPose extends Command {
 //     CommandSwerveDrivetrain     robotDrive;
 //     PhotonVision                photonVision;
@@ -53,7 +53,7 @@
 //     @Override
 //     public void execute() {
 
-//          Optional<EstimatedRobotPose> estimatedPoseOptional = photonVision.getEstimatedPose();
+//         //Optional<EstimatedRobotPose> estimatedPoseOptional = photonVision.getEstimatedPose();
 
 //         // update pose estimator pose with current epoch timestamp and the pose from the camera
 //         // if the camera has a good pose output.
@@ -63,11 +63,11 @@
 //             EstimatedRobotPose estimatedPoseContainer = estimatedPoseOptional.get();
             
 //             // convert a pose3d to pose2d (we ignore the Z axis which is just height off ground)
-//             //TODO Pose2d pose2d = new Pose2d(
-//             //     estimatedPoseContainer.estimatedPose.getX(),
-//             //     estimatedPoseContainer.estimatedPose.getY(),
-//             //     new Rotation2d(estimatedPoseContainer.estimatedPose.getRotation().getZ())
-//             //);
+//             Pose2d pose2d = new Pose2d(
+//                 estimatedPoseContainer.estimatedPose.getX(),
+//                 estimatedPoseContainer.estimatedPose.getY(),
+//                 new Rotation2d(estimatedPoseContainer.estimatedPose.getRotation().getZ())
+//             );
             
 //             //robotDrive.updateOdometryVision(pose2d, estimatedPoseContainer.timestampSeconds); rich
 //             //TODOrobotDrive.addVisionMeasurement(pose2d, estimatedPoseContainer.timestampSeconds); // rich

@@ -5,6 +5,7 @@ import static Team4450.Robot27.Constants.*;
 import java.util.List;
 
 import com.ctre.phoenix6.SignalLogger;
+import com.ctre.phoenix6.hardware.TalonFX;
 import com.fasterxml.jackson.databind.util.Named;
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.FollowPathCommand;
@@ -39,6 +40,7 @@ import Team4450.Robot27.subsystems.Drivebase;
 import Team4450.Robot27.subsystems.QuestNavSubsystem;
 import Team4450.Robot27.subsystems.ShuffleBoard;
 import Team4450.Robot27.subsystems.VisionSubsystem;
+import Team4450.Robot27.subsystems.utility.TalonFXVelocityController;
 import Team4450.Robot27.subsystems.Hopper;
 
 import org.wpilib.math.controller.PIDController;
@@ -295,6 +297,12 @@ public class RobotContainer {
 
         // Warmup PathPlanner to avoid Java pauses.
         CommandScheduler.getInstance().schedule(FollowPathCommand.warmupCommand());
+
+        // Test code.
+        TalonFX talon1 = new TalonFX(1, canBus);
+        TalonFX talon2 = new TalonFX(2, canBus);
+        TalonFXVelocityController tvc1 = new TalonFXVelocityController(talon1, "Test Talon");
+        TalonFXVelocityController tvc2 = new TalonFXVelocityController(talon2, "Test Talon ");
     }
 
     /**
@@ -359,15 +367,14 @@ public class RobotContainer {
         // // Toggle motor brake mode.
         // new Trigger(() -> driverController.getBButton()) // Rich
         // .onTrue(new InstantCommand(driveBase::toggleNeutralMode));
-
-        // Toggle slow-mode
-        // Right D-Pad button sets X pattern to stop movement.
-
+    
         new Trigger(() -> driverController.getPOVAngle(0))
                 .onTrue(new InstantCommand(shooter::toggleManualDistanceOne))
                 .onTrue(new InstantCommand(shooter::disableManualDistanceTwo))
                 .onTrue(new InstantCommand(shooter::disableManualDistanceThree))
                 .onTrue(new InstantCommand(shooter::disableManualDistanceFour));
+
+        // Right D-Pad button sets X pattern to stop movement.
 
         new Trigger(() -> driverController.getPOVAngle(90))
                 .onTrue(new InstantCommand(drivebase::setX));
@@ -476,10 +483,4 @@ public class RobotContainer {
     public double getVolatgeMultiplier() {
         return Constants.MAX_BATTERY_VOLTAGE / RobotController.getBatteryVoltage();
     }
-
-    // public void fixPathPlannerGyro() { rich
-    // driveBase.fixPathPlannerGyro();
-    // }
-    //
-    
 }

@@ -5,7 +5,6 @@ import Team4450.Robot27.Constants;
 import Team4450.Robot27.utility.RobotOrientation;
 import org.wpilib.system.RobotController;
 import org.wpilib.driverstation.Alliance;
-//import org.wpilib.smartdashboard.SmartDashboard;
 import org.wpilib.telemetry.Telemetry;
 import org.wpilib.command2.SubsystemBase;
 import java.lang.Math;
@@ -160,6 +159,7 @@ public class VisionSubsystem extends SubsystemBase {
             }
 
             double numTags = right_mt2.rawFiducials.length;
+            
             for (LimelightHelpers.RawFiducial tag : right_mt2.rawFiducials) {
                 if (Math.abs(tag.txnc) > Constants.LIMELIGHT_TXNC_LIMIT) { // TODO: Convert 20 to a constants value
                     numTags--;

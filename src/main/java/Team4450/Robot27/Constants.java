@@ -35,7 +35,7 @@ import org.wpilib.driverstation.DriverStationErrors;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
-    public static String PROGRAM_NAME = "ORF27b1-10.21.26";
+    public static String PROGRAM_NAME = "ORF27b1-10.23.26";
 
     public static Robot robot;
 
@@ -56,7 +56,7 @@ public final class Constants {
     public static final CANBus swerveCanBus = new CANBus(); // 2027
 
     // CAN bus for all other devices.
-    public static final CANBus canBus = new CANBus("S1");
+    public static final CANBus canBus = new CANBus("S1"); // 2027
 
     // Non-drive base motor controller port assignments
 

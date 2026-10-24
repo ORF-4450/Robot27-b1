@@ -36,15 +36,16 @@
     "Persistent Values": {"open": false},
     "Retained Values": {"open": false},
     "transitory": {
-      "Telemetry": {
-        "Version": {"open": true},
-        "open": true
-      },
+      "Telemetry": {"Version": {"open": true}},
       "Tunables": {
         "Auto Program": {"selected": {"open": true}},
-        "MonitorPower": {"open": true},
+        "LiveWindow": {
+          "Test Talon 2(S1:1)": {"open": true},
+          "Test Talon(1)": {"open": true},
+          "Test Talon(S1:1)": {"open": true},
+          "open": true
+        },
         "MyMonitorPower": {"open": true},
-        "Pigeon Gyro": {"open": true},
         "open": true
       }
     }

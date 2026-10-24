@@ -8,9 +8,8 @@ import org.wpilib.math.geometry.Pose3d;
 import org.wpilib.math.geometry.Quaternion;
 import org.wpilib.math.geometry.Rotation3d;
 import org.wpilib.telemetry.Telemetry;
-//TODO import org.wpilib.math.kinematics.SwerveModuleState;
+//import org.wpilib.math.kinematics.SwerveModuleState;
 import org.wpilib.framework.RobotBase;
-//mport org.wpilib.smartdashboard.SmartDashboard;
 
 public class AdvantageScope {
     // Why TF does this run all the time. It should only be running in simulation mode

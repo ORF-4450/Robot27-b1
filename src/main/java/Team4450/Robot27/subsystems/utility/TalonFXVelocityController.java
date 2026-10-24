@@ -11,10 +11,13 @@ import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 
 import Team4450.Lib.Util;
+import Team4450.Robot27.utility.LiveWindow;
 
 //import org.wpilib.util.sendable.SendableBuilder;
 //import org.wpilib.util.sendable.SendableRegistry;
 import org.wpilib.framework.RobotBase;
+import org.wpilib.tunable.ComplexTunable;
+import org.wpilib.tunable.TunableTable;
 import org.wpilib.command2.InstantCommand;
 import org.wpilib.command2.SubsystemBase;
 import org.wpilib.command2.button.RobotModeTriggers;
@@ -33,7 +36,7 @@ import static org.wpilib.units.Units.*;
  * <a href="https://docs.wpilib.org/en/stable/docs/software/advanced-controls/introduction/tuning-flywheel.html">WPILib</a>, 
  * <a href="https://v6.docs.ctr-electronics.com/en/latest/docs/api-reference/device-specific/talonfx/closed-loop-requests.html">CTRE</a>
  */
-public class TalonFXVelocityController extends SubsystemBase {
+public class TalonFXVelocityController extends SubsystemBase implements ComplexTunable  {
 
     private TalonFX         talon;
     private String          name;
@@ -72,11 +75,11 @@ public class TalonFXVelocityController extends SubsystemBase {
     
     public TalonFXVelocityController(TalonFX talon, String name) {
         this.talon = talon;
-        this.name = name + "(" + talon.getDeviceID() + ")";
+        this.name = name + "(" + talon.getNetwork().getName() + ":" + talon.getDeviceID() + ")";
 
         Util.consoleLog("%s", this.name);
 
-        //TODOSendableRegistry.addLW(this, this.name);
+        LiveWindow.registerComplexTunable(this.name, this);
 
         RobotModeTriggers.disabled().onChange(new InstantCommand(this::stop));
 
@@ -405,6 +408,18 @@ public class TalonFXVelocityController extends SubsystemBase {
     //         builder.addDoubleProperty("Torque kS", ()-> slot1_kS, this::withTorquekS);
     //     }
     // }
+
+    @Override
+    public void publishTunable(TunableTable table) {
+        table.publishDouble("Desired RPS", ()-> desiredRotationsPerSecond, null);
+        table.publishDouble("Motor RPS", this::getRPS, null);
+        table.publishDouble("Motor RPM", this::getRPM, null);
+    }
+    
+    @Override
+    public String getTunableType() {
+        return "TalonFXVelocityController";
+    }
 
     /**
      * Motor control types available. Note Motion Magic is configured the same

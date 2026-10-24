@@ -98,9 +98,6 @@ public class Drivebase extends SubsystemBase {
     //SmartDashboard.putData(Constants.SmartDashboardKeys.PIGEON_GYRO, pigeonWrapper);
     Tunables.publish(Constants.SmartDashboardKeys.PIGEON_GYRO, pigeonWrapper); // 2027
 
-    //TODO SmartDashboard.putData(Constants.SmartDashboardKeys.FIELD2D, field2d); This may not be
-    // needed anymore. See the field2d updating below in updateModulePoses().
-
     // Check Gyro.
     if (pigeonWrapper.getPigeon().isConnected())
       Util.consoleLog("Pigeon connected version=%s", pigeonWrapper.getPigeon().getVersion());
@@ -132,8 +129,8 @@ public class Drivebase extends SubsystemBase {
     if (RobotBase.isSimulation())
       driveField.ForwardPerspective = ForwardPerspectiveValue.BlueAlliance;
 
-    // Register for SDS telemetry.
-    //TODO sdsDrivebase.registerTelemetry(logger::telemeterize);
+    // Register for SDS telemetry. Not used at this time.
+    //sdsDrivebase.registerTelemetry(logger::telemeterize);
 
     updateDS();
   }

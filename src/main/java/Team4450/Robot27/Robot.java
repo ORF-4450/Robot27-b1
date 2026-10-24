@@ -2,23 +2,14 @@ package Team4450.Robot27;
 
 import static Team4450.Robot27.Constants.*;
 
-import com.pathplanner.lib.commands.PathPlannerAuto;
-
 import Team4450.Lib.*;
+import Team4450.Robot27.utility.LiveWindow;
 import Team4450.Robot27.utility.RobotOrientation;
-import Team4450.Robot27.commands.Shoot;
-//import Team4450.Robot27.subsystems.SDS.Telemetry;
+
 //import org.wpilib.framework.TimedRobot;
 import Team4450.Robot27.wpilib.TimedRobot;
 
 import org.wpilib.math.geometry.Pose2d;
-import org.wpilib.math.geometry.Pose3d;
-
-import org.wpilib.driverstation.MatchState;
-import org.wpilib.driverstation.RobotState;
-import org.wpilib.driverstation.Alliance;
-import org.wpilib.driverstation.MatchType;
-import org.wpilib.driverstation.DriverStationErrors;
 import org.wpilib.framework.RobotBase;
 import org.wpilib.system.WPILibVersion;
 import org.wpilib.command2.Command;
@@ -59,19 +50,15 @@ public class Robot extends TimedRobot {
       // sec to execute. It's very hard to stay under this limit. So...copied classes
       // from the wpilib name space to inside this project and modified them to allow
       // us to control these warnings and log some of them to our log file. The
-      // warnings
-      // from IterativeRobotBase can be turned on/off and the timeout set. Any
-      // warnings
-      // from that class will go to our log file. The CommandScheduler also generates
+      // warnings from IterativeRobotBase can be turned on/off and the timeout set. Any
+      // warnings from that class will go to our log file. The CommandScheduler also generates
       // essentially the same warnings but copying that is getting beyond what we
-      // should
-      // be doing, so we just set its internal timeout (because it allows us to) to a
+      // should be doing, so we just set its internal timeout (because it allows us to) to a
       // longer value to turn off its warnings. It does not log to our log file. These
       // warnings can be turned back on at times to check if we are having significant
       // overruns but turned off if things look ok. This is a major hack, the downside
       // of which is that with each yearly release of Wpilib the copied files would
-      // have
-      // to be recopied and remodified to make sure our copies are up to date.
+      // have to be recopied and remodified to make sure our copies are up to date.
       // IterativeRobotBase and Watchdog have been modified. TimedRobot is needed to
       // pull in these modified classes. Look for "4450" in the code for the mods.
       //
@@ -83,7 +70,8 @@ public class Robot extends TimedRobot {
 
       enableWatchDogWarning(false);
       enableWatchDogFlush(false);
-      this.setWatchDogTimeout(.04);
+      setWatchDogTimeout(.05);
+
       CommandScheduler.getInstance().setPeriod(1.0);
 
       // Set Java to catch any uncaught exceptions and record them in our log file.
@@ -153,26 +141,26 @@ public class Robot extends TimedRobot {
   @Override
   public void robotPeriodic() {
     // This function is called approx every .02 second.
-    // Runs the Scheduler. It is responsible for polling buttons, adding
-    // newly-scheduled
-    // commands, running already-scheduled commands, removing finished or
-    // interrupted commands,
-    // and running subsystem periodic() methods. Scheduler must be called from the
-    // robot's periodic
-    // function in order for anything in the Command-based framework to work.
+    // Runs the Scheduler. Scheduler is responsible for polling buttons, adding
+    // newly-scheduled commands, running already-scheduled commands, removing 
+    // finished or interrupted commands, and running subsystem periodic()
+    // methods. Scheduler must be called from the robot's periodic function in 
+    // order for anything in the Command-based framework to work.
 
     // WARNING: This function is called repeatedly even when robot is DISABLED. This
-    // means the
-    // periodic method in all subsystems will be called even when disabled. The
-    // scheduler will
-    // stop commands when disabled but not subsystems. It is also possible to set
-    // Commands to run
-    // when robot is disabled. This seems a bad idea...
+    // means the periodic method in all subsystems will be called even when disabled. 
+    // The scheduler will stop commands when disabled but not subsystems. It is also 
+    // possible to set Commands to run when robot is disabled. That seems a bad idea...
+    // Also note that this periodic funtion is run after the mode specific periodic
+    // function and the mode specific periodic functions also run even when disabled.
+    // The safety protection occurs at a lower level when disabled and communication
+    // of motor commands to the robot is suspended when disabled. Not sure what other
+    // control functions are suspended so be careful what you put in the periodic
+    // functions.
 
     // The try/catch will catch any exceptions thrown in the commands run by the
     // scheduler and record them in our log file then stops execution of this
     // program.
-    //
 
     try {
       CommandScheduler.getInstance().run();
@@ -187,6 +175,8 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void disabledInit() {
+    Util.consoleLog();
+
     // This is here because Pathplanner Autos don't stop the robot when it is
     // disabled.
     RobotContainer.drivebase.stop();
@@ -237,7 +227,6 @@ public class Robot extends TimedRobot {
       Util.logException(e);
       this.endCompetition();
     }
-    //
   }
 
   /**
@@ -256,6 +245,8 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopInit() {
+    Util.consoleLog();
+
     robotContainer.getMatchInformation();
 
     Telemetry.log(Constants.SmartDashboardKeys.DISABLED, false);
@@ -276,9 +267,6 @@ public class Robot extends TimedRobot {
       RobotContainer.drivebase.resetOdometry(RobotContainer.drivebase.robotPose);
     }
 
-    // robotContainer.fixPathPlannerGyro(); rich // Because of this only use blue
-    // alliance during practice
-
     // Driving handled by DriveCommand which is default command for the Drivebase.
     // Other commands scheduled by joystick buttons.
   }
@@ -293,6 +281,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void disabledExit() {
+    Util.consoleLog();
   }
 
   /**
@@ -315,6 +304,8 @@ public class Robot extends TimedRobot {
     // test/debug data in utility mode. This is how we replaced the old LiveWindow mode.
     // The whole point is to not send all the debugging Telemetry/Tunables in the regular modes.
     
+    LiveWindow.publish();
+    
     teleopInit();
 
     CommandScheduler.getInstance().enable();
@@ -329,5 +320,6 @@ public class Robot extends TimedRobot {
 
   @Override
   public void utilityExit() {
+    Util.consoleLog();
   }
 }

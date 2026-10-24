@@ -297,6 +297,7 @@ public abstract class IterativeRobotBase extends RobotBase {
 
     // Call the appropriate function depending upon the current robot mode
     DriverStationJNI.observeUserProgram(m_word.getNative());
+
     switch (mode) {
       case UNKNOWN -> {
         disabledPeriodic();
@@ -394,5 +395,19 @@ public abstract class IterativeRobotBase extends RobotBase {
   {
       m_watchdog.setTimeout(timeout);
       m_period = timeout;
+  }
+
+  /**
+   * 4450
+   * Add an epoch marker to the main loop watchdog.
+   * Note: elapsed time is measured from the previous epoch
+   * marker. You may need to add an epoch at the beginning and
+   * end of a function to measure elapsed time of isolated
+   * functions.
+   * @param name Name of the marker, typically a function name.
+   */
+  public void addEpoch(String name)
+  {
+    m_watchdog.addEpoch(name);
   }
 }

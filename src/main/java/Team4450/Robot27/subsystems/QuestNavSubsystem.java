@@ -83,13 +83,13 @@ public class QuestNavSubsystem extends SubsystemBase {
     }
 
     public boolean useQuest() {
-        //TODO if (Tunables.addBoolean(Constants.SmartDashboardKeys.USE_QUEST, true).get() &&
-        //         Tunables.addBoolean(Constants.SmartDashboardKeys.QUEST_TRACKING, false).get() &&
-        //         !questAgainstWall()) {
-        //     return true;
-        // } else {
+        if (Tunables.addBoolean(Constants.SmartDashboardKeys.USE_QUEST, true).get() &&
+                Tunables.addBoolean(Constants.SmartDashboardKeys.QUEST_TRACKING, false).get() &&
+                !questAgainstWall()) {
+            return true;
+        } else {
             return false;
-        // }
+        }
     }
 
     public boolean questAgainstWall() {
