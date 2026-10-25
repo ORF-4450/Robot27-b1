@@ -29,12 +29,10 @@ import org.wpilib.math.geometry.Translation2d;
 import org.wpilib.math.kinematics.ChassisVelocities;
 import org.wpilib.math.util.Units;
 import org.wpilib.units.measure.Angle;
-//import org.wpilib.util.sendable.Sendable;
 import org.wpilib.framework.RobotBase;
 import org.wpilib.system.RobotController;
 import org.wpilib.driverstation.Alliance;
 import org.wpilib.smartdashboard.Field2d;
-//import org.wpilib.smartdashboard.SmartDashboard;
 import org.wpilib.command2.Command;
 import org.wpilib.command2.SubsystemBase;
 import org.wpilib.command2.button.RobotModeTriggers;
@@ -45,10 +43,8 @@ import Team4450.Robot27.utility.RobotOrientation;
 
 /**
  * This class wraps the SDS drive base subsystem allowing us to add/modify drive
- * base
- * functions without modifyinig the SDS code generated from Tuner. Also allows
- * for
- * convenience wrappers for more complex functions in SDS code.
+ * base functions without modifyinig the SDS code generated from Tuner. Also allows
+ * for convenience wrappers for more complex functions in SDS code.
  */
 public class Drivebase extends SubsystemBase {
   private CommandSwerveDrivetrain sdsDrivebase = TunerConstants.createDrivetrain();
@@ -152,12 +148,12 @@ public class Drivebase extends SubsystemBase {
     Telemetry.log(Constants.SmartDashboardKeys.BUMP_HAPPENED, this.bumpHappened);
 
     Pose2d drivebasePose = getPose();
+
     if (Math.abs(drivebasePose.getX()) > Constants.FIELD_MAX_X || Math.abs(drivebasePose.getY()) > Constants.FIELD_MAX_Y) {
         Telemetry.log(Constants.SmartDashboardKeys.OUTSIDE_FIELD, true);
     } else {
         Telemetry.log(Constants.SmartDashboardKeys.OUTSIDE_FIELD, false);
     }
-
 
     if (Tunables.addDouble(Constants.SmartDashboardKeys.ROBOT_DISTANCE, 0).get() > 1.25 && 
         Tunables.addDouble(Constants.SmartDashboardKeys.ROBOT_DISTANCE, 0).get() < 1.75) {
@@ -204,7 +200,7 @@ public class Drivebase extends SubsystemBase {
         if (this.lastThrottle == throttle && this.lastStrafe == strafe &&
                 this.lastRotation == rotation) {
             return;
-                }
+          }
 
         if (fieldRelativeDriving) {
             sdsDrivebase.setControl(
@@ -217,10 +213,10 @@ public class Drivebase extends SubsystemBase {
                     .withVelocityY(strafe * maxSpeed)
                     .withRotationalRate(rotation * maxRotRate));
         }
+
         this.lastThrottle = throttle;
         this.lastStrafe = strafe;
         this.lastRotation = rotation;
-
   }
 
   public void driveRobotOriented(double throttle, double strafe, double rotation) {

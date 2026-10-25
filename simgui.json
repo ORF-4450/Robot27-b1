@@ -35,20 +35,16 @@
   "NetworkTables": {
     "Persistent Values": {"open": false},
     "Retained Values": {"open": false},
-    "transitory": {
-      "Telemetry": {"Version": {"open": true}},
-      "Tunables": {
-        "Auto Program": {"selected": {"open": true}},
-        "LiveWindow": {
-          "Test Talon 2(S1:1)": {"open": true},
-          "Test Talon(1)": {"open": true},
-          "Test Talon(S1:1)": {"open": true},
-          "open": true
-        },
-        "MyMonitorPower": {"open": true},
+    "transitory": {"Tunables": {
+      "Auto Program": {"selected": {"open": true}},
+      "LiveWindow": {
+        "Test Talon 2(S1:1)": {"open": true},
+        "Test Talon(S1:3)": {"open": true},
         "open": true
-      }
-    }
+      },
+      "MyMonitorPower": {"open": true},
+      "open": true
+    }}
   },
   "NetworkTables Info": {"visible": true}
 }

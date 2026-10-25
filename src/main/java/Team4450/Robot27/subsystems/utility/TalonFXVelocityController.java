@@ -11,10 +11,8 @@ import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 
 import Team4450.Lib.Util;
-import Team4450.Robot27.utility.LiveWindow;
+import Team4450.Lib.LiveWindow;
 
-//import org.wpilib.util.sendable.SendableBuilder;
-//import org.wpilib.util.sendable.SendableRegistry;
 import org.wpilib.framework.RobotBase;
 import org.wpilib.tunable.ComplexTunable;
 import org.wpilib.tunable.TunableTable;
@@ -79,7 +77,7 @@ public class TalonFXVelocityController extends SubsystemBase implements ComplexT
 
         Util.consoleLog("%s", this.name);
 
-        LiveWindow.registerComplexTunable(this.name, this);
+        LiveWindow.registerComplexTunable(this, this.name);
 
         RobotModeTriggers.disabled().onChange(new InstantCommand(this::stop));
 
@@ -384,36 +382,25 @@ public class TalonFXVelocityController extends SubsystemBase implements ComplexT
      */
     public double getRPM() { return getRPS() * 60; }
 
-    //TODO @Override
-    // public void initSendable( SendableBuilder builder )
-    // {
-    //     builder.setSmartDashboardType("TalonFXVelocityController"); 
-    //     builder.addBooleanProperty(".controllable", () -> true, null);
-
-    //     builder.addDoubleProperty("Desired RPS", ()-> desiredRotationsPerSecond, null);            
-    //     builder.addDoubleProperty("Motor RPS", this::getRPS, null);
-    //     builder.addDoubleProperty("Motor RPM", this::getRPM, null);
-
-    //     if (controlType == MotorControlType.voltage || controlType == MotorControlType.motionMagic) {
-    //         builder.addDoubleProperty("Voltage kP", ()-> slot0_kP, this::withVoltagekP);
-    //         builder.addDoubleProperty("Voltage kI", ()-> slot0_kI, this::withVoltagekI);
-    //         builder.addDoubleProperty("Voltage kD", ()-> slot0_kD, this::withVoltagekD);
-    //         builder.addDoubleProperty("Voltage kS", ()-> slot0_kS, this::withVoltagekS);
-    //         builder.addDoubleProperty("Voltage kV", ()-> slot0_kV, this::withVoltagekV);
-    //         builder.addDoubleProperty("Voltage kA", ()-> slot0_kA, this::withVoltagekA);
-    //     } else {
-    //         builder.addDoubleProperty("Torque kP", ()-> slot1_kP, this::withTorquekP);
-    //         builder.addDoubleProperty("Torque kI", ()-> slot1_kI, this::withTorquekI);
-    //         builder.addDoubleProperty("Torque kD", ()-> slot1_kD, this::withTorquekD);
-    //         builder.addDoubleProperty("Torque kS", ()-> slot1_kS, this::withTorquekS);
-    //     }
-    // }
-
     @Override
     public void publishTunable(TunableTable table) {
         table.publishDouble("Desired RPS", ()-> desiredRotationsPerSecond, null);
         table.publishDouble("Motor RPS", this::getRPS, null);
         table.publishDouble("Motor RPM", this::getRPM, null);
+
+        if (controlType == MotorControlType.voltage || controlType == MotorControlType.motionMagic) {
+            table.publishDouble("Voltage kP", ()-> slot0_kP, this::withVoltagekP);
+            table.publishDouble("Voltage kI", ()-> slot0_kI, this::withVoltagekI);
+            table.publishDouble("Voltage kD", ()-> slot0_kD, this::withVoltagekD);
+            table.publishDouble("Voltage kS", ()-> slot0_kS, this::withVoltagekS);
+            table.publishDouble("Voltage kV", ()-> slot0_kV, this::withVoltagekV);
+            table.publishDouble("Voltage kA", ()-> slot0_kA, this::withVoltagekA);
+        } else {
+            table.publishDouble("Torque kP", ()-> slot1_kP, this::withTorquekP);
+            table.publishDouble("Torque kI", ()-> slot1_kI, this::withTorquekI);
+            table.publishDouble("Torque kD", ()-> slot1_kD, this::withTorquekD);
+            table.publishDouble("Torque kS", ()-> slot1_kS, this::withTorquekS);
+        }
     }
     
     @Override

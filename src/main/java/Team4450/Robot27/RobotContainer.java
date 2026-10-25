@@ -2,11 +2,6 @@ package Team4450.Robot27;
 
 import static Team4450.Robot27.Constants.*;
 
-import java.util.List;
-
-import com.ctre.phoenix6.SignalLogger;
-import com.ctre.phoenix6.hardware.TalonFX;
-import com.fasterxml.jackson.databind.util.Named;
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.FollowPathCommand;
 import com.pathplanner.lib.commands.PathPlannerAuto;
@@ -27,43 +22,29 @@ import Team4450.Robot27.commands.IntakeDown;
 import Team4450.Robot27.commands.spinShooter;
 import Team4450.Robot27.commands.AutonHubTracking;
 import Team4450.Robot27.subsystems.Intake;
-import Team4450.Robot27.subsystems.LimelightHelpers;
 import Team4450.Robot27.subsystems.Drivebase;
 import Team4450.Robot27.subsystems.Shooter;
 import Team4450.Robot27.subsystems.ShuffleBoard;
-import Team4450.Lib.MonitorPDP;
 import Team4450.Lib.MonitorPower;
 import Team4450.Lib.Util;
 import Team4450.Lib.XboxController;
-import Team4450.Robot27.commands.DriveCommand;
-import Team4450.Robot27.subsystems.Drivebase;
 import Team4450.Robot27.subsystems.QuestNavSubsystem;
-import Team4450.Robot27.subsystems.ShuffleBoard;
 import Team4450.Robot27.subsystems.VisionSubsystem;
-import Team4450.Robot27.subsystems.utility.TalonFXVelocityController;
 import Team4450.Robot27.subsystems.Hopper;
 
 import org.wpilib.math.controller.PIDController;
-import org.wpilib.math.geometry.Pose2d;
 import org.wpilib.driverstation.MatchState;
 import org.wpilib.driverstation.RobotState;
 import org.wpilib.driverstation.Alliance;
-import org.wpilib.driverstation.MatchType;
-import org.wpilib.driverstation.DriverStationErrors;
 import org.wpilib.system.Timer;
-import org.wpilib.driverstation.DriverStation;
 import org.wpilib.driverstation.GenericHID.RumbleType;
 import org.wpilib.driverstation.internal.DriverStationBackend;
 import org.wpilib.system.RobotController;
-//import org.wpilib.smartdashboard.SendableChooser;
-//import org.wpilib.smartdashboard.SmartDashboard;
 import org.wpilib.command2.Command;
 import org.wpilib.command2.CommandScheduler;
 import org.wpilib.command2.Commands;
 import org.wpilib.command2.InstantCommand;
 import org.wpilib.command2.StartEndCommand;
-import org.wpilib.command2.button.Trigger;
-import org.wpilib.command2.sysid.SysIdRoutine;
 import org.wpilib.telemetry.Telemetry;
 import org.wpilib.tunable.Selectable;
 import org.wpilib.tunable.Tunables;
@@ -96,10 +77,6 @@ public class RobotContainer {
     public static Hopper hopper = new Hopper();
 
     public static boolean inUtilityMode = false;
-
-    //private static SendableChooser<String> stringAutoChooser;
-    // private static SendableChooser<Command> autoChooser;
-    //private static SendableChooser<Command> commandAutoChooser;
 
     private final Selectable<Command> autoChooser = new Selectable<>();
 
@@ -274,9 +251,6 @@ public class RobotContainer {
         }).start();
 
         // Configure autonomous routines and send to dashboard.
-        // autoChooser = AutoBuilder.buildAutoChooser();
-        //stringAutoChooser = new SendableChooser<String>();
-        //commandAutoChooser = new SendableChooser<Command>();
 
         // init non flipped autos
         for (int i = 0; i < AutoBuilder.getAllAutoNames().size(); i++) {
@@ -288,8 +262,6 @@ public class RobotContainer {
             autoChooser.add(AutoBuilder.getAllAutoNames().get(i).concat(" flipped"), new PathPlannerAuto(AutoBuilder.getAllAutoNames().get(i), true));
         }
 
-        //Telemetry.log("String Auto", stringAutoChooser);
-        //Telemetry.log("Auto Chooser", commandAutoChooser);
         Tunables.publish("Auto Program", autoChooser);
 
         // Configure the button bindings.
@@ -297,12 +269,6 @@ public class RobotContainer {
 
         // Warmup PathPlanner to avoid Java pauses.
         CommandScheduler.getInstance().schedule(FollowPathCommand.warmupCommand());
-
-        // Test code.
-        TalonFX talon1 = new TalonFX(1, canBus);
-        TalonFX talon2 = new TalonFX(2, canBus);
-        TalonFXVelocityController tvc1 = new TalonFXVelocityController(talon1, "Test Talon");
-        TalonFXVelocityController tvc2 = new TalonFXVelocityController(talon2, "Test Talon ");
     }
 
     /**
@@ -410,7 +376,7 @@ public class RobotContainer {
 
         new Trigger(() -> driverController.getAButton())
                 .onTrue(new InstantCommand(drivebase::setBumpHappened));
-
+                
         new Trigger(() -> driverController.getBButton())
                 .onTrue(new InstantCommand(visionSubsystem::resetYaw))
                 .onTrue(new InstantCommand(drivebase::resetFieldOrientation));

@@ -3,7 +3,6 @@ package Team4450.Robot27;
 import static Team4450.Robot27.Constants.*;
 
 import Team4450.Lib.*;
-import Team4450.Robot27.utility.LiveWindow;
 import Team4450.Robot27.utility.RobotOrientation;
 
 //import org.wpilib.framework.TimedRobot;
@@ -305,7 +304,7 @@ public class Robot extends TimedRobot {
     // The whole point is to not send all the debugging Telemetry/Tunables in the regular modes.
     
     LiveWindow.publish();
-    
+
     teleopInit();
 
     CommandScheduler.getInstance().enable();
