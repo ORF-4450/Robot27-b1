@@ -5,7 +5,7 @@ import java.util.Optional;
 import org.photonvision.EstimatedRobotPose;
 
 import Team4450.Lib.Util;
-//import Team4450.Robot27.subsystems.PhotonVision;
+import Team4450.Robot27.subsystems.PhotonVision;
 import Team4450.Robot27.subsystems.SDS.CommandSwerveDrivetrain;
 import org.wpilib.math.geometry.Pose2d;
 import org.wpilib.math.geometry.Rotation2d;
@@ -22,60 +22,60 @@ import org.wpilib.command2.Command;
  * pose so that the visionSim can accurately calculate targets
  * in the simulator.
  */
-// public class UpdateVisionPose extends Command {
-//     CommandSwerveDrivetrain     robotDrive;
-//     PhotonVision                photonVision;
+public class UpdateVisionPose extends Command {
+    CommandSwerveDrivetrain     robotDrive;
+    PhotonVision                photonVision;
 
-//     /**
-//      * updates the odometry pose estimator to include sighted AprilTag positions from
-//      * PhotonVision pose estimator
-//      * @param cameraSubsystem the PhotonVision subsystem in use
-//      * @param robotDrive the drive base
-//      */
-//     public UpdateVisionPose(CommandSwerveDrivetrain robotDrive, PhotonVision photonVision) {
-//         this.robotDrive = robotDrive;
-//         this.photonVision = photonVision;
+    /**
+     * updates the odometry pose estimator to include sighted AprilTag positions from
+     * PhotonVision pose estimator
+     * @param cameraSubsystem the PhotonVision subsystem in use
+     * @param robotDrive the drive base
+     */
+    public UpdateVisionPose(CommandSwerveDrivetrain robotDrive, PhotonVision photonVision) {
+        this.robotDrive = robotDrive;
+        this.photonVision = photonVision;
 
-//         // require camera subsystem because defaultcommand
-//         addRequirements(photonVision);
-//     }
+        // require camera subsystem because defaultcommand
+        addRequirements(photonVision);
+    }
     
-//     @Override
-//     public void initialize() {
+    @Override
+    public void initialize() {
 
-// 	}
+	}
 
-//     @Override
-//     public boolean runsWhenDisabled() {
-//         return true; // because we always want this running
-//     }
+    @Override
+    public boolean runsWhenDisabled() {
+        return true; // because we always want this running
+    }
 
-//     @Override
-//     public void execute() {
+    @Override
+    public void execute() {
 
-//         //Optional<EstimatedRobotPose> estimatedPoseOptional = photonVision.getEstimatedPose();
+        Optional<EstimatedRobotPose> estimatedPoseOptional = photonVision.getEstimatedPose();
 
-//         // update pose estimator pose with current epoch timestamp and the pose from the camera
-//         // if the camera has a good pose output.
-//         // Logic to decide if a pose is valid should be put in PhotonVision.java file, not here.
+        // update pose estimator pose with current epoch timestamp and the pose from the camera
+        // if the camera has a good pose output.
+        // Logic to decide if a pose is valid should be put in PhotonVision.java file, not here.
 
-//         if (estimatedPoseOptional.isPresent()) {
-//             EstimatedRobotPose estimatedPoseContainer = estimatedPoseOptional.get();
+        if (estimatedPoseOptional.isPresent()) {
+            EstimatedRobotPose estimatedPoseContainer = estimatedPoseOptional.get();
             
-//             // convert a pose3d to pose2d (we ignore the Z axis which is just height off ground)
-//             Pose2d pose2d = new Pose2d(
-//                 estimatedPoseContainer.estimatedPose.getX(),
-//                 estimatedPoseContainer.estimatedPose.getY(),
-//                 new Rotation2d(estimatedPoseContainer.estimatedPose.getRotation().getZ())
-//             );
+            // convert a pose3d to pose2d (we ignore the Z axis which is just height off ground)
+            Pose2d pose2d = new Pose2d(
+                estimatedPoseContainer.estimatedPose.getX(),
+                estimatedPoseContainer.estimatedPose.getY(),
+                new Rotation2d(estimatedPoseContainer.estimatedPose.getRotation().getZ())
+            );
             
-//             //robotDrive.updateOdometryVision(pose2d, estimatedPoseContainer.timestampSeconds); rich
-//             //TODOrobotDrive.addVisionMeasurement(pose2d, estimatedPoseContainer.timestampSeconds); // rich
-//         }
-//     }
+            //robotDrive.updateOdometryVision(pose2d, estimatedPoseContainer.timestampSeconds); rich
+            robotDrive.addVisionMeasurement(pose2d, estimatedPoseContainer.timestampSeconds); // 2027
+        }
+    }
 
-//     @Override
-//     public void end(boolean interrupted) {
-//         Util.consoleLog("interrupted=%b", interrupted);
-//     }
-// }
+    @Override
+    public void end(boolean interrupted) {
+        Util.consoleLog("interrupted=%b", interrupted);
+    }
+}

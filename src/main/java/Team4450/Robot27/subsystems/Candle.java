@@ -5,7 +5,6 @@ import Team4450.Lib.Util;
 import org.wpilib.command2.SubsystemBase;
 import org.wpilib.util.Color;
 
-
 import com.ctre.phoenix.ErrorCode;
 import com.ctre.phoenix.led.Animation;
 import com.ctre.phoenix.led.CANdle;
