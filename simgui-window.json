@@ -43,7 +43,7 @@
     "DS": {
       "Collapsed": "0",
       "Pos": "3,486",
-      "Size": "138,167"
+      "Size": "275,140"
     },
     "Debug##Default": {
       "Collapsed": "0",
@@ -78,7 +78,7 @@
     "Robot State": {
       "Collapsed": "0",
       "Pos": "5,20",
-      "Size": "309,156"
+      "Size": "291,156"
     },
     "System Joysticks": {
       "Collapsed": "0",
@@ -88,7 +88,7 @@
     "Timing": {
       "Collapsed": "0",
       "Pos": "2,192",
-      "Size": "301,239"
+      "Size": "301,222"
     }
   }
 }

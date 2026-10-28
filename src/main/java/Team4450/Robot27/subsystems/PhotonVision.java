@@ -49,7 +49,7 @@ public class PhotonVision extends SubsystemBase
     // change the field layout for other years!
     //private final AprilTagFields    fields = AprilTagFields.k2025ReefscapeWelded; 
     //private AprilTagFieldLayout     fieldLayout;
-    private Field                   fieldLayout;
+    private Field                   fieldLayout; // 2027
     private PhotonPoseEstimator     poseEstimator;
 
     private Transform3d             robotToCam;

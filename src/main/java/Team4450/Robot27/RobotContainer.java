@@ -30,6 +30,8 @@ import Team4450.Lib.Util;
 import Team4450.Lib.XboxController;
 import Team4450.Robot27.subsystems.QuestNavSubsystem;
 import Team4450.Robot27.subsystems.VisionSubsystem;
+import Team4450.Robot27.subsystems.Candle.AnimationTypes;
+import Team4450.Robot27.subsystems.utility.Candle6;
 import Team4450.Robot27.subsystems.Hopper;
 
 import org.wpilib.math.controller.PIDController;
@@ -48,6 +50,7 @@ import org.wpilib.command2.StartEndCommand;
 import org.wpilib.telemetry.Telemetry;
 import org.wpilib.tunable.Selectable;
 import org.wpilib.tunable.Tunables;
+import org.wpilib.util.Color;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -72,13 +75,15 @@ public class RobotContainer {
 
     public static Intake intake;
     public static Shooter shooter;
-    // public TestSubsystem testSubsystem;
 
     public static Hopper hopper = new Hopper();
 
     public static boolean inUtilityMode = false;
 
     private final Selectable<Command> autoChooser = new Selectable<>();
+
+    private final Candle6 candle = new Candle6(canBus, 60, 8)
+        .withBrightness(1);
 
     // Subsystem Default Commands.
 
@@ -269,6 +274,11 @@ public class RobotContainer {
 
         // Warmup PathPlanner to avoid Java pauses.
         CommandScheduler.getInstance().schedule(FollowPathCommand.warmupCommand());
+
+        //candle.setColor(Color.BLUE, 0, 7, true);
+        candle.setAnimation(Candle6.AnimationType.ColorFlow, 0, 7, Color.BLUE, 0);
+
+        Util.consoleLog("End of RobotContainer constructor");
     }
 
     /**

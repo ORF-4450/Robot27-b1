@@ -17,25 +17,23 @@ import com.ctre.phoenix6.CANBus;
 
 import org.wpilib.driverstation.MatchState;
 import org.wpilib.driverstation.RobotState;
+import org.wpilib.hardware.bus.CANPort;
 import org.wpilib.driverstation.Alliance;
 import org.wpilib.driverstation.MatchType;
 import org.wpilib.driverstation.DriverStationErrors;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide
- * numerical or boolean
- * constants. This class should not be used for any other purpose. All constants
- * should be
- * declared globally (i.e. public static). Do not put anything functional in
- * this class.
+ * numerical or boolean constants. This class should not be used for any other purpose. 
+ * All constants should be declared globally (i.e. public static). Do not put anything 
+ * functional in this class.
  *
  * <p>
  * It is advised to statically import this class (or one of its inner classes)
- * wherever the
- * constants are needed, to reduce verbosity.
+ * wherever the constants are needed, to reduce verbosity.
  */
 public final class Constants {
-    public static String PROGRAM_NAME = "ORF27b1-10.25.26";
+    public static String PROGRAM_NAME = "ORF27b1-10.28.26";
 
     public static Robot robot;
 
@@ -53,7 +51,7 @@ public final class Constants {
     // CAN bus that the swerve devices are located on;
     // All swerve devices must share the same CAN bus
     // Here defaults to S2.
-    public static final CANBus swerveCanBus = new CANBus(); // 2027
+    public static final CANBus swerveCanBus = new CANBus("S2"); // 2027
 
     // CAN bus for all other devices.
     public static final CANBus canBus = new CANBus("S1"); // 2027
