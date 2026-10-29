@@ -207,8 +207,9 @@ public class Candle6 extends SubsystemBase {
     }
 
     /**
-     * Sets Enable5VRail option on Candle.
-     * Chain this call on the class construtor or You may call 
+     * Sets Enable5VRail option on Candle. Enabled is 5v disabled
+     * is 12v. Select to match the voltage required by any attached
+     * led strip. Chain this call on the class construtor or You may call 
      * this method after the Candle6 object has been created
      * @param value Desired option value. Defaults to Enabled.
      * @return Reference to this Candle6 object for chaining.

@@ -26,8 +26,9 @@ import com.ctre.phoenix.led.ColorFlowAnimation.Direction;
 
 /**
  * Utiity class that wraps CTRE CANdle LED controller.
- * NOTE: This is Phoenix 5 CANDle and has been deprecated. Needs rewrite to Phoenix 6 API.
+ * NOTE: This is Phoenix 5 CANDle and has been deprecated. Use Candle6.
  */
+@Deprecated(since = "2026", forRemoval = true)
 public class Candle extends SubsystemBase {
 
 	private CANdle		 	candle;
@@ -51,6 +52,7 @@ public class Candle extends SubsystemBase {
 	 * @param numLed
 	 *            Number of leds in the strip.
 	 */
+	@Deprecated(since = "2026", forRemoval = true)
 	public Candle(int canId, LEDStripType stripType, int numLed) {
 		this(canId);
 
@@ -67,6 +69,7 @@ public class Candle extends SubsystemBase {
 	 * @param numLed
 	 *            Number of leds in the strip.
 	 */
+	@Deprecated(since = "2026", forRemoval = true)
 	public Candle(int canId, int numLed) {
 		this(canId);
 
@@ -80,6 +83,7 @@ public class Candle extends SubsystemBase {
 	 * @param canId
 	 *            The CAN id for the device.
 	 */
+	@Deprecated(since = "2026", forRemoval = true)
 	public Candle(int canId) {
 		candle = new CANdle(canId);
 

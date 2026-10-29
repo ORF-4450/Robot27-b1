@@ -30,7 +30,6 @@ import Team4450.Lib.Util;
 import Team4450.Lib.XboxController;
 import Team4450.Robot27.subsystems.QuestNavSubsystem;
 import Team4450.Robot27.subsystems.VisionSubsystem;
-import Team4450.Robot27.subsystems.Candle.AnimationTypes;
 import Team4450.Robot27.subsystems.utility.Candle6;
 import Team4450.Robot27.subsystems.Hopper;
 
@@ -54,13 +53,11 @@ import org.wpilib.util.Color;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
- * Command-based is a
- * "declarative" paradigm, very little robot logic should actually be handled in
- * the {@link Robot}
- * periodic methods (other than the scheduler calls). Instead, the structure of
- * the robot
- * (including subsystems, commands, and button mappings) should be declared
- * here.
+ * Command-based is a "declarative" paradigm, very little robot logic 
+ * should actually be handled in the {@link Robot} periodic methods 
+ * (other than the scheduler calls). Instead, the structure of the 
+ * robot (including subsystems, commands, and button mappings) should 
+ * be declared here.
  */
 public class RobotContainer {
     // Subsystems.
@@ -91,35 +88,24 @@ public class RobotContainer {
 
     // Some notes about Commands.
     // When a Command is created with the New operator, its constructor is called.
-    // When the
-    // command is added to the Scheduler to be run, its initialize method is called.
-    // Then on
-    // each scheduler run, as long as the command is still scheduled, its execute
-    // method is
-    // called followed by isFinished. If isFinished it false, the command remains in
-    // the
-    // scheduler list and on next run, execute is called followed by isFinished. If
-    // isFinished
-    // returns true, the end method is called and the command is removed from the
-    // scheduler list.
+    // When the command is added to the Scheduler to be run, its initialize method 
+    // is called. Then on each scheduler run, as long as the command is still 
+    // scheduled, its execute method is called followed by isFinished. If isFinished 
+    // is false, the command remains in the scheduler list and on next run, execute 
+    // is called followed by isFinished. If isFinished returns true, the end method 
+    // is called and the command is removed from the scheduler list.
     // Now if you create another instance with new, you get the constructor again.
-    // But if you
-    // are re-scheduling an existing command instance (like the ones above), you do
-    // not get the
-    // constructor called, but you do get initialize called again and then on to
-    // execute & etc.
-    // So this means you have to be careful about command initialization activities
-    // as a persistent
-    // command in effect has two lifetimes (or scopes): Class global and each new
-    // time the command
-    // is scheduled. Note the FIRST doc on the scheduler process is not accurate as
-    // of 2020.
+    // But if you are re-scheduling an existing command instance (like the ones above), 
+    // you do not get the constructor called, but you do get initialize called again 
+    // and then on to execute & etc. So this means you have to be careful about 
+    // command initialization activities as a persistent command in effect has two 
+    // lifetimes (or scopes): Class global and each new time the command is scheduled. 
+    // Note the FIRST doc on the scheduler process is not accurate as of 2020.
 
     // GamePads. 2 Game Pads use RobotLib XboxController wrapper class for some
-    // extra features.
-    // Note that button responsiveness may be slowed as the schedulers command list
-    // gets longer
-    // or commands get longer as buttons are processed once per scheduler run.
+    // extra features. Note that button responsiveness may be slowed as the schedulers 
+    // command list gets longer or commands get longer as buttons are processed once 
+    // per scheduler run.
 
     public static XboxController driverController = new XboxController(DRIVER_PAD);
     public static XboxController utilityController = new XboxController(UTILITY_PAD);
@@ -163,9 +149,8 @@ public class RobotContainer {
 
         // The pigeon is setup somewhere in the drivebase function.
         // It is important to note that the pigeon documentation says that the device
-        // does not need to be still on boot,
-        // however the documentation also says that the drift is worse when started
-        // while moving.
+        // does not need to be still on boot, however the documentation also says that 
+        // the drift is worse when started while moving.
         drivebase = new Drivebase();
         visionSubsystem = new VisionSubsystem(drivebase);
         questNavSubsystem = new QuestNavSubsystem();
@@ -218,9 +203,9 @@ public class RobotContainer {
         // Note: X and Y axis on stick is opposite X and Y axis on the WheelSpeeds object
         // and the odometry pose2d classes.
         // Wheelspeeds +X axis is down the field away from alliance wall. +Y axis is left
-        // when standing at alliance wall looking down the field.
-        // This is handled here by swapping the inputs. Note that first axis parameter below
-        // is the X wheelspeeds input and the second is Y wheelspeeds input.
+        // when standing at alliance wall looking down the field. This is handled here by 
+        // swapping the inputs. Note that first axis parameter below is the X wheelspeeds 
+        // input and the second is Y wheelspeeds input.
 
         // Note that field oriented driving does the movements in relation to the field.
         // So throttle is always down the field and back and strafe is always left right
@@ -292,11 +277,9 @@ public class RobotContainer {
         // ------- Driver controller buttons -------------
 
         // For simple functions, instead of creating commands, we can call convenience
-        // functions on
-        // the target subsystem from an InstantCommand. It can be tricky deciding what
-        // functions
-        // should be an aspect of the subsystem and what functions should be in
-        // Commands...
+        // functions on the target subsystem from an InstantCommand. It can be tricky 
+        // deciding what functions should be an aspect of the subsystem and what 
+        // functions should be in Commands...
 
         // POV buttons do same as alternate driving mode but without any lateral
         // Movement and increments of 45deg.
@@ -434,8 +417,6 @@ public class RobotContainer {
      */
 
     public Command getAutonomousCommand() {
-        // return autoChooser.getSelected();
-        // return stringAutoChooser.getSelected();
         return autoChooser.getSelected();
     }
 
@@ -458,7 +439,7 @@ public class RobotContainer {
         return RobotController.getBatteryVoltage() / Constants.MAX_BATTERY_VOLTAGE;
     }
 
-    public double getVolatgeMultiplier() {
-        return Constants.MAX_BATTERY_VOLTAGE / RobotController.getBatteryVoltage();
-    }
+    // public double getVolatgeMultiplier() { 2027 rich
+    //     return Constants.MAX_BATTERY_VOLTAGE / RobotController.getBatteryVoltage();
+    // }
 }
