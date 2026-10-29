@@ -82,7 +82,7 @@ public class RobotContainer {
 
     private final Selectable<Command> autoChooser = new Selectable<>();
 
-    private final Candle6 candle = new Candle6(canBus, 60, 8)
+    private final Candle6 candle = new Candle6(canBus, CTRE_CANDLE, 8)
         .withBrightness(1);
 
     // Subsystem Default Commands.
@@ -272,11 +272,13 @@ public class RobotContainer {
         // Configure the button bindings.
         configureButtonBindings();
 
-        // Warmup PathPlanner to avoid Java pauses.
+        // Warmup PathPlanner to avoid Java paus5es.
         CommandScheduler.getInstance().schedule(FollowPathCommand.warmupCommand());
 
-        //candle.setColor(Color.BLUE, 0, 7, true);
-        candle.setAnimation(Candle6.AnimationType.ColorFlow, 0, 7, Color.BLUE, 0);
+        candle.setColor(Color.BLUE, 0, 2);
+        candle.setColor(Color.GREEN, 5, 7);
+        candle.setColor(Color.RED, 3, 4, true);
+        //candle.setAnimation(Candle6.AnimationType.ColorFlow, 0, 7, Color.BLUE, 0);
 
         Util.consoleLog("End of RobotContainer constructor");
     }

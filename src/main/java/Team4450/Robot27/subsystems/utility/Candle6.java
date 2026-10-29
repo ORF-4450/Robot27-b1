@@ -14,23 +14,31 @@ import com.ctre.phoenix6.signals.VBatOutputModeValue;
 import Team4450.Lib.Util;
 
 import org.wpilib.command2.SubsystemBase;
+import org.wpilib.framework.RobotBase;
+import org.wpilib.hardware.led.AddressableLED;
+import org.wpilib.hardware.led.AddressableLEDBuffer;
 import org.wpilib.telemetry.Telemetry;
 import org.wpilib.util.Color;
 
 /**
  * Utiity subsystem class that wraps CTRE CANdle LED controller.
- * NOTE: This is Phoenix 6 CANDle.
+ * NOTE: This is Phoenix 6 API for CANDle. Sim only works for
+ * solid colors and uses WPILib AddressableLED class to display
+ * simulation on sim GUI.
  */
 public class Candle6 extends SubsystemBase {
 
     private CANdle              candle = null;
     private CANdleConfiguration cfg = new CANdleConfiguration();
 
-    private int                 numLeds;
-    private boolean             flashing, flashOn;
+    private int                 numLeds, simLedChannel, simLedBufferStart;
+    private boolean             blinking, blinkOn;
     private double              timeStamp;
-    private ControlRequest      savedRequest;
-    
+    private SolidColor          savedRequest;
+            
+    private AddressableLED       simLED; 
+    private AddressableLEDBuffer simLedBuffer;
+
     public enum AnimationType {
         None,
         ColorFlow,
@@ -76,11 +84,26 @@ public class Candle6 extends SubsystemBase {
         Util.consoleLog("Candle6 created");
     }
 
+    /**
+     * Turns off all leds by setting color to black.
+     */
     private void turnOffLeds()
     {
-        Util.consoleLog();
+        //Util.consoleLog();
 
-        candle.setControl(new SolidColor(0, numLeds - 1).withColor(new RGBWColor(Color.BLACK)));
+        setControl(new SolidColor(0, numLeds - 1).withColor(new RGBWColor(Color.BLACK)));
+    }
+
+    /**
+     * Turns off the led range of a specific request. Does not modify the
+     * supplied request.
+     * @param request The request to turn off.
+     */
+    private void turnOffLeds(SolidColor request)
+    {
+        //Util.consoleLog();
+
+        setControl(request.clone().withColor(new RGBWColor(Color.BLACK)));
     }
 
     /**
@@ -89,6 +112,42 @@ public class Candle6 extends SubsystemBase {
     public void resetConfig()
     {
         candle.getConfigurator().apply(cfg);
+
+        if (RobotBase.isSimulation()) {
+            // Instantiate a standard WPILib AddressableLED object strictly for the GUI.
+            if (simLED != null) simLED.close();
+            simLED = new AddressableLED(simLedChannel); 
+            simLedBuffer = new AddressableLEDBuffer(numLeds);
+            simLED.setLength(simLedBuffer.getLength());
+            simLED.setStart(simLedBufferStart);
+        }
+    }
+
+    /**
+     * Sets the channel used by the AddressableLED WPILib class which is used to
+     * simulate the CANdle in the sim GUI. Sim only works for solid colors.,
+     * @param channel Channel number 0-5 (defaults to 0).
+     * @return Reference to this Candle6 object for chaining.
+     */
+    public Candle6 withSimLedChannel(int channel)
+    {
+        simLedChannel = channel;
+        resetConfig();
+        return this;
+    }
+    
+    /**
+     * Set the start of the AddressableLED data buffer in the global buffer
+     * used for multiple strips. Global buffer can contain 1024 led slots
+     * over all configured strips.
+     * @param start Buffer starting location (0-1023). Defaults t0 0.
+     * @return Reference to this Candle6 object for chaining.
+     */
+    public Candle6 withSimLedBufferStart(int start)
+    {
+        simLedBufferStart = start;
+        resetConfig();
+        return this;
     }
 
     /**
@@ -188,11 +247,11 @@ public class Candle6 extends SubsystemBase {
     /**
      * Set solid color on full led string.
      * @param color Color to set.
-     * @param flash True to flash. Can be omitted.
+     * @param blink True to blink. Can be omitted.
      */
-    public void setColor(Color color, boolean... flash)
+    public void setColor(Color color, boolean... blink)
     {
-        setColor(color, 0, numLeds- 1, flash);
+        setColor(color, 0, numLeds- 1, blink);
     }
 
     /**
@@ -201,15 +260,15 @@ public class Candle6 extends SubsystemBase {
      * @param color Color to set.
      * @param startLed Start led index (0 based).
      * @param endLed End led index (0 based).
-     * @param flash True to flash. Can be omitted.
+     * @param blink True to blink. Can be omitted.
      */
-    public void setColor(Color color, int startLed, int endLed, boolean... flash)
+    public void setColor(Color color, int startLed, int endLed, boolean... blink)
     {
         Util.consoleLog("%s [%d,%d]", color.toString(), startLed, endLed);
 
-        candle.setControl(new SolidColor(startLed, endLed).withColor(new RGBWColor(color)));
+        setControl(new SolidColor(startLed, endLed).withColor(new RGBWColor(color)));
 
-        setFlash((flash.length == 0) ? false : flash[0]);
+        setBlink((blink.length == 0) ? false : blink[0]);
     }
 
     /**
@@ -223,19 +282,19 @@ public class Candle6 extends SubsystemBase {
     }
 
     /**
-     * Flash current solid color.
-     * @param flash True to flash, false to stop.
+     * Blink solid color leds set with last call to setColor().
+     * @param blink True to blink, false to stop.
      */
-    public void setFlash(boolean flash)
+    public void setBlink(boolean blink)
     {
-        Util.consoleLog("%b", flash);
+        Util.consoleLog("%b", blink);
 
-        savedRequest = candle.getAppliedControl();
+        savedRequest = (SolidColor) candle.getAppliedControl();
 
-        flashing = flash;
-        flashOn = false;
+        blinking = blink;
+        blinkOn = false;
         timeStamp = Util.timeStamp();
-        Telemetry.log("Candle flash", flashing);
+        Telemetry.log("Candle blink", blinking);
     }
 
     /**
@@ -255,74 +314,105 @@ public class Candle6 extends SubsystemBase {
 
         Util.consoleLog("%s [%d,%d] %s [%d]", type.name(), startLed, endLed, color.toString(), slotNum);
 
+        setBlink(false);
+        
         switch (type) {
             case ColorFlow:
-                candle.setControl(
+                setControl(
                     new ColorFlowAnimation(startLed, endLed).withSlot(slotNum).withColor(new RGBWColor(color))
                 );
                 break;
 
             case Rainbow:
-                candle.setControl(
+                setControl(
                     new RainbowAnimation(startLed, endLed).withSlot(slotNum)
                 );
                 break;
 
             case Twinkle:
-                candle.setControl(
+                setControl(
                     new TwinkleAnimation(startLed, endLed).withSlot(slotNum).withColor(new RGBWColor(color))
                 );
                 break;
 
             case TwinkleOff:
-                candle.setControl(
+                setControl(
                     new TwinkleOffAnimation(startLed, endLed).withSlot(slotNum).withColor(new RGBWColor(color))
                 );
                 break;
 
             case Fire:
-                candle.setControl(new FireAnimation(startLed, endLed).withSlot(slotNum));
+                setControl(new FireAnimation(startLed, endLed).withSlot(slotNum));
                 break;
 
             case Larson:
-                candle.setControl(new LarsonAnimation(startLed, endLed).withSlot(slotNum).withColor(new RGBWColor(color)));
+                setControl(new LarsonAnimation(startLed, endLed).withSlot(slotNum).withColor(new RGBWColor(color)));
                 break;
 
             case Strobe:
-                candle.setControl(new StrobeAnimation(startLed, endLed).withSlot(slotNum).withColor(new RGBWColor(color)));
+                setControl(new StrobeAnimation(startLed, endLed).withSlot(slotNum).withColor(new RGBWColor(color)));
                 break;
 
             case None:
-                candle.setControl(new EmptyAnimation(slotNum));
+                setControl(new EmptyAnimation(slotNum));
 
             case RgbFade:
-                candle.setControl(new RgbFadeAnimation(startLed, endLed).withSlot(slotNum));
+                setControl(new RgbFadeAnimation(startLed, endLed).withSlot(slotNum));
                 break;
 
             case SingleFade:
-                candle.setControl(new SingleFadeAnimation(startLed, endLed)
+                setControl(new SingleFadeAnimation(startLed, endLed)
                     .withSlot(slotNum)
                     .withColor(new RGBWColor(color)));
                 break;
         }
     }
 
+    /**
+     * Sends a CANDle control request to the CANDle while handling Solid
+     * Color simulation.
+     * @param request Control request to send.
+     */
+    private void setControl(ControlRequest request)
+    {
+        if (RobotBase.isSimulation() && request instanceof SolidColor) simulateSolidColor((SolidColor) request);
+
+        candle.setControl(request);
+    }
+
+    /**
+     * Simulates CANdle with WPILib AddressableLedStrip which will appear
+     * in the sim GUI.
+     * @param request A solid color request to write to the led strip.
+     */
+    private void simulateSolidColor(SolidColor request)
+    {
+        //Util.consoleLog("%d-%d %s", request.LEDStartIndex, request.LEDEndIndex, request.Color.toString());
+
+        for (int i = request.LEDStartIndex; i < request.LEDEndIndex + 1; i++)
+        {
+            simLedBuffer.setRGB(i, request.Color.Red, request.Color.Green, request.Color.Blue);
+        }
+
+        simLED.setData(simLedBuffer);
+    }
+
     @Override
     public void periodic()
     {
-        if (flashing && Util.getElaspedTime(timeStamp) > 1)
+        if (blinking && Util.getElaspedTime(timeStamp) > 1)
         {
-            if (flashOn)
+            if (blinkOn)
             {
-                candle.setControl(savedRequest);
-                flashOn = false;
+                setControl(savedRequest);
+                blinkOn = false;
             } else {
-                turnOffLeds();
-                flashOn = true;
+                turnOffLeds(savedRequest);
+                blinkOn = true;
             }
 
             timeStamp = Util.timeStamp();
-            Telemetry.log("Candle flashon", flashOn);
+            Telemetry.log("Candle blinkOn", blinkOn);
         }
     }
 }
