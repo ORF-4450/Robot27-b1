@@ -1,8 +1,14 @@
 {
-  "HALProvider": {"Addressable LEDs": {
-    "0": {"columns": 8},
-    "window": {"visible": true}
-  }},
+  "HALProvider": {
+    "Addressable LEDs": {
+      "0": {"columns": 8},
+      "window": {"visible": true}
+    },
+    "Other Devices": {
+      "Talon FX (v6)[12]": {"header": {"open": true}},
+      "Talon FX (v6)[18]": {"header": {"open": true}}
+    }
+  },
   "NTProvider": {
     "types": {
       "\/DriverStation": "DriverStation",

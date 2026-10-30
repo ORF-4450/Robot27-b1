@@ -5,6 +5,8 @@ import static Team4450.Robot27.Constants.*;
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.FollowPathCommand;
 import com.pathplanner.lib.commands.PathPlannerAuto;
+import com.ctre.phoenix6.controls.SolidColor;
+import com.ctre.phoenix6.signals.RGBWColor;
 import com.pathplanner.lib.auto.AutoBuilder;
 
 import org.wpilib.command2.button.RobotModeTriggers;
@@ -263,6 +265,8 @@ public class RobotContainer {
         candle.setColor(Color.BLUE, 0, 2);
         candle.setColor(Color.GREEN, 5, 7);
         candle.setColor(Color.RED, 3, 4, true);
+        //candle.setControl(new SolidColor(0, 7).withColor(new RGBWColor(Color.RED)));
+        //candle.setBlink(true);
         //candle.setAnimation(Candle6.AnimationType.ColorFlow, 0, 7, Color.BLUE, 0);
 
         Util.consoleLog("End of RobotContainer constructor");

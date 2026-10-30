@@ -1,9 +1,12 @@
 package Team4450.Robot27.subsystems.utility;
 
+import com.ctre.phoenix.ErrorCode;
 import com.ctre.phoenix6.CANBus;
+import com.ctre.phoenix6.StatusCode;
 import com.ctre.phoenix6.configs.CANdleConfiguration;
 import com.ctre.phoenix6.controls.*;
 import com.ctre.phoenix6.hardware.CANdle;
+import com.ctre.phoenix6.signals.Animation3TypeValue;
 import com.ctre.phoenix6.signals.Enable5VRailValue;
 import com.ctre.phoenix6.signals.LossOfSignalBehaviorValue;
 import com.ctre.phoenix6.signals.RGBWColor;
@@ -71,9 +74,9 @@ public class Candle6 extends SubsystemBase {
         
         cfg.LED.StripType = StripTypeValue.GRB;
         cfg.LED.BrightnessScalar = 0.5;
-        cfg.LED.LossOfSignalBehavior = LossOfSignalBehaviorValue.DisableLEDs;
+        cfg.LED.LossOfSignalBehavior = LossOfSignalBehaviorValue.KeepRunning;
 
-        cfg.CANdleFeatures.StatusLedWhenActive = StatusLedWhenActiveValue.Enabled;
+        cfg.CANdleFeatures.StatusLedWhenActive = StatusLedWhenActiveValue.Disabled;
         cfg.CANdleFeatures.Enable5VRail = Enable5VRailValue.Enabled;
         cfg.CANdleFeatures.VBatOutputMode = VBatOutputModeValue.On;
 
@@ -111,7 +114,9 @@ public class Candle6 extends SubsystemBase {
      */
     public void resetConfig()
     {
-        candle.getConfigurator().apply(cfg);
+        StatusCode statusCode = candle.getConfigurator().apply(cfg);
+        
+        if (statusCode != StatusCode.OK) Util.consoleLog(statusCode.toString());
 
         if (RobotBase.isSimulation()) {
             // Instantiate a standard WPILib AddressableLED object strictly for the GUI.
@@ -179,10 +184,12 @@ public class Candle6 extends SubsystemBase {
     }
 
     /**
-     * Sets LossOfSignalBehavior option on Candle.
+     * Sets LossOfSignalBehavior option on Candle. Determines
+     * if setting a solid color is momentary or presists after
+     * the setCOlor() call.
      * Chain this call on the class construtor or You may call 
      * this method after the Candle6 object has been created
-     * @param value Desired option value. Defaults to DisableLeds.
+     * @param value Desired option value. Defaults to KeepRunning.
      * @return Reference to this Candle6 object for chaining.
      */
     public Candle6 withLossOfSignalBehavior(LossOfSignalBehaviorValue value)
@@ -196,7 +203,7 @@ public class Candle6 extends SubsystemBase {
      * Sets StatusLedWhenActive option on Candle.
      * Chain this call on the class construtor or You may call 
      * this method after the Candle6 object has been created
-     * @param value Desired option value. Defaults to On.
+     * @param value Desired option value. Defaults to Disabled.
      * @return Reference to this Candle6 object for chaining.
      */
     public Candle6 withStatusLedWhenActive(StatusLedWhenActiveValue value)
@@ -290,7 +297,7 @@ public class Candle6 extends SubsystemBase {
     {
         Util.consoleLog("%b", blink);
 
-        savedRequest = (SolidColor) candle.getAppliedControl();
+        if (blink) savedRequest = (SolidColor) candle.getAppliedControl();
 
         blinking = blink;
         blinkOn = false;
@@ -371,14 +378,18 @@ public class Candle6 extends SubsystemBase {
 
     /**
      * Sends a CANDle control request to the CANDle while handling Solid
-     * Color simulation.
+     * Color simulation. Normally not called by the user but can be used
+     * to manually constructed ControlRequest to the CANdle being controlled
+     * by this class. Allows for more detailed configuration of the request.
      * @param request Control request to send.
      */
-    private void setControl(ControlRequest request)
+    public void setControl(ControlRequest request)
     {
         if (RobotBase.isSimulation() && request instanceof SolidColor) simulateSolidColor((SolidColor) request);
 
-        candle.setControl(request);
+        StatusCode statusCode = candle.setControl(request);
+        
+        if (statusCode != StatusCode.OK) Util.consoleLog(statusCode.toString());
     }
 
     /**
