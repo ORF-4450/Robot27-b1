@@ -33,7 +33,7 @@ import org.wpilib.driverstation.DriverStationErrors;
  * wherever the constants are needed, to reduce verbosity.
  */
 public final class Constants {
-    public static String PROGRAM_NAME = "ORF27b1-10.28.26";
+    public static String PROGRAM_NAME = "ORF27b1-11.02.26";
 
     public static Robot robot;
 

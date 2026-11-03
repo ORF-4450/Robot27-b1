@@ -1,12 +1,10 @@
 package Team4450.Robot27.subsystems.utility;
 
-import com.ctre.phoenix.ErrorCode;
 import com.ctre.phoenix6.CANBus;
 import com.ctre.phoenix6.StatusCode;
 import com.ctre.phoenix6.configs.CANdleConfiguration;
 import com.ctre.phoenix6.controls.*;
 import com.ctre.phoenix6.hardware.CANdle;
-import com.ctre.phoenix6.signals.Animation3TypeValue;
 import com.ctre.phoenix6.signals.Enable5VRailValue;
 import com.ctre.phoenix6.signals.LossOfSignalBehaviorValue;
 import com.ctre.phoenix6.signals.RGBWColor;
@@ -243,13 +241,21 @@ public class Candle6 extends SubsystemBase {
     }
 
     /**
-     * Turn off animations.
-     */
+     * Turn off all animations.
+     */ 
     public void clearAllAnimations()
     {
-        Util.consoleLog();
+        for (int i = 0; i < 8; i++) clearAnimation(i);
+    }
 
-        candle.clearAllAnimations();
+    /**
+     * Turn off the animation in a specific slot.
+     * @param slot Slot to clear (0-7).
+     */
+    public void clearAnimation(int slot)
+    {
+        Util.consoleLog("slot=%d", slot);
+        candle.setControl(new EmptyAnimation(slot));
     }
 
     /**
@@ -306,10 +312,29 @@ public class Candle6 extends SubsystemBase {
     }
 
     /**
+     * Return the number of leds on the string attached to the CANdle.
+     * @return Number of leds.
+     */
+    public int numLeds()
+    {
+        return numLeds;
+    }
+
+    /**
+     * Set an animation on the whole string of leds. Will be set in slot 0.
+     * @param type The desired animation.
+     * @param color Desired color. Not all animations have color selection.
+     */
+    public void setAnimation(AnimationType type, Color color)
+    {
+        setAnimation(type, 0, numLeds - 1, color, 0);
+    }
+
+    /**
      * Set an animation to be active on a range of leds. More than one animation
      * range can be active determined by the slot number. Slot led ranges should
      * not overlap. To clear an animation on a slot, use the None animation type 
-     * and slot. Led index values are ignored.
+     * and slot (Led index values are ignored).
      * @param type The desired animation.
      * @param startLed Start led (0 based).
      * @param endLed End led (0 based).
@@ -379,8 +404,10 @@ public class Candle6 extends SubsystemBase {
     /**
      * Sends a CANDle control request to the CANDle while handling Solid
      * Color simulation. Normally not called by the user but can be used
-     * to manually constructed ControlRequest to the CANdle being controlled
-     * by this class. Allows for more detailed configuration of the request.
+     * to sed a manually constructed ControlRequest to the CANdle being 
+     * Controlled by this class. Allows for more detailed configuration 
+     * of the request, typically an Animation. See com.ctre.phoenix6.controls
+     * for the available requests.
      * @param request Control request to send.
      */
     public void setControl(ControlRequest request)

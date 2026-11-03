@@ -3,8 +3,8 @@ package Team4450.Robot27.commands.Utility;
 import static Team4450.Robot27.Constants.alliance;
 
 import Team4450.Lib.Util;
-import Team4450.Robot27.subsystems.Candle;
-import Team4450.Robot27.subsystems.Candle.AnimationTypes;
+import Team4450.Robot27.subsystems.utility.Candle6;
+
 import org.wpilib.driverstation.Alliance;
 import org.wpilib.driverstation.RobotState;
 import org.wpilib.util.Color;
@@ -14,16 +14,17 @@ import org.wpilib.command2.Command;
  * Default command that updates the LEDs on the robot.
  */
 public class UpdateCandle extends Command {
-    private Candle candle;
-    private enum State {DISABLED, ENABLED, TARGET_LOCKED, ALLIANCE, OFF}
-    private State state = State.DISABLED;
-    private double time;
+    private Candle6     candle;
+    private enum        State {DISABLED, ENABLED, TARGET_LOCKED, ALLIANCE, OFF}
+    private State       state = State.DISABLED;
+    private State       saveState = State.OFF;
+    private double      time;
 
     /**
      * A default command that updates the CANdle LED state, using NetworkTables data
      * @param candle the CANdle subsystem
      */
-    public UpdateCandle(Candle candle) {
+    public UpdateCandle(Candle6 candle) {
         this.candle = candle;
         addRequirements(candle);
     }
@@ -49,7 +50,17 @@ public class UpdateCandle extends Command {
         }
         
         // Util.consoleLog("state=%s", state.toString());
-        setLeds();
+
+        if (state != saveState) {
+            setLeds();
+            saveState = state;
+        }
+    }
+
+    // Makes this command run forever.
+    @Override
+    public boolean isFinished() {
+        return false;
     }
 
     /**
@@ -59,11 +70,11 @@ public class UpdateCandle extends Command {
      */
     public void blink(Color color, Color color2) {
         if (Util.getElaspedTime(time) % 0.2 < 0.1) {
-            candle.setLeds(color);
+            candle.setColor(color);
         } else if (color2 == null) {
             candle.setLedsOff();
         } else {
-            candle.setLeds(color2);
+            candle.setColor(color2);
         }
     }
 
@@ -81,22 +92,22 @@ public class UpdateCandle extends Command {
     private void setLeds() {
         switch (state) {
             case DISABLED: // rainbow
-                candle.setAnimation(AnimationTypes.Rainbow);
+                candle.setAnimation(Candle6.AnimationType.Rainbow, Color.BLACK);
                 break;
             case ALLIANCE: // alliance color
-                candle.setAnimation(AnimationTypes.Off);
-                candle.setLeds(alliance==Alliance.BLUE ? Color.BLUE : Color.RED);
+                candle.clearAnimation(0);
+                candle.setColor(alliance == Alliance.BLUE ? Color.BLUE : Color.RED);
                 break;
             case ENABLED:
-                candle.setAnimation(AnimationTypes.Off);
-                candle.setLeds(Color.GREEN);
+                candle.clearAnimation(0);
+                candle.setColor(Color.GREEN);
                 break;
             case TARGET_LOCKED: // alternating yellow and blue
-                candle.setAnimation(AnimationTypes.Off);
+                candle.clearAnimation(0);
                 blink(Color.BLUE, Color.YELLOW);
                 break;
             case OFF: // LEDs off
-                candle.setAnimation(AnimationTypes.Off);
+                candle.clearAnimation(0);
                 candle.setLedsOff();
                 break;
         }

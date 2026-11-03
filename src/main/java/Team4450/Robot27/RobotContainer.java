@@ -22,6 +22,7 @@ import Team4450.Robot27.commands.StopAuto;
 import Team4450.Robot27.commands.IntakeUp;
 import Team4450.Robot27.commands.IntakeDown;
 import Team4450.Robot27.commands.spinShooter;
+import Team4450.Robot27.commands.Utility.UpdateCandle;
 import Team4450.Robot27.commands.AutonHubTracking;
 import Team4450.Robot27.subsystems.Intake;
 import Team4450.Robot27.subsystems.Drivebase;
@@ -262,12 +263,14 @@ public class RobotContainer {
         // Warmup PathPlanner to avoid Java paus5es.
         CommandScheduler.getInstance().schedule(FollowPathCommand.warmupCommand());
 
-        candle.setColor(Color.BLUE, 0, 2);
-        candle.setColor(Color.GREEN, 5, 7);
-        candle.setColor(Color.RED, 3, 4, true);
+        //candle.setColor(Color.BLUE, 0, 2);
+        //candle.setColor(Color.GREEN, 5, 7);
+        //candle.setColor(Color.RED, 3, 4, true);
         //candle.setControl(new SolidColor(0, 7).withColor(new RGBWColor(Color.RED)));
         //candle.setBlink(true);
-        //candle.setAnimation(Candle6.AnimationType.ColorFlow, 0, 7, Color.BLUE, 0);
+        //candle.setAnimation(Candle6.AnimationType.ColorFlow, 0, 3, Color.BLUE, 0);
+        //candle.setAnimation(Candle6.AnimationType.Rainbow, 4, 7, Color.RED, 0);
+        candle.setDefaultCommand(new UpdateCandle(candle));
 
         Util.consoleLog("End of RobotContainer constructor");
     }
