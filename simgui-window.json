@@ -11,19 +11,11 @@
     "xpos": "-1",
     "ypos": "-1"
   }},
-  "Table": {
-    "0x48040D35,4": {
-      "Column 0  Weight": "1.0000",
-      "Column 1  Weight": "1.0000",
-      "Column 2  Weight": "1.0000",
-      "Column 3  Weight": "1.0000"
-    },
-    "0xED901DC8,2": {
-      "Column 0  Width": "262",
-      "Column 1  Width": "284",
-      "RefScale": "13"
-    }
-  },
+  "Table": {"0xED901DC8,2": {
+    "Column 0  Width": "262",
+    "Column 1  Width": "225",
+    "RefScale": "13"
+  }},
   "Window": {
     "\/Telemetry\/Field2d": {
       "Collapsed": "0",
@@ -48,7 +40,7 @@
     "DS": {
       "Collapsed": "0",
       "Pos": "3,486",
-      "Size": "158,167"
+      "Size": "138,167"
     },
     "Debug##Default": {
       "Collapsed": "0",
@@ -56,8 +48,8 @@
       "Size": "400,400"
     },
     "Display": {
-      "Collapsed": "1",
-      "Pos": "509,27",
+      "Collapsed": "0",
+      "Pos": "498,140",
       "Size": "650,320"
     },
     "Joysticks": {
@@ -67,12 +59,12 @@
     },
     "NetworkTables": {
       "Collapsed": "0",
-      "Pos": "320,44",
+      "Pos": "320,43",
       "Size": "750,672"
     },
     "NetworkTables Info": {
       "Collapsed": "1",
-      "Pos": "336,28",
+      "Pos": "312,89",
       "Size": "750,233"
     },
     "Other Devices": {
@@ -93,7 +85,7 @@
     "Timing": {
       "Collapsed": "0",
       "Pos": "2,192",
-      "Size": "301,256"
+      "Size": "301,222"
     }
   }
 }

@@ -54,7 +54,7 @@ public class TalonFXPositionController extends SubsystemBase implements ComplexT
     private NeutralModeValue neutralModeValue = NeutralModeValue.Brake;
     private InvertedValue    invertedValue = InvertedValue.Clockwise_Positive;
     
-    private double              desiredPosition = 0, driveRatio = 1;
+    private double              targetPosition = 0, driveRatio = 1;
     private MotorControlType    controlType = MotorControlType.voltage;
 
     /* Voltage-based Position requires a Position feed forward to account for the back-emf of the motor */
@@ -191,12 +191,12 @@ public class TalonFXPositionController extends SubsystemBase implements ComplexT
     }
 
     /**
-     * Set desired motor Position and starts motor.
+     * Set target motor Position and starts motor.
      * @param position Position in rotations.
      */
-    public void desiredPosition(double position)
+    public void targetPosition(double position)
     {
-        desiredPosition = position;
+        targetPosition = position;
 
         start();
     }
@@ -206,19 +206,19 @@ public class TalonFXPositionController extends SubsystemBase implements ComplexT
      * to reach and hold the desired position.
      */
     private void start() {
-        Util.consoleLog("%.2f", desiredPosition);
+        Util.consoleLog("%.2f", targetPosition);
 
         configureTalon();
         
         if (controlType == MotorControlType.motionMagic) {
             /* Use Motion Magic control */
-            talon.setControl(positionMotionMagic.withPosition(desiredPosition));
+            talon.setControl(positionMotionMagic.withPosition(targetPosition));
         } else if (controlType == MotorControlType.voltage) { 
                 /* Use Position voltage control */
-                talon.setControl(positionVoltage.withPosition(desiredPosition));
+                talon.setControl(positionVoltage.withPosition(targetPosition));
             } else {
                 /* Use Position torque control */
-                talon.setControl(positionTorque.withPosition(desiredPosition));
+                talon.setControl(positionTorque.withPosition(targetPosition));
             }
     }
 
@@ -228,7 +228,7 @@ public class TalonFXPositionController extends SubsystemBase implements ComplexT
     public void stop() {
         Util.consoleLog();
 
-        desiredPosition = getPosition();
+        targetPosition = getPosition();
 
         talon.setControl(brake);
     }
@@ -410,7 +410,7 @@ public class TalonFXPositionController extends SubsystemBase implements ComplexT
 
     @Override
     public void publishTunable(TunableTable table) {
-        table.publishDouble("Desired Position", ()-> desiredPosition, null);
+        table.publishDouble("target Position", ()-> targetPosition, this::targetPosition);
         table.publishDouble("Motor Position", this::getPosition, null);
 
         if (controlType == MotorControlType.voltage || controlType == MotorControlType.motionMagic) {

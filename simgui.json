@@ -1,14 +1,5 @@
 {
-  "HALProvider": {
-    "Addressable LEDs": {
-      "0": {"columns": 8},
-      "window": {"visible": true}
-    },
-    "Other Devices": {
-      "Talon FX (v6)[12]": {"header": {"open": true}},
-      "Talon FX (v6)[18]": {"header": {"open": true}}
-    }
-  },
+  "HALProvider": {"Addressable LEDs": {"window": {"visible": true}}},
   "NTProvider": {
     "types": {
       "\/DriverStation": "DriverStation",
@@ -16,49 +7,30 @@
       "\/Tunables\/Auto Program": "Selectable",
       "\/Tunables\/Pigeon Gyro": "Gyro"
     },
-    "windows": {
-      "\/Telemetry\/Field2d": {
-        "Robot": {
-          "image": "C:\\Users\\Richard\\Workspace\\FRC Java\\Robot27-b1\\resources\\robot.png",
-          "length": 0.7366,
-          "width": 0.7366
-        },
-        "Swerve Modules": {
-          "image": "C:\\Users\\Richard\\Workspace\\FRC Java\\Robot27-b1\\resources\\swerve_module.png",
-          "length": 0.3048,
-          "width": 0.3048
-        },
-        "bottom": 1917,
-        "builtin": "2026 FRC Rebuilt Welded",
-        "height": 8.069,
-        "left": 254,
-        "right": 3951,
-        "top": 121,
-        "units": "inches",
-        "width": 16.541,
-        "window": {"visible": true}
+    "windows": {"\/Telemetry\/Field2d": {
+      "units": "",
+      "window": {"visible": true}
+    }}
+  },
+  "NetworkTables": {"transitory": {
+    "Telemetry": {
+      "open": true,
+      "testTVC TL TP": {"open": true},
+      "testTVC(S1:10)": {"open": false},
+      "testTVC(S1:10) TL": {"open": true}
+    },
+    "Tunables": {
+      "Auto Program": {"selected": {"open": false}},
+      "LiveWindow": {
+        "Test Talon 2(S1:1)": {"open": false},
+        "Test Talon(S1:3)": {"open": false},
+        "open": true,
+        "testTVC(S1:10)": {"open": true},
+        "testTVC(S1:62)": {"open": true}
       },
-      "\/Tunables\/Auto Program": {"window": {"visible": true}},
-      "\/Tunables\/Pigeon Gyro": {"window": {"visible": true}}
+      "MyMonitorPower": {"open": false},
+      "open": true
     }
-  },
-  "NetworkTables": {
-    "Persistent Values": {"open": false},
-    "Retained Values": {"open": false},
-    "transitory": {
-      "Telemetry": {"open": true},
-      "Tunables": {
-        "Auto Program": {"selected": {"open": true}},
-        "LiveWindow": {
-          "MonitorPower": {"open": true},
-          "Test Talon 2(S1:1)": {"open": true},
-          "Test Talon(S1:3)": {"open": true},
-          "open": true
-        },
-        "MyMonitorPower": {"open": true},
-        "open": true
-      }
-    }
-  },
+  }},
   "NetworkTables Info": {"visible": true}
 }

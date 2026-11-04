@@ -5,8 +5,6 @@ import static Team4450.Robot27.Constants.*;
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.FollowPathCommand;
 import com.pathplanner.lib.commands.PathPlannerAuto;
-import com.ctre.phoenix6.controls.SolidColor;
-import com.ctre.phoenix6.signals.RGBWColor;
 import com.pathplanner.lib.auto.AutoBuilder;
 
 import org.wpilib.command2.button.RobotModeTriggers;
@@ -52,7 +50,6 @@ import org.wpilib.command2.StartEndCommand;
 import org.wpilib.telemetry.Telemetry;
 import org.wpilib.tunable.Selectable;
 import org.wpilib.tunable.Tunables;
-import org.wpilib.util.Color;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -84,6 +81,10 @@ public class RobotContainer {
 
     private final Candle6 candle = new Candle6(canBus, CTRE_CANDLE, 8)
         .withBrightness(1);
+
+    //private static final TalonFX testTalon = new TalonFX(62, canBus);
+
+    //public static final TalonFXVelocityController testTVC = new TalonFXVelocityController(testTalon, "testTVC");
 
     // Subsystem Default Commands.
 
@@ -271,6 +272,8 @@ public class RobotContainer {
         //candle.setAnimation(Candle6.AnimationType.ColorFlow, 0, 3, Color.BLUE, 0);
         //candle.setAnimation(Candle6.AnimationType.Rainbow, 4, 7, Color.RED, 0);
         candle.setDefaultCommand(new UpdateCandle(candle));
+
+        //testTVC.targetRPM(50);
 
         Util.consoleLog("End of RobotContainer constructor");
     }

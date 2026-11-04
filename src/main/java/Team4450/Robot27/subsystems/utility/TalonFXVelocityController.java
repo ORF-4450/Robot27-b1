@@ -14,6 +14,8 @@ import Team4450.Lib.Util;
 import Team4450.Lib.LiveWindow;
 
 import org.wpilib.framework.RobotBase;
+import org.wpilib.telemetry.TelemetryLoggable;
+import org.wpilib.telemetry.TelemetryTable;
 import org.wpilib.tunable.ComplexTunable;
 import org.wpilib.tunable.TunableTable;
 import org.wpilib.command2.InstantCommand;
@@ -34,7 +36,7 @@ import static org.wpilib.units.Units.*;
  * <a href="https://docs.wpilib.org/en/stable/docs/software/advanced-controls/introduction/tuning-flywheel.html">WPILib</a>, 
  * <a href="https://v6.docs.ctr-electronics.com/en/latest/docs/api-reference/device-specific/talonfx/closed-loop-requests.html">CTRE</a>
  */
-public class TalonFXVelocityController extends SubsystemBase implements ComplexTunable  {
+public class TalonFXVelocityController extends SubsystemBase implements ComplexTunable {
 
     private TalonFX         talon;
     private String          name;
@@ -54,7 +56,7 @@ public class TalonFXVelocityController extends SubsystemBase implements ComplexT
     private NeutralModeValue neutralModeValue = NeutralModeValue.Brake;
     private InvertedValue    invertedValue = InvertedValue.Clockwise_Positive;
     
-    private double              desiredRotationsPerSecond = 0, driveRatio = 1;
+    private double              targetRotationsPerSecond = 7, driveRatio = 1;
     private MotorControlType    controlType = MotorControlType.voltage;
 
     /* Voltage-based velocity requires a velocity feed forward to account for the back-emf of the motor */
@@ -65,7 +67,8 @@ public class TalonFXVelocityController extends SubsystemBase implements ComplexT
     private double  slot0_kI = 0;     // No output for integrated error
     private double  slot0_kD = 0;     // No output for error derivative
 
-    // Torque-based velocity does not require a velocity feed forward, as torque will accelerate the rotor up to the desired velocity by itself */
+    // Torque-based velocity does not require a velocity feed forward, as torque will accelerate the rotor 
+    // up to the target velocity by itself */
     private double  slot1_kS = 1.3;   // To account for friction, add 2.5 A of static feedforward
     private double  slot1_kP = 5;     // An error of 1 rotation per second results in 5 A output
     private double  slot1_kI = 0;     // No output for integrated error
@@ -172,7 +175,7 @@ public class TalonFXVelocityController extends SubsystemBase implements ComplexT
 
     /**
      * Set the control type to be used to control the motor. Defaults to voltage.
-     * call desired*() to restart the PID control with the new value.
+     * call target*() to restart the PID control with the new value.
      * @param controlType Sets motor control type to use. 
      * @return Itself
      */
@@ -183,44 +186,44 @@ public class TalonFXVelocityController extends SubsystemBase implements ComplexT
     }
 
     /**
-     * Set desired motor velocity and start motor.
+     * Set target motor velocity and start motor.
      * @param rps Velocity in rotations per second.
      */
-    public void desiredRPS(double rps)
+    public void targetRPS(double rps)
     {
-        desiredRotationsPerSecond = rps;
+        targetRotationsPerSecond = rps;
 
         start();
     }
 
     /**
-     * Set desired motor velocity and start motor.
+     * Set target motor velocity and start motor.
      * @param rpm Velocity in rotations per minute.
      */
-    public void desiredRPM(double rpm) {
-        desiredRotationsPerSecond = rpm / 60;
+    public void targetRPM(double rpm) {
+        targetRotationsPerSecond = rpm / 60;
 
         start();
     }
 
     /**
      * Starts the motor controller with the selected control type
-     * to reach and hold the desired rps.
+     * to reach and hold the target rps.
      */
     private void start() {
-        Util.consoleLog("%.2f", desiredRotationsPerSecond);
+        Util.consoleLog("%.2f", targetRotationsPerSecond);
 
         configureTalon();
         
         if (controlType == MotorControlType.motionMagic) {
             /* Use Motion Magic control */
-            talon.setControl(velocityMotionMagic.withVelocity(desiredRotationsPerSecond));
+            talon.setControl(velocityMotionMagic.withVelocity(targetRotationsPerSecond));
         } else if (controlType == MotorControlType.voltage) { 
             /* Use velocity voltage control */
-                talon.setControl(velocityVoltage.withVelocity(desiredRotationsPerSecond));
+                talon.setControl(velocityVoltage.withVelocity(targetRotationsPerSecond));
             } else {
             /* Use velocity torque control */
-                talon.setControl(velocityTorque.withVelocity(desiredRotationsPerSecond));
+                talon.setControl(velocityTorque.withVelocity(targetRotationsPerSecond));
             }
     }
 
@@ -230,7 +233,7 @@ public class TalonFXVelocityController extends SubsystemBase implements ComplexT
     public void stop() {
         Util.consoleLog();
 
-        desiredRotationsPerSecond = 0;
+        targetRotationsPerSecond = 0;
 
         talon.setControl(brake);
     }
@@ -238,7 +241,7 @@ public class TalonFXVelocityController extends SubsystemBase implements ComplexT
     /**
      * Sets the drive ratio between motor shaft and driven mechanisim. This is
      * the number of motor shaft rotations to 1 rotation of the driven mechanisim.
-     * when ratio greater than one, the desired* functions set the velocity of the 
+     * when ratio greater than one, the target* functions set the velocity of the 
      * driven mechanisim.
      * @param ratio number of motor shaft rotations to one mecanisim rotation.
      * @return Itself
@@ -251,7 +254,7 @@ public class TalonFXVelocityController extends SubsystemBase implements ComplexT
 
     /**
      * Set the kP value for voltage PID control. After changing this value
-     * call desired*() to restart the PID control with the new value.
+     * call target*() to restart the PID control with the new value.
      * @param kP The proportional value. Voltage applied for error of 1 rps.
      * @return Itself
      */
@@ -263,7 +266,7 @@ public class TalonFXVelocityController extends SubsystemBase implements ComplexT
 
     /**
      * Set the kI value for voltage PID control. After changing this value
-     * call desired*() to restart the PID control with the new value.
+     * call target*() to restart the PID control with the new value.
      * @param kI The integral value.
      * @return Itself
      */
@@ -275,7 +278,7 @@ public class TalonFXVelocityController extends SubsystemBase implements ComplexT
 
     /**
      * Set the kD value for voltage PID control. After changing this value
-     * call desired*() to restart the PID control with the new value.
+     * call target*() to restart the PID control with the new value.
      * @param kD The derivative value.
      * @return Itself
      */
@@ -287,7 +290,7 @@ public class TalonFXVelocityController extends SubsystemBase implements ComplexT
 
     /**
      * Set the kS value for voltage PID control. After changing this value
-     * call desired*() to restart the PID control with the new value.
+     * call target*() to restart the PID control with the new value.
      * @param kS The static feedforward voltage.
      * @return Itself
      */
@@ -299,7 +302,7 @@ public class TalonFXVelocityController extends SubsystemBase implements ComplexT
 
     /**
      * Set the kV value for voltage PID control. After changing this value
-     * call desired*() to restart the PID control with the new value.
+     * call target*() to restart the PID control with the new value.
      * @param kV The voltage required for 1 rps velocity.
      * @return Itself
      */
@@ -311,7 +314,7 @@ public class TalonFXVelocityController extends SubsystemBase implements ComplexT
 
     /**
      * Set the kA value for voltage PID control. Only applies to Motion Magic.
-     * After changing this value call desired*() to restart the PID control
+     * After changing this value call target*() to restart the PID control
      * with the new value.
      * @param kA The voltage for acceleration of 1 rps/s.
      * @return Itself
@@ -324,7 +327,7 @@ public class TalonFXVelocityController extends SubsystemBase implements ComplexT
 
     /**
      * Set the kP value for torque PID control. After changing this value
-     * call desired*() to restart the PID control with the new value.
+     * call target*() to restart the PID control with the new value.
      * @param kP The proportional value. The amperage to apply for error of 1 rps.
      * 
      */
@@ -336,7 +339,7 @@ public class TalonFXVelocityController extends SubsystemBase implements ComplexT
 
     /**
      * Set the kI value for torque PID control. After changing this value
-     * call desired*() to restart the PID control with the new value.
+     * call target*() to restart the PID control with the new value.
      * @param kI The integral value.
      * @return Itself
      */
@@ -348,7 +351,7 @@ public class TalonFXVelocityController extends SubsystemBase implements ComplexT
 
     /**
      * Set the kD value for torque PID control. After changing this value
-     * call desired*() to restart the PID control with the new value.
+     * call target*() to restart the PID control with the new value.
      * @param kD The derivative value.
      * 
      */
@@ -360,7 +363,7 @@ public class TalonFXVelocityController extends SubsystemBase implements ComplexT
 
     /**
      * Set the kS value for torque PID control. After changing this value
-     * call desired*() to restart the PID control with the new value.
+     * call target*() to restart the PID control with the new value.
      * @param kS The static feedforward voltage.
      * @return Itself
      */
@@ -384,7 +387,8 @@ public class TalonFXVelocityController extends SubsystemBase implements ComplexT
 
     @Override
     public void publishTunable(TunableTable table) {
-        table.publishDouble("Desired RPS", ()-> desiredRotationsPerSecond, null);
+        table.publishDouble("Target RPS", ()-> targetRotationsPerSecond, this::targetRPS);
+        table.publishDouble("Target RPM", ()-> targetRotationsPerSecond * 60, this::targetRPM);
         table.publishDouble("Motor RPS", this::getRPS, null);
         table.publishDouble("Motor RPM", this::getRPM, null);
 

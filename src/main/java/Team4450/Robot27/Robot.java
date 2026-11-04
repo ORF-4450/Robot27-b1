@@ -303,7 +303,7 @@ public class Robot extends TimedRobot {
     // test/debug data in utility mode. This is how we replaced the old LiveWindow mode.
     // The whole point is to not send all the debugging Telemetry/Tunables in the regular modes.
     
-    LiveWindow.publish();
+    LiveWindow.publishTunables();
 
     teleopInit();
 
@@ -315,6 +315,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void utilityPeriodic() {
+    LiveWindow.publishLoggables();
   }
 
   @Override
