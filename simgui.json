@@ -22,11 +22,19 @@
     "Tunables": {
       "Auto Program": {"selected": {"open": false}},
       "LiveWindow": {
+        "TalonFXVelocityController": {
+          "TalonFXPositionController": {"open": true},
+          "open": true
+        },
         "Test Talon 2(S1:1)": {"open": false},
         "Test Talon(S1:3)": {"open": false},
         "open": true,
+        "testTPC(62)": {"open": true},
         "testTVC(S1:10)": {"open": true},
-        "testTVC(S1:62)": {"open": true}
+        "testTVC(S1:62)": {
+          "open": true,
+          "testTPC(S1:62)": {"open": true}
+        }
       },
       "MyMonitorPower": {"open": false},
       "open": true

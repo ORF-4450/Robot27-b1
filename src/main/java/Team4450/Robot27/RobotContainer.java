@@ -5,6 +5,7 @@ import static Team4450.Robot27.Constants.*;
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.FollowPathCommand;
 import com.pathplanner.lib.commands.PathPlannerAuto;
+import com.ctre.phoenix6.hardware.TalonFX;
 import com.pathplanner.lib.auto.AutoBuilder;
 
 import org.wpilib.command2.button.RobotModeTriggers;
@@ -32,6 +33,7 @@ import Team4450.Lib.XboxController;
 import Team4450.Robot27.subsystems.QuestNavSubsystem;
 import Team4450.Robot27.subsystems.VisionSubsystem;
 import Team4450.Robot27.subsystems.utility.Candle6;
+import Team4450.Robot27.subsystems.utility.TalonFXVelocityController;
 import Team4450.Robot27.subsystems.Hopper;
 
 import org.wpilib.math.controller.PIDController;

@@ -31,12 +31,12 @@ public class SDSTelemetry {
      */
     public SDSTelemetry(double maxSpeed) {
         MaxSpeed = maxSpeed;
-        SignalLogger.start();
-
-        // This line turns off the *Stupid* CTRE logging into ".hoot" files. This save a very large amount on bandwidth on 
-        // the system (network, disk). Basic testing shows that this savings is about 50 Megabytes or more for every minute 
-        // of robot runtime (At least while the robot is stationary).
-        SignalLogger.stop();
+        
+        // This line turns off the CTRE logging into ".hoot" files. This save a very large amount on bandwidth 
+        // on the system (network, disk). Basic testing shows that this savings is about 50 Megabytes or more for every 
+        // minute of robot runtime (At least while the robot is stationary). Note auto logging is turned off in the
+        // Robot class constructor.
+        //SignalLogger.start();
     }
 
     // All of this is commented out because it is a ton of data that really does not need to be sent.

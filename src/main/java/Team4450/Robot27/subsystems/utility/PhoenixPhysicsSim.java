@@ -11,6 +11,8 @@ import com.ctre.phoenix6.hardware.TalonFX;
 public class PhoenixPhysicsSim {
     private static final PhoenixPhysicsSim sim = new PhoenixPhysicsSim();
 
+    private final ArrayList<SimProfile> _simProfiles = new ArrayList<SimProfile>();
+
     /**
      * Gets the robot simulator instance.
      */
@@ -44,8 +46,6 @@ public class PhoenixPhysicsSim {
             simProfile.run();
         }
     }
-
-    private final ArrayList<SimProfile> _simProfiles = new ArrayList<SimProfile>();
 
     /**
      * Holds information about a simulated device.

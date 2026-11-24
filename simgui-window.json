@@ -8,8 +8,8 @@
     "style": "2",
     "userScaling": "100",
     "width": "1456",
-    "xpos": "-1",
-    "ypos": "-1"
+    "xpos": "235",
+    "ypos": "84"
   }},
   "Table": {"0xED901DC8,2": {
     "Column 0  Width": "262",
@@ -17,6 +17,11 @@
     "RefScale": "13"
   }},
   "Window": {
+    "\/DriverStation": {
+      "Collapsed": "0",
+      "Pos": "60,60",
+      "Size": "138,150"
+    },
     "\/Telemetry\/Field2d": {
       "Collapsed": "0",
       "Pos": "277,67",
@@ -40,7 +45,7 @@
     "DS": {
       "Collapsed": "0",
       "Pos": "3,486",
-      "Size": "138,167"
+      "Size": "275,140"
     },
     "Debug##Default": {
       "Collapsed": "0",
@@ -64,7 +69,7 @@
     },
     "NetworkTables Info": {
       "Collapsed": "1",
-      "Pos": "312,89",
+      "Pos": "316,27",
       "Size": "750,233"
     },
     "Other Devices": {
@@ -75,7 +80,7 @@
     "Robot State": {
       "Collapsed": "0",
       "Pos": "5,20",
-      "Size": "309,156"
+      "Size": "291,156"
     },
     "System Joysticks": {
       "Collapsed": "0",

@@ -26,7 +26,7 @@ import static org.wpilib.units.Units.*;
  * Configures controller with PID parameters and runs the control loop on the
  * controller. Provides voltage, torque and Motion Magic (voltage) control methods.
  * Torque control requires Phoemix Pro license.
- * Set any parameters before calling desiredPosition(). Automatically
+ * Set any parameters before calling targetPosition(). Automatically
  * stops motor when robot disabled. Default parameters work with Kraken x60. This
  * should be tuned for your application. See CTRE and WPILib doc for information 
  * about the parameters and how to tune this controller:
@@ -76,7 +76,7 @@ public class TalonFXPositionController extends SubsystemBase implements ComplexT
 
     public TalonFXPositionController(TalonFX talon, String name) {
         this.talon = talon;
-        this.name = name + "(" + talon.getDeviceID() + ")";
+        this.name = name  + "(" + talon.getNetwork().getName() + ":" + talon.getDeviceID() + ")";
 
         Util.consoleLog("%s", this.name);
 

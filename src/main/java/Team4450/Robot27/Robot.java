@@ -17,6 +17,8 @@ import org.wpilib.telemetry.Telemetry;
 import org.wpilib.tunable.TunableBoolean;
 import org.wpilib.tunable.Tunables;
 
+import com.ctre.phoenix6.SignalLogger;
+
 /**
  * This is the top class or starting point for team robot code. This class acts
  * as an interface between out team code and the FIRST supplied (WpiLib) robot
@@ -42,6 +44,9 @@ public class Robot extends TimedRobot {
       // Set up our custom logger.
 
       Util.CustomLogger.setup(true);
+
+      // Turn off CTRE "hoot" logging unless you want it on.
+      SignalLogger.enableAutoLogging(false);
 
       // The WPIlib classes that underlie this class generate a lot of warning
       // messages that flood the Riolog and make it almost unusable. The warnings
@@ -296,7 +301,7 @@ public class Robot extends TimedRobot {
     // Cancels all running commands at the start of utility mode.
     CommandScheduler.getInstance().cancelAll();
 
-    // Next two lines launch teleop mode, but since we are in utility
+    // Next three lines launch teleop mode, but since we are in utility
     // mode, Telemetry/Tunables will be enabled to display test data to the
     // outlineviewer and dashboard. Our "utility" mode is the regular
     // telop with Telemetry/Tunables enabled. Our code displays more detailed 
@@ -315,7 +320,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void utilityPeriodic() {
-    LiveWindow.publishLoggables();
+    //LiveWindow.publishLoggables();  // Only needed if you register TelemetryLoggable classes with LiveWindow.
   }
 
   @Override

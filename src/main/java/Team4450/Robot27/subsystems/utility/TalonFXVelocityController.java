@@ -14,8 +14,6 @@ import Team4450.Lib.Util;
 import Team4450.Lib.LiveWindow;
 
 import org.wpilib.framework.RobotBase;
-import org.wpilib.telemetry.TelemetryLoggable;
-import org.wpilib.telemetry.TelemetryTable;
 import org.wpilib.tunable.ComplexTunable;
 import org.wpilib.tunable.TunableTable;
 import org.wpilib.command2.InstantCommand;
@@ -28,7 +26,7 @@ import static org.wpilib.units.Units.*;
  * Configures controller with PID parameters and runs the control loop on the
  * controller. Provides voltage, torque and Motion Magic (voltage) control methods.
  * Torque control requires Phoenix Pro license.
- * Set any parameters before calling setDesiredRPS or setDesiredRPM. Automatically
+ * Set any parameters before calling targetRPS or targetRPM. Automatically
  * stops motor when robot disabled. Default parameters work with Kraken x60. This
  * should be tuned for your application. In particular, kV may need adjustment to
  * get this controller to exactly match the target velocity. See CTRE and WPILib 
@@ -59,6 +57,8 @@ public class TalonFXVelocityController extends SubsystemBase implements ComplexT
     private double              targetRotationsPerSecond = 7, driveRatio = 1;
     private MotorControlType    controlType = MotorControlType.voltage;
 
+    private TalonFXPositionController   tfxpc;
+
     /* Voltage-based velocity requires a velocity feed forward to account for the back-emf of the motor */
     private double  slot0_kS = 0.1;   // To account for friction, add 0.1 V of static feedforward
     private double  slot0_kV = 0.12;  // Kraken X60 is a 500 kV motor, 500 rpm per V = 8.333 rps per V, 1/8.33 = 0.12 volts / rotation per second
@@ -85,6 +85,8 @@ public class TalonFXVelocityController extends SubsystemBase implements ComplexT
         RobotModeTriggers.disabled().onChange(new InstantCommand(this::stop));
 
         if (RobotBase.isSimulation()) PhoenixPhysicsSim.getInstance().addTalonFX(talon, 0.001);
+
+        //tfxpc = new TalonFXPositionController(talon, this.name + "/" + "testTPC");
     }
 
     private void configureTalon() {
@@ -405,6 +407,10 @@ public class TalonFXVelocityController extends SubsystemBase implements ComplexT
             table.publishDouble("Torque kD", ()-> slot1_kD, this::withTorquekD);
             table.publishDouble("Torque kS", ()-> slot1_kS, this::withTorquekS);
         }
+
+        //TunableTable tfxpcTable = table.getTable(tfxpc.getName());
+
+        //tfxpc.publishTunable(tfxpcTable);
     }
     
     @Override
